@@ -20,7 +20,8 @@ class systemVios:
 
     def selectSystemVios(self):
 
-        print ("\nSelect the system host for LPAR")
+        print ("\n[LPAR host Configuration]\n"
+               "\nSelect the system host for LPAR")
         systems_keys = list(systems.keys())
         systems_length = (len(systems.keys()))-1
         count = 0
