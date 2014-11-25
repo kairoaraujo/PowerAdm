@@ -97,7 +97,7 @@ print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\
 
 change = raw_input("Change or Ticket number: ")
 
-file_change = open("changes/%s_%s.sh" % (change, timestr) , 'w')
+file_change = open("tmp/%s_%s.sh" % (change, timestr) , 'w')
 
 configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
 newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n)' , 'y')
@@ -114,7 +114,9 @@ while configlpar.answerCheck() == 'n':
             if newconfiglpar.answerCheck() == 'n':
                 print ('Encerrando CRQ')
 
+file_change.write('# File closed with success by PowerAdm\n')
 file_change.close()
+os.system('mv tmp/%s_%s.sh changes/' % (change, timestr))
 
 print (freeid.getId())
 print (system_vio.getSystem())
