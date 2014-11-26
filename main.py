@@ -27,6 +27,7 @@ def headerconfig():
 def lparconfig():
     global prefix, lparname, lparentcpu, lparentcpumin, lparentcpumax, lparvcpu
     global lparvcpumin, lparvcpumax, lparmem, lparmenmin, lparmenmax
+    global npiv_vio1, npiv_vio2
 
     print ("\n[LPAR Configuration ]\n")
     prefix = raw_input("Prefix (XXXX-lparname): ")
@@ -79,6 +80,18 @@ def lparconfig():
         netconfiglpar.mkCheck()
         netconfiglpar.answerCheck()
 
+    # VIOs NPIV selection
+    print ("\n\n[NPIV HBA Configuration]\n")
+    print ("\nFinding on %s the NPIVs availabe.\n"
+           "This might take a few minutes...\n" % (system_vio.getVio1()))
+    os.system('cat simulation/VIO1A_NPIV')
+    npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+
+    print ("\nFinding on %s the NPIVs availabe.\n"
+           "This might take a few minutes...\n" % (system_vio.getVio1()))
+    os.system("cat simulation/VIO2A_NPIV")
+    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+
     # verify configuration
     global virtual_eth_adapters
     print ("\n[LPAR Configuration Validation]\n"
@@ -86,10 +99,13 @@ def lparconfig():
            "LPAR name: %s-%s hosted in %s with ID %s\n"
            "Entitled CPU: Minimum: %.1f , Desired: %.1f, Maximum: %.1f\n"
            "Virtual CPU : Minimum: %s , Desired: %s, Maximum: %s\n"
-           "Memory      : Minimum: %s , Desired: %s, Maximum: %s"
+           "Memory      : Minimum: %s , Desired: %s, Maximum: %s\n"
+           "NPIV        : %s: %s \t %s: %s\n"
            % (prefix, lparname, system_vio.getSystem(), freeid.getId(),
               lparentcpumin, lparentcpu, lparentcpumax, lparvcpumin,
-              lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax ))
+              lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax,
+              system_vio.getVio1(), npiv_vio1, system_vio.getVio2(),
+              npiv_vio2))
     count = 0
     while count <= net_length:
         print ("Network %s: Virtual Switch: %s - VLAN: %s" % (count, net_vsw[count], net_vlan[count]))
@@ -182,11 +198,13 @@ def writechange():
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp fcs0\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio1))
+    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp %s\'\""
+                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio1,
+                      npiv_vio1))
 
-    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp fcs0\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio2))
+    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp %s\'\""
+                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio2,
+                      npiv_vio2))
 
     file_reservedids_tmp = open('tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))
