@@ -15,6 +15,14 @@ from verify import *
 #### FRONTEND                                                                              ####
 ###############################################################################################
 
+def headerconfig():
+    global change
+    os.system('clear')
+    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n\n" % version)
+
+    change = raw_input("Change or Ticket number: ")
+
+
 # get lpar configuration (mem, cpu etc)
 def lparconfig():
     global prefix, lparname, lparentcpu, lparentcpumin, lparentcpumax, lparvcpu
@@ -99,6 +107,14 @@ def lparconfig():
 #### BACKEND                                                                               ####
 ###############################################################################################
 
+def headerchange():
+
+    global file_change
+
+    file_change = open("tmp/%s_%s.sh" % (change, timestr) , 'w')
+    file_change.write("#!/bin/sh\n")
+
+
 def writechange():
 
     print ('Writing file change/%s-%s ... ' % (change, timestr))
@@ -172,13 +188,13 @@ def writechange():
     file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp fcs0\'\""
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio2))
 
-os.system('clear')
-print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n\n" % version)
 
-change = raw_input("Change or Ticket number: ")
+###############################################################################################
+#### MAIN                                                                                  ####
+###############################################################################################
 
-file_change = open("tmp/%s_%s.sh" % (change, timestr) , 'w')
-file_change.write("#!/bin/sh\n")
+headerconfig()
+headerchange()
 
 configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
 newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n)' , 'y')
