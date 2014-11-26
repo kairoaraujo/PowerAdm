@@ -1,0 +1,239 @@
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost0      U9119.FHB.8297FBR-V3-C313              13 TIVIT-tivit053 7AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V13-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost1      U9119.FHB.8297FBR-V3-C3122            122 ZURICH-ZBRLPAR CGPSPR10
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V122-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost2      U9119.FHB.8297FBR-V3-C3121            121 ZURICH-ZBRLPAR CGPSPR09
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V121-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost3      U9119.FHB.8297FBR-V3-C3120            120 ZURICH-ZBRLPAR CGPSPR08
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V120-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost4      U9119.FHB.8297FBR-V3-C3119            119 ZURICH-ZBRLPAR CGPSPR07
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V119-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost5      U9119.FHB.8297FBR-V3-C3116            116 ZURICH-ZBRLPAR CGPSUA04
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V116-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost6      U9119.FHB.8297FBR-V3-C3104            104 ZURICH-ZBRLPAR CGPSDS02
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V104-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost7      U9119.FHB.8297FBR-V3-C3103            103 ZURICH-ZBRLPAR CGPSDS01
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V103-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost8      U9119.FHB.8297FBR-V3-C3115            115 ZURICH-ZBRLPAR CGPSUA03
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V115-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost9      U9119.FHB.8297FBR-V3-C3117            117 ZURICH-ZBRORAC LGPSPR05
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V117-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost10     U9119.FHB.8297FBR-V3-C3118            118 ZURICH-ZBRORAC LGPSPR06
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V118-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost11     U9119.FHB.8297FBR-V3-C3125            125 FABER-FABER-BW -QASAIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V125-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost12     U9119.FHB.8297FBR-V3-C3126            126 FABER-FABER-BW -PRDAIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V126-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost13     U9119.FHB.8297FBR-V3-C3127            127 TIVIT-TIVIT073 0AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V127-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost14     U9119.FHB.8297FBR-V3-C3128            128 TIVIT-TIVIT073 1AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V128-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost15     U9119.FHB.8297FBR-V3-C3131            131 CIELO-CIEBCV01 AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V131-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost16     U9119.FHB.8297FBR-V3-C3129            129 TIVIT-TIVIT073 2AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V129-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost17     U9119.FHB.8297FBR-V3-C3130            130 TIVIT-TIVIT073 3AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V130-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost18     U9119.FHB.8297FBR-V3-C3166            166
+
+Status:NOT_LOGGED_IN
+FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C6-T1
+Ports logged in:0
+Flags:4<NOT_LOGGED>
+VFC client name:                VFC client DRC:
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost35     U9119.FHB.8297FBR-V3-C3167            167 CSN-xvr44      AIX
+
+Status:LOGGED_IN
+FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V167-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost36     U9119.FHB.8297FBR-V3-C3168            168 CSN-xvr46      AIX
+
+Status:LOGGED_IN
+FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V168-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost37     U9119.FHB.8297FBR-V3-C3202            202 CSN-xvr45      AIX
+
+Status:LOGGED_IN
+FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V202-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost43     U9119.FHB.8297FBR-V3-C3173            173 CSN-xvr14      AIX
+
+Status:LOGGED_IN
+FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C6-T1
+Ports logged in:5
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V173-C33
+
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost54     U9119.FHB.8297FBR-V3-C3186            186 CIELO-CIELBCV0 01AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5803.001.99205Y1-P1-C6-T1
+Ports logged in:3
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FBR-V186-C33

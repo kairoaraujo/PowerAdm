@@ -20,7 +20,7 @@ class newId:
         count = 0
         while count <= systems_length:
             #os.system('lssyscfg -m %s -r lpar -F lpar_id >> tmp/ids_%s' % (systems[count], timestr))
-            os.system('cat simulacao/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
+            os.system('cat simulation/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
             count += 1
         fileids = open('tmp/ids_%s' % (timestr), 'r')
         ids = fileids.readlines()
