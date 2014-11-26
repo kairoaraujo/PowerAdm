@@ -117,7 +117,7 @@ def headerchange():
 
 def writechange():
 
-    print ('Writing file change/%s-%s ... ' % (change, timestr))
+    print ('Writing file %s-%s.sh ... ' % (change, timestr))
 
     file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix, lparname,
                       system_vio.getSystem()))
@@ -188,6 +188,15 @@ def writechange():
     file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp fcs0\'\""
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio2))
 
+    file_reservedids_tmp = open('tmp/reserved_ids_%s' %(timestr), 'ab')
+    file_reservedids_tmp.write('%s\n' % (freeid.getId()))
+    file_reservedids_tmp.close()
+
+def closechange():
+    file_change.write('\n\n# File closed with success by PowerAdm\n')
+    file_change.close()
+    os.system('mv tmp/%s_%s.sh changes/' % (change, timestr))
+    os.system('cat tmp/reserved_ids_%s >> data/reserved_ids' % (timestr))
 
 ###############################################################################################
 #### MAIN                                                                                  ####
@@ -212,8 +221,5 @@ while configlpar.answerCheck() == 'n':
             if newconfiglpar.answerCheck() == 'n':
                 print ('Closing the file change/%s-%s' % (change, timestr))
 
-file_change.write('\n\n# File closed with success by PowerAdm\n')
-file_change.close()
-os.system('mv tmp/%s_%s.sh changes/' % (change, timestr))
-
+closechange()
 
