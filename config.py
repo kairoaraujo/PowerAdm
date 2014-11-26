@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 ## -*- coding: utf-8 -*-
 #
+# PowerAdm
 #
-# Configuration
+# Configuration file
 ###############################################################################################
+#
 # hmc server
 hmcserver = 'hmctvttsm01'
 # Put here the minimum and maximum memory percent to lpars
@@ -19,4 +21,3 @@ systems = {'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'], 'P1-8205-E6D-SN06A07BT':['
            'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']}
 # Virtual Switches
 virtual_switches = ['VSW-GERENCIA-01', 'VSW-DADOS-01', 'VSW-BACKUP-01']
-
