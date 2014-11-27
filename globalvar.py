@@ -15,4 +15,3 @@ from config import *
 timestr = time.strftime("%d%m%Y-%H%M%S")
 version = '0.1b'
 
-global file_reservedids_tmp
