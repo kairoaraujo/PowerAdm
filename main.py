@@ -85,11 +85,13 @@ def lparconfig():
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio1()))
     os.system('cat simulation/VIO1A_NPIV')
+    os.system('cat simulation/FCSxSAN')
     npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio1()))
-    os.system("cat simulation/VIO2A_NPIV")
+    os.system('cat simulation/VIO2A_NPIV')
+    os.system('cat simulation/FCSxSAN')
     npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     # verify configuration
