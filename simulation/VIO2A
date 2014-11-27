@@ -1,6 +1,6 @@
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost0      U9119.FHB.8297FBR-V4-C413              13 TIVIT-tivit053 7AIX
+vfchost0      U9119.FHB.8297FBR-V4-C413              13 onibus-onibus053 7AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -10,7 +10,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V13-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost1      U9119.FHB.8297FBR-V4-C4122            122 ZURICH-ZBRLPAR CGPSPR10
+vfchost1      U9119.FHB.8297FBR-V4-C4122            122 KKKK-HHHHH CFFFPR10
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -20,7 +20,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V122-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost2      U9119.FHB.8297FBR-V4-C4121            121 ZURICH-ZBRLPAR CGPSPR09
+vfchost2      U9119.FHB.8297FBR-V4-C4121            121 KKKK-HHHHH CFFFPR09
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -30,7 +30,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V121-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost3      U9119.FHB.8297FBR-V4-C4120            120 ZURICH-ZBRLPAR CGPSPR08
+vfchost3      U9119.FHB.8297FBR-V4-C4120            120 KKKK-HHHHH CFFFPR08
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -40,7 +40,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V120-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost4      U9119.FHB.8297FBR-V4-C4119            119 ZURICH-ZBRLPAR CGPSPR07
+vfchost4      U9119.FHB.8297FBR-V4-C4119            119 KKKK-HHHHH CFFFPR07
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -50,7 +50,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V119-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost5      U9119.FHB.8297FBR-V4-C4116            116 ZURICH-ZBRLPAR CGPSUA04
+vfchost5      U9119.FHB.8297FBR-V4-C4116            116 KKKK-HHHHH CFFFUA04
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -60,7 +60,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V116-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost6      U9119.FHB.8297FBR-V4-C4104            104 ZURICH-ZBRLPAR CGPSDS02
+vfchost6      U9119.FHB.8297FBR-V4-C4104            104 KKKK-HHHHH CFFFDS02
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -70,7 +70,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V104-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost7      U9119.FHB.8297FBR-V4-C4103            103 ZURICH-ZBRLPAR CGPSDS01
+vfchost7      U9119.FHB.8297FBR-V4-C4103            103 KKKK-HHHHH CFFFDS01
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -80,7 +80,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V103-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost8      U9119.FHB.8297FBR-V4-C4115            115 ZURICH-ZBRLPAR CGPSUA03
+vfchost8      U9119.FHB.8297FBR-V4-C4115            115 KKKK-HHHHH CFFFUA03
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -90,7 +90,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V115-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost9      U9119.FHB.8297FBR-V4-C4117            117 ZURICH-ZBRORAC LGPSPR05
+vfchost9      U9119.FHB.8297FBR-V4-C4117            117 KKKK-ZBRORAC LFFFPR05
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -100,7 +100,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V117-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost10     U9119.FHB.8297FBR-V4-C4118            118 ZURICH-ZBRORAC LGPSPR06
+vfchost10     U9119.FHB.8297FBR-V4-C4118            118 KKKK-ZBRORAC LFFFPR06
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -110,7 +110,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V118-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost11     U9119.FHB.8297FBR-V4-C4125            125 FABER-FABER-BW -QASAIX
+vfchost11     U9119.FHB.8297FBR-V4-C4125            125 FIBRA-FIBRA-BW -QASAIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -120,7 +120,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V125-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost12     U9119.FHB.8297FBR-V4-C4126            126 FABER-FABER-BW -PRDAIX
+vfchost12     U9119.FHB.8297FBR-V4-C4126            126 FIBRA-FIBRA-BW -PRDAIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -130,7 +130,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V126-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost13     U9119.FHB.8297FBR-V4-C4127            127 TIVIT-TIVIT073 0AIX
+vfchost13     U9119.FHB.8297FBR-V4-C4127            127 onibus-onibus073 0AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -140,7 +140,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V127-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost14     U9119.FHB.8297FBR-V4-C4128            128 TIVIT-TIVIT073 1AIX
+vfchost14     U9119.FHB.8297FBR-V4-C4128            128 onibus-onibus073 1AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -150,7 +150,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V128-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost15     U9119.FHB.8297FBR-V4-C131             131 CIELO-CIEBCV01 AIX
+vfchost15     U9119.FHB.8297FBR-V4-C131             131 XXXX-YYYYBCV01 AIX
 
 Status:LOGGED_IN
 FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C8-T1
@@ -160,7 +160,7 @@ VFC client name:fcs3            VFC client DRC:U9119.FHB.8297FBR-V131-C37
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost16     U9119.FHB.8297FBR-V4-C4131            131 CIELO-CIEBCV01 AIX
+vfchost16     U9119.FHB.8297FBR-V4-C4131            131 XXXX-YYYYBCV01 AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -170,7 +170,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V131-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost17     U9119.FHB.8297FBR-V4-C3131            131 CIELO-CIEBCV01 AIX
+vfchost17     U9119.FHB.8297FBR-V4-C3131            131 XXXX-YYYYBCV01 AIX
 
 Status:LOGGED_IN
 FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C8-T1
@@ -180,7 +180,7 @@ VFC client name:fcs2            VFC client DRC:U9119.FHB.8297FBR-V131-C36
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost18     U9119.FHB.8297FBR-V4-C4129            129 TIVIT-TIVIT073 2AIX
+vfchost18     U9119.FHB.8297FBR-V4-C4129            129 onibus-onibus073 2AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -190,7 +190,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V129-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost19     U9119.FHB.8297FBR-V4-C4130            130 TIVIT-TIVIT073 3AIX
+vfchost19     U9119.FHB.8297FBR-V4-C4130            130 onibus-onibus073 3AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -210,7 +210,7 @@ VFC client name:                VFC client DRC:
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost37     U9119.FHB.8297FBR-V4-C4167            167 CSN-xvr44      AIX
+vfchost37     U9119.FHB.8297FBR-V4-C4167            167 XXX-yyy44      AIX
 
 Status:LOGGED_IN
 FC name:fcs5                    FC loc code:U5803.001.99205Y1-P1-C7-T2
@@ -220,7 +220,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V167-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost38     U9119.FHB.8297FBR-V4-C4168            168 CSN-xvr46      AIX
+vfchost38     U9119.FHB.8297FBR-V4-C4168            168 XXX-yyy46      AIX
 
 Status:LOGGED_IN
 FC name:fcs5                    FC loc code:U5803.001.99205Y1-P1-C7-T2
@@ -230,7 +230,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V168-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost39     U9119.FHB.8297FBR-V4-C4202            202 CSN-xvr45      AIX
+vfchost39     U9119.FHB.8297FBR-V4-C4202            202 XXX-yyy45      AIX
 
 Status:LOGGED_IN
 FC name:fcs5                    FC loc code:U5803.001.99205Y1-P1-C7-T2
@@ -240,7 +240,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V202-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost45     U9119.FHB.8297FBR-V4-C4173            173 CSN-xvr14      AIX
+vfchost45     U9119.FHB.8297FBR-V4-C4173            173 XXX-yyy14      AIX
 
 Status:LOGGED_IN
 FC name:fcs5                    FC loc code:U5803.001.99205Y1-P1-C7-T2
@@ -250,7 +250,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V173-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost56     U9119.FHB.8297FBR-V4-C4186            186 CIELO-CIELBCV0 01AIX
+vfchost56     U9119.FHB.8297FBR-V4-C4186            186 XXXX-YYYYLBCV0 01AIX
 
 Status:LOGGED_IN
 FC name:fcs1                    FC loc code:U5873.001.992014H-P2-C3-T2
@@ -260,7 +260,7 @@ VFC client name:fcs1            VFC client DRC:U9119.FHB.8297FBR-V186-C34
 
 Name          Physloc                            ClntID ClntName       ClntOS
 ------------- ---------------------------------- ------ -------------- -------
-vfchost57     U9119.FHB.8297FBR-V4-C3186            186 CIELO-CIELBCV0 01AIX
+vfchost57     U9119.FHB.8297FBR-V4-C3186            186 XXXX-YYYYLBCV0 01AIX
 
 Status:LOGGED_IN
 FC name:fcs2                    FC loc code:U5873.001.992014H-P2-C8-T1
