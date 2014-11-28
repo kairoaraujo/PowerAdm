@@ -110,14 +110,26 @@ def lparconfig():
     print ("\n\n[NPIV HBA Configuration]\n")
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio1()))
-    os.system('cat simulation/VIO1A_NPIV')
-    os.system('cat simulation/FCSxSAN')
+    # simulation
+    #os.system('cat simulation/VIO1A_NPIV')
+    #os.system('cat simulation/FCSINFO')
+    os.system('ssh -l poweradm $s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio1()))
+    os.system('ssh -l poweradm $s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio1()))
+
     npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio1()))
-    os.system('cat simulation/VIO2A_NPIV')
-    os.system('cat simulation/FCSxSAN')
+    # simulation
+    #os.system('cat simulation/VIO2A_NPIV')
+    #os.system('cat simulation/FCSINFO')
+    os.system('ssh -l poweradm $s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio2()))
+    os.system('ssh -l poweradm $s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio2()))
+
     npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     # verify configuration
