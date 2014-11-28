@@ -130,7 +130,7 @@ def lparconfig():
     os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
               system_vio.getSystem(), system_vio.getVio2()))
 
-    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio2()))
 
     # verify configuration
     global virtual_eth_adapters
