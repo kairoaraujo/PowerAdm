@@ -44,8 +44,10 @@ class newId:
         systems_length = (len(systems.keys()))-1
         count = 0
         while count <= systems_length:
-            #os.system('lssyscfg -m %s -r lpar -F lpar_id >> tmp/ids_%s' % (systems[count], timestr))
-            os.system('cat simulation/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
+            # simulation
+            #os.system('cat simulation/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
+            os.system('ssh -l poweradm %s lssyscfg -m %s -r lpar -F lpar_id >> tmp/ids_%s'
+                      % (hmcserver, systems[count], timestr))
             os.system('cat data/reserved_ids >> tmp/ids_%s' % (timestr))
             if os.path.isfile('tmp/reserved_ids_%s' % (timestr)):
                 os.system('cat tmp/reserved_ids_%s >> tmp/ids_%s' % (timestr, timestr))

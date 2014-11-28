@@ -31,7 +31,7 @@
 ###############################################################################################
 #
 # hmc server
-hmcserver = 'hmctvttsm01'
+hmcserver = 'myhmcserver'
 # Put here the minimum and maximum memory percent to lpars
 mem_min = 50
 mem_max = 50
