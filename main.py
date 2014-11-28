@@ -179,7 +179,7 @@ def writechange():
                       system_vio.getSystem()))
 
     file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
-                      "lpar_id=%s ,profile_name=%s, lpar_env=aixlinux, min_mem=%s "
+                      "lpar_id=%s ,profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
                       "desired_mem=%s, max_mem=%s, proc_mode=shared, min_procs=%s,"
                       "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
                       "max_proc_units=%s, sharing_mode=uncap, uncap_weight=128, conn_monitoring=1, "
