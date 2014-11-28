@@ -184,10 +184,10 @@ def writechange():
                       "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
                       "max_proc_units=%s, sharing_mode=uncap, uncap_weight=128, conn_monitoring=1, "
                       "boot_mode=norm, max_virtual_slots=40, "
-                      "\'virtual_eth_adapters=%s"
-                      "\'virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\' '\n"
+                      "\\\"virtual_eth_adapters=%s\\\","
+                      "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"\n"
                       % ( hmcserver, system_vio.getSystem(), prefix, lparname, freeid.getId(),
-                      lparname, lparmenmin, lparmem, lparmenmax, lparvcpumin, lparvcpu,
+                      lparname, lparmenmin*1024, lparmem*1024, lparmenmax*1024, lparvcpumin, lparvcpu,
                       lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, virtual_eth_adapters,
                       system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
 
