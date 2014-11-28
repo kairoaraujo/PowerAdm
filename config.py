@@ -39,9 +39,10 @@ mem_max = 50
 cpu_min = 50
 cpu_max = 100
 # Systems and VIOS NPIV
-# Important: Require two vios. If you have only one vios repeat the vios.
+# Important: Require two vios. If you have only one vio repeat the vio.
 # Syntax: systems = {'SYSTEM_NAME1':['vio1','vio2'], 'SYSTEM_NAME2':['vio1','vio2']}
-systems = {'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'], 'P1-8205-E6D-SN06A07BT':['VIO1B','VIO2B'],
+systems = {'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'],
+           'P1-8205-E6D-SN06A07BT':['VIO1B','VIO2B'],
            'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']}
 # Virtual Switches
 virtual_switches = ['VSW-GERENCIA-01', 'VSW-DADOS-01', 'VSW-BACKUP-01']
