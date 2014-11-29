@@ -121,7 +121,7 @@ def lparconfig():
     npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     print ("\nFinding on %s the NPIVs availabe.\n"
-           "This might take a few minutes...\n" % (system_vio.getVio1()))
+           "This might take a few minutes...\n" % (system_vio.getVio2()))
     # simulation
     #os.system('cat simulation/VIO2A_NPIV')
     #os.system('cat simulation/FCSINFO')
@@ -130,7 +130,7 @@ def lparconfig():
     #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
     #          system_vio.getSystem(), system_vio.getVio2()))
 
-    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio2()))
+    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     # verify configuration
     global virtual_eth_adapters
@@ -151,12 +151,12 @@ def lparconfig():
         print ("Network %s: Virtual Switch: %s - VLAN: %s" % (count, net_vsw[count], net_vlan[count]))
         count += 1
         if net_length == 0:
-            virtual_eth_adapters = ("10/0/%s//0/0/%s,\'" % (net_vlan[0],net_vsw[0]))
+            virtual_eth_adapters = ("10/0/%s//0/0/%s" % (net_vlan[0],net_vsw[0]))
         elif net_length == 1:
-            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,\'" % (net_vlan[0],net_vsw[0],
+            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s" % (net_vlan[0],net_vsw[0],
                                     net_vlan[1],net_vsw[1]))
         elif net_length == 2:
-            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s\'," % (net_vlan[0],
+            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" % (net_vlan[0],
                                     net_vsw[0], net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
 
 ###############################################################################################
@@ -185,7 +185,7 @@ def writechange():
                       "max_proc_units=%s, sharing_mode=uncap, uncap_weight=128, conn_monitoring=1, "
                       "boot_mode=norm, max_virtual_slots=40, "
                       "\\\"virtual_eth_adapters=%s\\\","
-                      "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"\n"
+                      "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
                       % ( hmcserver, system_vio.getSystem(), prefix, lparname, freeid.getId(),
                       lparname, lparmenmin*1024, lparmem*1024, lparmenmax*1024, lparvcpumin, lparvcpu,
                       lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, virtual_eth_adapters,
@@ -194,12 +194,12 @@ def writechange():
     file_change.write("\n\necho 'Making DLPAR on %s and %s to create FCs'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc"
+    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                       "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
                       prefix, lparname ))
 
-    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc"
+    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                       "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
                       prefix, lparname ))
@@ -213,24 +213,24 @@ def writechange():
     file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
                      (hmcserver, system_vio.getSystem(), system_vio.getVio2()))
 
+    file_change.write("\n\necho 'Identifying the news vfchost on %s and %s'" %
+                     ( system_vio.getVio1(), system_vio.getVio2()))
 
-    #vfchost_vio1 = commands.getoutput("ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-    #                         "| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
-    #                        (hmcserver, system_vio.getSystem(), system_vio.getVio1(),
-    #                        freeid.getId()))
+    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      system_vio.getVio1(), freeid.getId()))
 
-    #vfchost_vio2 = commands.getoutput("ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-    #                         "| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
-    #                        (hmcserver, system_vio.getSystem(), system_vio.getVio2(),
-    #                        freeid.getId()))
+    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      system_vio.getVio2(), freeid.getId()))
 
 
     # simulation
-    vfchost_vio1 = commands.getoutput("cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
-                            (system_vio.getVio1(), freeid.getId()))
+    #vfchost_vio1 = commands.getoutput("cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
+    #                        (system_vio.getVio1(), freeid.getId()))
 
-    vfchost_vio2 = commands.getoutput("cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
-                            (system_vio.getVio2(), freeid.getId()))
+    #vfchost_vio2 = commands.getoutput("cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
+    #                        (system_vio.getVio2(), freeid.getId()))
 
     #print (vfchost_vio1)
     #print (vfchost_vio2)
@@ -238,13 +238,11 @@ def writechange():
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp %s\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio1,
-                      npiv_vio1))
+    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter $vfchost_vio1 -fcp %s\'\""
+                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio1))
 
-    file_change.write("\n\nssh %s -l viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter %s -fcp %s\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), vfchost_vio2,
-                      npiv_vio2))
+    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter $vfchost_vio2 -fcp %s\'\""
+                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
 
     file_reservedids_tmp = open('tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))
