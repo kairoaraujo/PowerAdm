@@ -1,7 +1,7 @@
 How to install PowerAdm
 
-1. You need a *nix with Python 2.6 (>=) with access on
-your HMC (Hardware Management Console)
+1. You need a *nix with Python 2.6 (>=) with access on your HMC (Hardware Management 
+   Console)
 
 2. On your *nix create a user poweradm
 
@@ -43,8 +43,8 @@ your HMC (Hardware Management Console)
 
 8. Edit the config.py with your enviorment configs
 
-9. On your VIOS NPIV is recommended create on padmin home the file FCSINFO with
-   relevant informations. See example:
+9. ** Not Working yet ** On your VIOS NPIV is recommended create on padmin home the 
+   file FCSINFO with relevant informations. See example:
    
    FCSINFO:
    fcs      WWN                     SAN SWITCH
