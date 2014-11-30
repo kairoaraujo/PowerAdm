@@ -216,15 +216,6 @@ def writechange():
     file_change.write("\n\necho 'Identifying the news vfchost on %s and %s'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
-                      system_vio.getVio1(), freeid.getId()))
-
-    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
-                      system_vio.getVio2(), freeid.getId()))
-
-
     # simulation
     #vfchost_vio1 = commands.getoutput("cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
     #                        (system_vio.getVio1(), freeid.getId()))
@@ -232,8 +223,14 @@ def writechange():
     #vfchost_vio2 = commands.getoutput("cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
     #                        (system_vio.getVio2(), freeid.getId()))
 
-    #print (vfchost_vio1)
-    #print (vfchost_vio2)
+
+    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      system_vio.getVio1(), freeid.getId()))
+
+    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      system_vio.getVio2(), freeid.getId()))
 
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
