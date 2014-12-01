@@ -179,6 +179,8 @@ def writechange():
 
     print ('Writing file %s-%s.sh ... ' % (change, timestr))
 
+    file_change.write("\n\n#LPARID=%s" % (freeid.getId()))
+
     file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix, lparname,
                       system_vio.getSystem()))
 
@@ -229,13 +231,13 @@ def writechange():
     #                 (system_vio.getVio2(), freeid.getId()))
     # // simulation
 
-    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                      system_vio.getVio1(), freeid.getId()))
+    #file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+    #                  "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+    #                  system_vio.getVio1(), freeid.getId()))
 
-    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                      system_vio.getVio2(), freeid.getId()))
+    #file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+    #                  "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+    #                  system_vio.getVio2(), freeid.getId()))
 
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
@@ -293,20 +295,20 @@ def exec_createlparconf():
                 newconfiglpar.mkCheck()
                 newconfiglpar.answerCheck()
                 if newconfiglpar.answerCheck() == 'n':
-                    print ('Closing the file change/%s-%s' % (change, timestr))
+                    print ('Closing the file changes/%s-%s' % (change, timestr))
 
     closechange()
 
     # check if you want executes the change/ticket after creation
-    check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s?: ' %
+    check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
             (change, timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing change/ticket %s-%s' % (change, timestr))
-        os.system('sh changes/%s' % (change, timestr))
-        os.system('mv changes/%s changes_executed/' % (change, timestr))
+        print ('Runing changes/ticket %s-%s' % (change, timestr))
+        exec_change_after_creation = ExecChange('%s-%s' % (change, timestr))
+        exec_change_after_creation.runChange()
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
               % (change, timestr))
     else:
-        print ('Change/Ticket not execute. Storing %s-%s...\nExiting!' %
+        print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
                 (change, timestr))

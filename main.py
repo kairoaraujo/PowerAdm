@@ -49,19 +49,17 @@ if poweradm == '1':
 
 elif poweradm == '2':
 
-    exec_createlpar = findChange('changenum')
-    exec_createlpar.selectChange()
-    check_exec_createlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
-            (exec_createlpar.getChange()), 'n')
-    check_exec_createlpar.mkCheck()
-    if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing change/ticket %s' % (exec_createlpar.getChange()))
-        os.system('sh changes/%s' % (exec_createlpar.getChange()))
-        os.system('mv changes/%s changes_executed/' % (exec_createlpar.getChange()))
-        print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
-              % (exec_createlpar.getChange()))
+    exec_findlpar = findChange('changenum')
+    exec_findlpar.selectChange()
+    check_exec_findlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
+            (exec_findlpar.getChange()), 'n')
+    check_exec_findlpar.mkCheck()
+    if check_exec_findlpar.answerCheck() == 'y':
+        print ('Runing change/ticket %s' % (exec_findlpar.getChange()))
+        exec_change = ExecChange('%s', (exec_findlpar.getChange()))
+        exec_change.runChange()
     else:
-        print ('Aborting change/ticket %s...\nExiting!' % (exec_createlpar.getChange()))
+        print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))
         exit
 
 elif poweradm == '3':
