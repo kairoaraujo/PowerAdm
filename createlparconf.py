@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# main.py
+# createlparocnf.py
 #
 # Copyright (c) 2014 Kairo Araujo
 #
@@ -41,11 +41,9 @@ from verify import *
 #### FRONTEND                                                                              ####
 ###############################################################################################
 
-def headerconfig():
+def changeconfig():
     global change
-    os.system('clear')
-    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n\n" % version)
-
+    print ("\n[Change/Ticket Information]\n")
     change = raw_input("Change or Ticket number: ")
 
 
@@ -261,24 +259,26 @@ def closechange():
 #### MAIN                                                                                  ####
 ###############################################################################################
 
-headerconfig()
-headerchange()
+def exec_createlparconf():
 
-configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
-newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n)' , 'y')
-while configlpar.answerCheck() == 'n':
-    while newconfiglpar.answerCheck() == 'y':
-        lparconfig()
-        configlpar.mkCheck()
-        configlpar.answerCheck()
-        if configlpar.answerCheck() == 'y':
+    changeconfig()
+    headerchange()
 
-            writechange()
+    configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
+    newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n)' , 'y')
+    while configlpar.answerCheck() == 'n':
+        while newconfiglpar.answerCheck() == 'y':
+            lparconfig()
+            configlpar.mkCheck()
+            configlpar.answerCheck()
+            if configlpar.answerCheck() == 'y':
 
-            newconfiglpar.mkCheck()
-            newconfiglpar.answerCheck()
-            if newconfiglpar.answerCheck() == 'n':
-                print ('Closing the file change/%s-%s' % (change, timestr))
+                writechange()
 
-closechange()
+                newconfiglpar.mkCheck()
+                newconfiglpar.answerCheck()
+                if newconfiglpar.answerCheck() == 'n':
+                    print ('Closing the file change/%s-%s' % (change, timestr))
+
+    closechange()
 
