@@ -31,6 +31,7 @@
 from config import *
 from createlparconf import *
 from findchange import *
+from execchange import *
 import os
 
 os.system('clear')
@@ -56,7 +57,7 @@ elif poweradm == '2':
     check_exec_findlpar.mkCheck()
     if check_exec_findlpar.answerCheck() == 'y':
         print ('Runing change/ticket %s' % (exec_findlpar.getChange()))
-        exec_change = ExecChange('%s', (exec_findlpar.getChange()))
+        exec_change = ExecChange('%s' % (exec_findlpar.getChange()))
         exec_change.runChange()
     else:
         print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))

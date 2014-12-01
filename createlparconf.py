@@ -36,6 +36,7 @@ from config import *
 from newid import *
 from systemVios import *
 from verify import *
+from execchange import *
 
 ###############################################################################################
 #### FRONTEND                                                                              ####
@@ -179,7 +180,7 @@ def writechange():
 
     print ('Writing file %s-%s.sh ... ' % (change, timestr))
 
-    file_change.write("\n\n#LPARID=%s" % (freeid.getId()))
+    file_change.write("\n\n#LPARID %s" % (freeid.getId()))
 
     file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix, lparname,
                       system_vio.getSystem()))
@@ -305,10 +306,8 @@ def exec_createlparconf():
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
         print ('Runing changes/ticket %s-%s' % (change, timestr))
-        exec_change_after_creation = ExecChange('%s-%s' % (change, timestr))
+        exec_change_after_creation = ExecChange('%s_%s.sh' % (change, timestr))
         exec_change_after_creation.runChange()
-        print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
-              % (change, timestr))
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
                 (change, timestr))

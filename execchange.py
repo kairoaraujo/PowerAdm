@@ -43,11 +43,11 @@ class ExecChange:
     def runChange(self):
 
         print ("\nRuning change/ticket %s" % (self.changefile))
-        os.system("echo 'sh changes/%s'" % (self.changefile))
+        os.system("sh changes/%s" % (self.changefile))
         os.system('mv changes/%s changes_executed/' % (self.changefile))
-        f_change_executed = open("changes/%s" % (self.changefile), 'r')
+        f_change_executed = open("changes_executed/%s" % (self.changefile), 'r')
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
-                % (exec_findlpar.getChange()))
+                % (self.changefile))
         for line in f_change_executed.readlines():
             if line.startswith('#LPARID'):
                 lparidcreated = line.split()
@@ -57,6 +57,6 @@ class ExecChange:
                 file_reservedids.close()
                 file_reservedids = open('data/reserved_ids', 'w')
                 for lineids in line_reservedids:
-                    file_reservedids.write(lineids.replace((lparidcreated[1]), ""))
+                    file_reservedids.write(lineids.replace((lparidcreated[1]), "0"))
                 file_reservedids.close()
         f_change_executed.close()
