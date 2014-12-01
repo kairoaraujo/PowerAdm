@@ -221,10 +221,10 @@ def writechange():
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
     # // simulation
-    #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
+    #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\')" %
     #                 (system_vio.getVio1(), freeid.getId()))
 
-    #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
+    #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\')" %
     #                 (system_vio.getVio2(), freeid.getId()))
     # // simulation
 
