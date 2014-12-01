@@ -70,3 +70,8 @@ Virtual devices:
 With this example we can see how easy it is to identify within the VIO's virtual devices, searching for the partition ID.
 
 ## How it works
+
+It's developing using Python and uses some Shell Scripting.
+I'm not a developer. I'm a System Administrator. Please sorry if not look great but your help is important to improve.
+
+
