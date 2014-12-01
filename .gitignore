@@ -1,4 +1,7 @@
 simulation
 *.pyc
 changes/CRQ*
+changes_executed/CRQ*
 tmp/reserved_ids*
+tmp/CRQ*
+tmp/ids*
