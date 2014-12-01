@@ -32,17 +32,42 @@
 #
 # hmc server
 hmcserver = 'myhmcserver'
+
 # Put here the minimum and maximum memory percent to lpars
 mem_min = 50
 mem_max = 50
+
 # Put here the minimum and maximum cpu percent to lpars
 cpu_min = 50
 cpu_max = 100
+
 # Systems and VIOS NPIV
 # Important: Require two vios. If you have only one vio repeat the vio.
 # Syntax: systems = {'SYSTEM_NAME1':['vio1','vio2'], 'SYSTEM_NAME2':['vio1','vio2']}
-systems = {'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'],
+systems = {
+           'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'],
            'P1-8205-E6D-SN06A07BT':['VIO1B','VIO2B'],
-           'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']}
+           'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']
+          }
+
 # Virtual Switches
 virtual_switches = ['VSW-GERENCIA-01', 'VSW-DADOS-01', 'VSW-BACKUP-01']
+
+# Others configurations
+# To change check the mksyscfg HMC help commands
+#
+# Processor Mode
+proc_mode = 'shared'
+
+# Shared Mode
+sharing_mode = 'uncap'
+
+# Shared Weigth
+uncap_weight = '128'
+
+# Boot Mode
+boot_mode = 'norm'
+
+# Enable/Disable monitoring
+conn_monitoring = '1'
+

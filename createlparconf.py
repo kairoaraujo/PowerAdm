@@ -183,16 +183,17 @@ def writechange():
                       system_vio.getSystem()))
 
     file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
-                      "lpar_id=%s ,profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
-                      "desired_mem=%s, max_mem=%s, proc_mode=shared, min_procs=%s,"
+                      "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
+                      "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
                       "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
-                      "max_proc_units=%s, sharing_mode=uncap, uncap_weight=128, conn_monitoring=1, "
-                      "boot_mode=norm, max_virtual_slots=40, "
+                      "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
+                      "boot_mode=%s, max_virtual_slots=40, "
                       "\\\"virtual_eth_adapters=%s\\\","
                       "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
                       % ( hmcserver, system_vio.getSystem(), prefix, lparname, freeid.getId(),
-                      lparname, lparmenmin*1024, lparmem*1024, lparmenmax*1024, lparvcpumin, lparvcpu,
-                      lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, virtual_eth_adapters,
+                      lparname, lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                      lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
+                      uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
                       system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
 
     file_change.write("\n\necho 'Making DLPAR on %s and %s to create FCs'" %
