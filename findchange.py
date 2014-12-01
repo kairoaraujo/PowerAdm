@@ -31,13 +31,12 @@ import time
 import os
 import fnmatch
 from globalvar import *
-from main import *
 ##############################################################################################
 #
-# Class createlpar
+# Class findChange
 ##############################################################################################
 
-class createLpar:
+class findChange:
 
     def __init__(self, change_exec):
         self.change_exec = change_exec
@@ -55,7 +54,7 @@ class createLpar:
         while count <= listChanges_length:
             print ("%s : %s" % (count, listChanges[count]))
             count += 1
-        change_option = int(raw_input("\nWhat's change/ticket you want execute?: "))
+        change_option = int(raw_input("\nWhat's change/ticket id you want execute?: "))
         self.change_exec = (listChanges[change_option])
 
     def getChange(self):
