@@ -58,10 +58,10 @@ class newId:
         ids.sort(key=int)
         lastid = len(ids)-1
         self.newid = int(ids[lastid])+1
+        if self.newid < 10:
+            self.newid = ('0%s' % (self.newid))
         fileids.close()
         os.system('rm tmp/ids_%s' % (timestr))
 
     def getId(self):
         return self.newid
-
-
