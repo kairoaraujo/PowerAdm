@@ -1,6 +1,6 @@
 # Power Adm - Power Administration to cloud
 
-## Why this software
+## What does it do?
 
 Who manages environment with IBM Power through the Hardware Management Console (HMC) or Integrated Virtualization Manager (IVM) know that we have an easy management creating LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc.
 
