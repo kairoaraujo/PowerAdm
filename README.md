@@ -77,4 +77,8 @@ I'm not a developer. I'm a System Administrator. Please sorry if not look great 
 If you don't have an HMC and a Power to run tests, don't worry. I've an some codes with simulation on createlparconf.py, newid.py. D
 irectory simulation is available upon request.
 
+## License
+
+This software is BSD License. Please more details in LICENSE file.
+
 
