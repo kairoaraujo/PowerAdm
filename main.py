@@ -110,25 +110,31 @@ def lparconfig():
     print ("\n\n[NPIV HBA Configuration]\n")
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio1()))
-    # simulation
+
+    # // simulation
     #os.system('cat simulation/VIO1A_NPIV')
     #os.system('cat simulation/FCSINFO')
-    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-              system_vio.getSystem(), system_vio.getVio1()))
     #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
     #          system_vio.getSystem(), system_vio.getVio1()))
+    # // simulation
+
+    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio1()))
 
     npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     print ("\nFinding on %s the NPIVs availabe.\n"
            "This might take a few minutes...\n" % (system_vio.getVio2()))
-    # simulation
+
+    # // simulation
     #os.system('cat simulation/VIO2A_NPIV')
     #os.system('cat simulation/FCSINFO')
-    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-              system_vio.getSystem(), system_vio.getVio2()))
     #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
     #          system_vio.getSystem(), system_vio.getVio2()))
+    # // simulation
+
+    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+              system_vio.getSystem(), system_vio.getVio2()))
 
     npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
@@ -216,20 +222,20 @@ def writechange():
     file_change.write("\n\necho 'Identifying the news vfchost on %s and %s'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    # simulation
-    #vfchost_vio1 = commands.getoutput("cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
-    #                        (system_vio.getVio1(), freeid.getId()))
+    # // simulation
+    #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\'" %
+    #                 (system_vio.getVio1(), freeid.getId()))
 
-    #vfchost_vio2 = commands.getoutput("cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
-    #                        (system_vio.getVio2(), freeid.getId()))
-
+    #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\'" %
+    #                 (system_vio.getVio2(), freeid.getId()))
+    # // simulation
 
     file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                       system_vio.getVio1(), freeid.getId()))
 
     file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(), 
+                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                       system_vio.getVio2(), freeid.getId()))
 
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
