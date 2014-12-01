@@ -44,8 +44,9 @@ class newId:
         systems_length = (len(systems.keys()))-1
         count = 0
         while count <= systems_length:
-            # simulation
+            # // simulation
             #os.system('cat simulation/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
+            # // simulation
             os.system('ssh -l poweradm %s lssyscfg -m %s -r lpar -F lpar_id >> tmp/ids_%s'
                       % (hmcserver, systems_keys[count], timestr))
             os.system('cat data/reserved_ids >> tmp/ids_%s' % (timestr))
