@@ -68,3 +68,5 @@ Virtual devices:
 
 
 With this example we can see how easy it is to identify within the VIO's virtual devices, searching for the partition ID.
+
+## How it works
