@@ -30,6 +30,7 @@
 ###############################################################################################
 from config import *
 from createlparconf import *
+from createlpar import *
 import os
 
 os.system('clear')
@@ -37,7 +38,7 @@ print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\
 
 poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
-                  "2. Execute the LPAR creation. (in developing)\n"
+                  "2. Execute the LPAR creation.\n"
                   "3. Deploy OS on an existing LPAR. (not implemented yet)\n"
                   "4. Quit\n\n"
                   "Please choose an option: ")
@@ -48,12 +49,23 @@ if poweradm == '1':
 
 elif poweradm == '2':
 
-    print("in developing\n")
+    exec_createlpar = createLpar('changenum')
+    exec_createlpar.selectChange()
+    check_exec_createlpar = checkOk('\nDo you want execute change/ticket %s?: ' %
+            (exec_createlpar.getChange()), 'n')
+    check_exec_createlpar.mkCheck()
+    if check_exec_createlpar.answerCheck() == 'y':
+        print ('Runing change/ticket %s' % (exec_createlpar.getChange()))
+        os.system('sh changes/%s' % (exec_createlpar.getChange()))
+        os.system('mv changes/%s changes_executed/' % (exec_createlpar.getChange()))
+        print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
+              % (exec_createlpar.getChange()))
+    else:
+        print ('Aborting change/ticket %s...\nExiting!' % (exec_createlpar.getChange()))
+        exit
 
 elif poweradm == '3':
     print ("3. not implemented yet\n")
-    helpmkvhostfile()
-    helpfindhdisk()
 
 elif poweradm == '4':
     print ("4. Quit")
