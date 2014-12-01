@@ -231,13 +231,13 @@ def writechange():
     #                 (system_vio.getVio2(), freeid.getId()))
     # // simulation
 
-    #file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-    #                  "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-    #                  system_vio.getVio1(), freeid.getId()))
+    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                      system_vio.getVio1(), freeid.getId()))
 
-    #file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-    #                  "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-    #                  system_vio.getVio2(), freeid.getId()))
+    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                      system_vio.getVio2(), freeid.getId()))
 
     file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
