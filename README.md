@@ -1,4 +1,4 @@
-# Power Adm - Power Administration to cloud
+# Power Adm - Power Administration to Power.
 
 ## What does it do?
 
