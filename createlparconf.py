@@ -297,3 +297,16 @@ def exec_createlparconf():
 
     closechange()
 
+    # check if you want executes the change/ticket after creation
+    check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s?: ' %
+            (change, timestr), 'n')
+    check_exec_createlpar.mkCheck()
+    if check_exec_createlpar.answerCheck() == 'y':
+        print ('Runing change/ticket %s-%s' % (change, timestr))
+        os.system('sh changes/%s' % (change, timestr))
+        os.system('mv changes/%s changes_executed/' % (change, timestr))
+        print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
+              % (change, timestr))
+    else:
+        print ('Change/Ticket not execute. Storing %s-%s...\nExiting!' %
+                (change, timestr))

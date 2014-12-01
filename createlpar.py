@@ -31,6 +31,7 @@ import time
 import os
 import fnmatch
 from globalvar import *
+from main import *
 ##############################################################################################
 #
 # Class createlpar
@@ -47,6 +48,9 @@ class createLpar:
                "\nSelect the Change/Ticket to execute:\n")
         listChanges = fnmatch.filter(os.listdir("changes/"), "*.sh")
         listChanges_length = len(listChanges)-1
+        if listChanges_length == -1:
+            print ('No changes found. Exiting\n')
+            exit()
         count = 0
         while count <= listChanges_length:
             print ("%s : %s" % (count, listChanges[count]))
