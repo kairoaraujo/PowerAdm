@@ -6,9 +6,8 @@
 #
 # Copyright (c) 2014 Kairo Araujo
 #
-# This program was created to help in managing vhost devices and its hdisks
-# in PowerVM (vios) servers. It was created for personal use. There are no
-# guarantees of the author. Use at your own risk.
+# It was created for personal use. There are no guarantees of the author.
+# Use at your own risk.
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -35,5 +34,5 @@ from config import *
 #
 # Global Variables
 timestr = time.strftime("%d%m%Y-%H%M%S")
-version = '0.1b'
+version = '0.3-beta'
 
