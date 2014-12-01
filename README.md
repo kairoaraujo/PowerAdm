@@ -69,9 +69,12 @@ Virtual devices:
 
 With this example we can see how easy it is to identify within the VIO's virtual devices, searching for the partition ID.
 
-## How it works
+## How is it development?
 
 It's developing using Python and uses some Shell Scripting.
 I'm not a developer. I'm a System Administrator. Please sorry if not look great but your help is important to improve.
+
+If you don't have an HMC and a Power to run tests, don't worry. I've an some codes with simulation on createlparconf.py, newid.py. D
+irectory simulation is available upon request.
 
 
