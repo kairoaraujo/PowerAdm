@@ -2,14 +2,18 @@
 
 ## What does it do?
 
-Who manages environment with IBM Power through the Hardware Management Console (HMC) or Integrated Virtualization Manager (IVM) know that we have an easy management creating LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc.
+Who manages environment with IBM Power through the Hardware Management Console (HMC) know that we have easy management interface to create LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc., and manage information the maximum and minimum memory and CPUs, physical devices, capped, uncapped etc.
 
-Although an easy runs it is necessary to manage information such as maximum and minimum memory and CPUs.
+The objective of this application is to adopt a standard IDs based on LPAR ID and facilitate the creation avoiding filling more complex information, facilitating the use by analysts with a knowledge in Power not as advanced or operators.
 
-These IDs are well organized, assist in the identification of devices, particularly in times of troubleshooting.
+It would be a very minimalist and simpler version of PowerVC (only on goal)
+
+Something that really consider the differential is the organization IDs.
+
+### IDs Structure 
+
+These IDs are well organized, assist in the identification of devices, particularly in times of troubleshooting in environments with a large number of LPARs
 These IDs also help in managing the Live Partition Mobility, that is, if well organized will remain independent of the box.
-
-The objective of this application in the first instance, is to adopt a standard IDs based on LPAR ID and facilitate the creation for the team avoiding filling more complex information, facilitating the use of analysts with a knowledge in Power not as advanced.
 
 For this, the following rule was established:
 
@@ -66,8 +70,35 @@ Virtual devices:
 - 411 Fiber Channel (Client: 11 / Virtual Client: 34)
 - 412 Fiber Channel (Client: 12 / Virtual Client: 34)
 
-
 With this example we can see how easy it is to identify within the VIO's virtual devices, searching for the partition ID.
+
+Sample: Identifying AIX1 on VIOs
+
+	padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+	padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
+	SVSA            Physloc                                      Client Partition ID
+	--------------- -------------------------------------------- ------------------
+	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+	VTD                   NO VIRTUAL TARGET DEVICE FOUND
+
+
+	padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
+
+	padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
+	Name          Physloc                            ClntID ClntName       ClntOS
+	------------- ---------------------------------- ------ -------------- -------
+	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 rz412AIX
+
+	Status:LOGGED_IN
+	FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
+	Ports logged in:2
+	Flags:a<LOGGED_IN,STRIP_MERGE>
+	VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
+
 
 ## How is it development?
 
