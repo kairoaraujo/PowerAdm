@@ -91,7 +91,7 @@ Sample: Identifying AIX1 on VIOs
 	padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
 	Name          Physloc                            ClntID ClntName       ClntOS
 	------------- ---------------------------------- ------ -------------- -------
-	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 rz412AIX
+	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1  AIX
 
 	Status:LOGGED_IN
 	FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
