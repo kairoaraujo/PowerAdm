@@ -58,6 +58,7 @@ class newId:
         ids.sort(key=int)
         lastid = len(ids)-1
         self.newid = int(ids[lastid])+1
+        # if id < 10 add 0 left, view ticket #5 github
         if self.newid < 10:
             self.newid = ('0%s' % (self.newid))
         fileids.close()
