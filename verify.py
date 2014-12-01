@@ -49,7 +49,7 @@ class checkOk:
                 self.answer = 'y'
                 check_ok = 1
             elif (self.answer == 'n') or (self.answer == 'N'):
-                answer = 'n'
+                self.answer = 'n'
                 check_ok = 1
             else:
                 print ("Please use y or n!")
@@ -57,6 +57,3 @@ class checkOk:
 
     def answerCheck(self):
         return self.answer
-
-
-
