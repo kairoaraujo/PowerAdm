@@ -30,11 +30,11 @@
 ###############################################################################################
 from config import *
 from createlparconf import *
-from createlpar import *
+from findchange import *
 import os
 
 os.system('clear')
-print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n\n" % version)
+print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n" % version)
 
 poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
@@ -49,9 +49,9 @@ if poweradm == '1':
 
 elif poweradm == '2':
 
-    exec_createlpar = createLpar('changenum')
+    exec_createlpar = findChange('changenum')
     exec_createlpar.selectChange()
-    check_exec_createlpar = checkOk('\nDo you want execute change/ticket %s?: ' %
+    check_exec_createlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
             (exec_createlpar.getChange()), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
