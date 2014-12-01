@@ -252,16 +252,15 @@ def writechange():
     file_change.write("\n\necho 'Saving %s and %s current configuration'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
 
-    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n `lssyscfg -r lpar -m %s"
-                      "--filter \"lpar_names=%s\" -F curr_profile` --force" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio1(), system_vio.getSystem(),
+    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
+                      "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
+                     (hmcserver, system_vio.getSystem(), system_vio.getVio1(), hmcserver, system_vio.getSystem(),
                       system_vio.getVio1()))
 
-    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n `lssyscfg -r lpar -m %s"
-                      "--filter \"lpar_names=%s\" -F curr_profile` --force" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio2(), system_vio.getSystem(),
+    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
+                      "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
+                     (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
                       system_vio.getVio2()))
-
 
     file_reservedids_tmp = open('tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))

@@ -56,7 +56,6 @@ elif poweradm == '2':
             (exec_findlpar.getChange()), 'n')
     check_exec_findlpar.mkCheck()
     if check_exec_findlpar.answerCheck() == 'y':
-        print ('Runing change/ticket %s' % (exec_findlpar.getChange()))
         exec_change = ExecChange('%s' % (exec_findlpar.getChange()))
         exec_change.runChange()
     else:
