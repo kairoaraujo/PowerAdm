@@ -74,8 +74,8 @@ With this example we can see how easy it is to identify within the VIO's virtual
 
 Sample: Identifying AIX1 on VIOs
 
-padmin@VIOS1:[/home/padmin]lsmap -all | grep C1**11**
-	vhost6          U9119.FHB.8297FCR-V3-C1**11**                    0x0000000b
+padmin@VIOS1:[/home/padmin]lsmap -all | grep C1 **11**
+	vhost6          U9119.FHB.8297FCR-V3-C1 **11**                    0x0000000b
 
 	padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
 	SVSA            Physloc                                      Client Partition ID
