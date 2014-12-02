@@ -74,24 +74,24 @@ With this example we can see how easy it is to identify within the VIO's virtual
 
 Sample: Identifying AIX1 on VIOs
 
-padmin@VIOS1:[/home/padmin]lsmap -all | grep C1 **11**
-	vhost6          U9119.FHB.8297FCR-V3-C1 **11**                    0x0000000b
+	padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
 
 	padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
 	SVSA            Physloc                                      Client Partition ID
 	--------------- -------------------------------------------- ------------------
-	vhost6          U9119.FHB.8297FCR-V3-C1*11*                    0x0000000b
+	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
 
 	VTD                   NO VIRTUAL TARGET DEVICE FOUND
 
 
-	padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C3*11*
-	vfchost3      U9119.FHB.8297FCR-V3-C3*11*              *11* AIX1 AIX
+	padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
 
 	padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
 	Name          Physloc                            ClntID ClntName       ClntOS
 	------------- ---------------------------------- ------ -------------- -------
-	vfchost3      U9119.FHB.8297FCR-V3-C3*11*              11 AIX1           AIX
+	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
 
 	Status:LOGGED_IN
 	FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
