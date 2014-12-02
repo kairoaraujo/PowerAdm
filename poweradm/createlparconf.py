@@ -36,15 +36,17 @@ from newid import *
 from systemVios import *
 from verify import *
 from execchange import *
+from fields import *
 
 ###############################################################################################
 #### FRONTEND                                                                              ####
 ###############################################################################################
 
 def changeconfig():
-    global change
     print ("\n[Change/Ticket Information]\n")
-    change = raw_input("Change or Ticket number: ")
+    global change
+    change = Fields('change', 'Change/Ticket', 'Change or Ticket number: ')
+    change.chkFieldStr()
 
 
 # get lpar configuration (mem, cpu etc)
@@ -54,17 +56,50 @@ def lparconfig():
     global npiv_vio1, npiv_vio2
 
     print ("\n[LPAR Configuration ]\n")
-    prefix = raw_input("Prefix (XXXX-lparname): ")
-    lparname = raw_input("LPAR Hostname: ")
-    lparentcpu = float(raw_input("LPAR Entitled CPU desired: "))
-    lparentcpumin = lparentcpu-(lparentcpu*cpu_min/100)
-    lparentcpumax = (lparentcpu*cpu_max/100)+lparentcpu
-    lparvcpu = int(raw_input("LPAR Virtual CPU desired: "))
-    lparvcpumin = lparvcpu-(lparvcpu*cpu_min/100)
-    if lparvcpumin < 1:
-        lparvcpumin = 1
-    lparvcpumax = (lparvcpu*cpu_max/100)+lparvcpu
-    lparmem = int(raw_input("LPAR Memory desired: "))
+
+    prefix = Fields('prefix', 'Prefix', 'Prefix (XXXX-lparname): ')
+    prefix.chkFieldStr()
+
+    lparname= Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
+    lparname.chkFieldStr()
+
+    check_cpu_config = 0 # check if entitled is > virtual
+    while check_cpu_config == 0:
+        while True:
+            try:
+                lparentcpu = float(raw_input("LPAR Entitled CPU desired: "))
+                break
+            except (TypeError, ValueError):
+                print ('\tERROR: LPAR Entitled needs a flot: Example: 0.1, 1.2, 2.4 etc')
+
+        lparentcpumin = lparentcpu-(lparentcpu*cpu_min/100)
+        lparentcpumax = (lparentcpu*cpu_max/100)+lparentcpu
+
+        while True:
+            try:
+                lparvcpu = int(raw_input("LPAR Virtual CPU desired: "))
+                break
+            except (TypeError, ValueError):
+                print('\tERROR: LPAR Virtual needs full cpu: Example: 1, 3, 4 etc')
+
+        lparvcpumin = lparvcpu-(lparvcpu*cpu_min/100)
+        if lparvcpumin < 1:
+            lparvcpumin = 1
+        lparvcpumax = (lparvcpu*cpu_max/100)+lparvcpu
+
+        cpu_config = lparentcpu*100/lparvcpu
+        if cpu_config >= 10:
+            check_cpu_config = 1
+        else:
+            print ("\tERROR: It's necessary that CPU Entitled is at least 10% of the Virtual")
+
+    while True:
+        try:
+            lparmem = int(raw_input("LPAR Memory desired: "))
+            break
+        except (TypeError, ValueError):
+            print ('\tERROR: LPAR Memory needs GB value: Example: 8, 10, 20 etc')
+
     lparmenmin = lparmem-(lparmem*mem_min/100)
     lparmenmax = (lparmem*mem_max/100)+lparmem
 
@@ -145,7 +180,7 @@ def lparconfig():
            "Virtual CPU : Minimum: %s , Desired: %s, Maximum: %s\n"
            "Memory      : Minimum: %s , Desired: %s, Maximum: %s\n"
            "NPIV        : %s: %s \t %s: %s\n"
-           % (prefix, lparname, system_vio.getSystem(), freeid.getId(),
+           % (prefix.srtVarOut(), lparname.srtVarOut(), system_vio.getSystem(), freeid.getId(),
               lparentcpumin, lparentcpu, lparentcpumax, lparvcpumin,
               lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax,
               system_vio.getVio1(), npiv_vio1, system_vio.getVio2(),
@@ -171,17 +206,17 @@ def headerchange():
 
     global file_change
 
-    file_change = open("poweradm/tmp/%s_%s.sh" % (change, timestr) , 'w')
+    file_change = open("poweradm/tmp/%s_%s.sh" % (change.srtVarOut(), timestr) , 'w')
     file_change.write("#!/bin/sh\n")
 
 
 def writechange():
 
-    print ('Writing file %s-%s.sh ... ' % (change, timestr))
+    print ('Writing file %s-%s.sh ... ' % (change.srtVarOut(), timestr))
 
     file_change.write("\n\n#LPARID %s" % (freeid.getId()))
 
-    file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix, lparname,
+    file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix.srtVarOut(), lparname.srtVarOut(),
                       system_vio.getSystem()))
 
     file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
@@ -192,8 +227,8 @@ def writechange():
                       "boot_mode=%s, max_virtual_slots=40, "
                       "\\\"virtual_eth_adapters=%s\\\","
                       "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
-                      % ( hmcserver, system_vio.getSystem(), prefix, lparname, freeid.getId(),
-                      lparname, lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                      % ( hmcserver, system_vio.getSystem(), prefix.srtVarOut(), lparname.srtVarOut(), freeid.getId(),
+                      lparname.srtVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                       lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                       uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
                       system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
@@ -204,12 +239,12 @@ def writechange():
     file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                       "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
-                      prefix, lparname ))
+                      prefix.srtVarOut(), lparname.srtVarOut() ))
 
     file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                       "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
                       % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
-                      prefix, lparname ))
+                      prefix.srtVarOut(), lparname.srtVarOut() ))
 
     file_change.write("\n\necho 'Making cfgdev on %s and %s to reconize new devices'" %
                      ( system_vio.getVio1(), system_vio.getVio2()))
@@ -268,7 +303,7 @@ def writechange():
 def closechange():
     file_change.write('\n\n# File closed with success by PowerAdm\n')
     file_change.close()
-    os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (change, timestr))
+    os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (change.srtVarOut(), timestr))
     os.system('cat poweradm/tmp/reserved_ids_%s >> poweradm/data/reserved_ids' % (timestr))
 
 ###############################################################################################
@@ -294,18 +329,18 @@ def exec_createlparconf():
                 newconfiglpar.mkCheck()
                 newconfiglpar.answerCheck()
                 if newconfiglpar.answerCheck() == 'n':
-                    print ('Closing the file changes/%s-%s' % (change, timestr))
+                    print ('Closing the file changes/%s-%s' % (change.srtVarOut(), timestr))
 
     closechange()
 
     # check if you want executes the change/ticket after creation
     check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
-            (change, timestr), 'n')
+            (change.srtVarOut(), timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing changes/ticket %s-%s' % (change, timestr))
-        exec_change_after_creation = ExecChange('%s_%s.sh' % (change, timestr))
+        print ('Runing changes/ticket %s-%s' % (change.srtVarOut(), timestr))
+        exec_change_after_creation = ExecChange('%s_%s.sh' % (change.srtVarOut(), timestr))
         exec_change_after_creation.runChange()
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
-                (change, timestr))
+                (change.srtVarOut(), timestr))
