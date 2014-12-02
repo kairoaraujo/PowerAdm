@@ -1,4 +1,7 @@
 *.pyc
+dist
+setup.py
+MANIFEST*
 poweradm/*.pyc
 poweradm/simulation
 poweradm/changes/CRQ*
