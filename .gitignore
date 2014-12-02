@@ -7,5 +7,5 @@ poweradm/simulation
 poweradm/changes/CRQ*
 poweradm/changes_executed/CRQ*
 poweradm/tmp/reserved_ids*
-poweradm/tmp/CRQ*
+poweradm/tmp/*.sh
 poweradm/tmp/ids*
