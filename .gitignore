@@ -1,7 +1,8 @@
-simulation
 *.pyc
-changes/CRQ*
-changes_executed/CRQ*
-tmp/reserved_ids*
-tmp/CRQ*
-tmp/ids*
+poweradm/*.pyc
+poweradm/simulation
+poweradm/changes/CRQ*
+poweradm/changes_executed/CRQ*
+poweradm/tmp/reserved_ids*
+poweradm/tmp/CRQ*
+poweradm/tmp/ids*

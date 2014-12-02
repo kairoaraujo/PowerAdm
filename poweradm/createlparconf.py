@@ -110,7 +110,7 @@ def lparconfig():
            "This might take a few minutes...\n" % (system_vio.getVio1()))
 
     # // simulation
-    #os.system('cat simulation/VIO1A_NPIV')
+    #os.system('cat poweradm/simulation/VIO1A_NPIV')
     #os.system('cat simulation/FCSINFO')
     #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
     #          system_vio.getSystem(), system_vio.getVio1()))
@@ -125,7 +125,7 @@ def lparconfig():
            "This might take a few minutes...\n" % (system_vio.getVio2()))
 
     # // simulation
-    #os.system('cat simulation/VIO2A_NPIV')
+    #os.system('cat poweradm/simulation/VIO2A_NPIV')
     #os.system('cat simulation/FCSINFO')
     #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
     #          system_vio.getSystem(), system_vio.getVio2()))
@@ -171,7 +171,7 @@ def headerchange():
 
     global file_change
 
-    file_change = open("tmp/%s_%s.sh" % (change, timestr) , 'w')
+    file_change = open("poweradm/tmp/%s_%s.sh" % (change, timestr) , 'w')
     file_change.write("#!/bin/sh\n")
 
 
@@ -261,15 +261,15 @@ def writechange():
                      (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
                       system_vio.getVio2()))
 
-    file_reservedids_tmp = open('tmp/reserved_ids_%s' %(timestr), 'ab')
+    file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))
     file_reservedids_tmp.close()
 
 def closechange():
     file_change.write('\n\n# File closed with success by PowerAdm\n')
     file_change.close()
-    os.system('mv tmp/%s_%s.sh changes/' % (change, timestr))
-    os.system('cat tmp/reserved_ids_%s >> data/reserved_ids' % (timestr))
+    os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (change, timestr))
+    os.system('cat poweradm/tmp/reserved_ids_%s >> poweradm/data/reserved_ids' % (timestr))
 
 ###############################################################################################
 #### MAIN                                                                                  ####

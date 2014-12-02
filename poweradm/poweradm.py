@@ -33,42 +33,46 @@ from findchange import *
 from execchange import *
 import os
 
-os.system('clear')
-print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n" % version)
+def main_poweradm():
 
-poweradm = raw_input("\nPower Adm options\n"
+    os.system('clear')
+    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n" % version)
+
+    poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
                   "2. Execute the LPAR creation.\n"
                   "3. Deploy OS on an existing LPAR. (not implemented yet)\n"
                   "4. Quit\n\n"
                   "Please choose an option: ")
 
-if poweradm == '1':
+    if poweradm == '1':
 
-    exec_createlparconf()
+        exec_createlparconf()
 
-elif poweradm == '2':
+    elif poweradm == '2':
 
-    exec_findlpar = findChange('changenum')
-    exec_findlpar.selectChange()
-    check_exec_findlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
-            (exec_findlpar.getChange()), 'n')
-    check_exec_findlpar.mkCheck()
-    if check_exec_findlpar.answerCheck() == 'y':
-        exec_change = ExecChange('%s' % (exec_findlpar.getChange()))
-        exec_change.runChange()
+        exec_findlpar = findChange('changenum')
+        exec_findlpar.selectChange()
+        check_exec_findlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
+                (exec_findlpar.getChange()), 'n')
+        check_exec_findlpar.mkCheck()
+        if check_exec_findlpar.answerCheck() == 'y':
+            exec_change = ExecChange('%s' % (exec_findlpar.getChange()))
+            exec_change.runChange()
+        else:
+            print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))
+            exit
+
+    elif poweradm == '3':
+        print ("3. not implemented yet\n")
+
+    elif poweradm == '4':
+        print ("4. Quit")
+        print ("Quiting...")
+        exit()
+
     else:
-        print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))
-        exit
+        print ("Invalid option. Quiting")
+        exit()
 
-elif poweradm == '3':
-    print ("3. not implemented yet\n")
 
-elif poweradm == '4':
-    print ("4. Quit")
-    print ("Quiting...")
-    exit()
-
-else:
-    print ("Invalid option. Quiting")
-    exit()

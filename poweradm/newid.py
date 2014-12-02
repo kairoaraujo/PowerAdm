@@ -44,15 +44,15 @@ class newId:
         count = 0
         while count <= systems_length:
             # // simulation
-            #os.system('cat simulation/%s >> tmp/ids_%s' % (systems_keys[count], timestr))
+            #os.system('cat poweradm/simulation/%s >> poweradm/tmp/ids_%s' % (systems_keys[count], timestr))
             # // simulation
-            os.system('ssh -l poweradm %s lssyscfg -m %s -r lpar -F lpar_id >> tmp/ids_%s'
+            os.system('ssh -l poweradm %s lssyscfg -m %s -r lpar -F lpar_id >> poweradm/tmp/ids_%s'
                       % (hmcserver, systems_keys[count], timestr))
-            os.system('cat data/reserved_ids >> tmp/ids_%s' % (timestr))
-            if os.path.isfile('tmp/reserved_ids_%s' % (timestr)):
-                os.system('cat tmp/reserved_ids_%s >> tmp/ids_%s' % (timestr, timestr))
+            os.system('cat poweradm/data/reserved_ids >> poweradm/tmp/ids_%s' % (timestr))
+            if os.path.isfile('poweradm/tmp/reserved_ids_%s' % (timestr)):
+                os.system('cat poweradm/tmp/reserved_ids_%s >> poweradm/tmp/ids_%s' % (timestr, timestr))
             count += 1
-        fileids = open('tmp/ids_%s' % (timestr), 'r')
+        fileids = open('poweradm/tmp/ids_%s' % (timestr), 'r')
         ids = fileids.readlines()
         ids.sort(key=int)
         lastid = len(ids)-1
@@ -61,7 +61,7 @@ class newId:
         if self.newid < 10:
             self.newid = ('0%s' % (self.newid))
         fileids.close()
-        os.system('rm tmp/ids_%s' % (timestr))
+        os.system('rm poweradm/tmp/ids_%s' % (timestr))
 
     def getId(self):
         return self.newid

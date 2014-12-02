@@ -45,7 +45,7 @@ class findChange:
 
         print ("\n[LPAR creation]\n"
                "\nSelect the Change/Ticket to execute:\n")
-        listChanges = fnmatch.filter(os.listdir("changes/"), "*.sh")
+        listChanges = fnmatch.filter(os.listdir("poweradm/changes/"), "*.sh")
         listChanges_length = len(listChanges)-1
         if listChanges_length == -1:
             print ('No changes found. Exiting\n')
