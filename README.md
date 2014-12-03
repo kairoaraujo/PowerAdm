@@ -16,6 +16,11 @@
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - **Organize your IDs!!!** You don't Know are this? Continue reading...
 
+See the screenshots (coming soon)
+
+In the future:
+- Deploy SO from the NIM Server
+- Web Interface
 
 Who manages environment with IBM Power through the Hardware Management Console (HMC) know that we have easy management interface to create LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc., and manage information the maximum and minimum memory and CPUs, physical devices, capped, uncapped etc.
 
@@ -25,7 +30,7 @@ It would be a very minimalist and simpler version of PowerVC (only on goal)
 
 Something that really consider the differential is the organization IDs.
 
-### IDs Structure 
+### IDs Structure / Organize your IDs
 
 These IDs are well organized, assist in the identification of devices, particularly in times of troubleshooting in environments with a large number of LPARs
 These IDs also help in managing the Live Partition Mobility, that is, if well organized will remain independent of the box.
