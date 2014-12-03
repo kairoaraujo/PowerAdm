@@ -53,21 +53,5 @@ class Fields:
             else:
                 break
 
-    def srtVarOut(self):
+    def strVarOut(self):
         return self.variable
-
-    # get and check a field with float value
-    def chkFieldFloat(self):
-
-        while True:
-
-            self.variable = raw_input('%s' % (self.textField))
-            if (self.variable.isspace() == True) or ( self.variable == '') or (' ' in self.variable):
-                print ("%s can not be blank or contain spaces" % (self.field))
-            else:
-                checkstring = True
-                break
-
-    def floatVarOut(self):
-        return self.variable
-

@@ -63,7 +63,7 @@ def lparconfig():
     lparname= Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
     lparname.chkFieldStr()
 
-    check_cpu_config = 0 # check if entitled is > virtual
+    check_cpu_config = 0 # check if entitled is 10% >= virtual ('if' down)
     while check_cpu_config == 0:
         while True:
             try:
@@ -73,6 +73,8 @@ def lparconfig():
                 print ('\tERROR: LPAR Entitled needs a flot: Example: 0.1, 1.2, 2.4 etc')
 
         lparentcpumin = lparentcpu-(lparentcpu*cpu_min/100)
+        if lparentcpumin < 0.10:
+            lparentcpumin = 0.1
         lparentcpumax = (lparentcpu*cpu_max/100)+lparentcpu
 
         while True:
@@ -87,6 +89,7 @@ def lparconfig():
             lparvcpumin = 1
         lparvcpumax = (lparvcpu*cpu_max/100)+lparvcpu
 
+        # check if entitled is 10% >= virtual
         cpu_config = lparentcpu*100/lparvcpu
         if cpu_config >= 10:
             check_cpu_config = 1
@@ -107,15 +110,52 @@ def lparconfig():
     global freeid
     freeid = newId('newid')
     freeid.mkId()
-    freeid.getId()
 
     # select a system and vios from systemVios.py
     global system_vio
     system_vio = systemVios('system', 'vio1', 'vio2')
     system_vio.selectSystemVios()
-    system_vio.getSystem()
-    system_vio.getVio1()
-    system_vio.getVio1()
+
+    # SCSI and DISK configuration
+    print ("\n[SCSI and DISK Configuration]\n")
+    global vscsi
+    global add_disk
+    vscsi = checkOk('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
+    vscsi.mkCheck()
+
+    if vscsi.answerCheck() == 'y':
+        global vscsi_vio1
+        global vscsi_vio2
+        vscsi_vio1 = ("21/client/any/%s/1%s/0" % (system_vio.getVio1(), freeid.getId()))
+        vscsi_vio2 = ("22/client/any/%s/2%s/0" % (system_vio.getVio2(), freeid.getId()))
+
+        if active_ssp == 'yes':
+            global num_disk
+            add_disk = checkOk('\nDo you want add an disk to LPAR?\n'
+                    '**** FUNCTION ALPHA NOT TESTED YET **** (y/n): ', 'n')
+            add_disk.mkCheck()
+
+            if add_disk.answerCheck() == 'y':
+                while True:
+                    try:
+                        global disk_size
+                        disk_size = int(raw_input("Disk Size in GB: "))
+                        break
+                    except (TypeError, ValueError):
+                        print ('\tERROR: Disk Size needs GB value: Example: 10, 15, 50 etc')
+
+                print ("\nSelect the Storage Pool to add:\n")
+                storage_pools_length = (len(storage_pools))-1
+
+                if storage_pools_length == 0:
+                    global storage_pools_option
+                    storage_pool_option = storage_pools[0]
+                else:
+                    count = 0
+                    while count <= storage_pools_length:
+                        print ("%s : %s" % (count, storage_pools[count]))
+                        count +=1
+                    storage_pools_option = int(input("Storage Pool: "))
 
     # get network configuration
     net_vlan = []
@@ -139,55 +179,70 @@ def lparconfig():
         netconfiglpar.mkCheck()
         netconfiglpar.answerCheck()
 
-    # VIOs NPIV selection
+
     print ("\n\n[NPIV HBA Configuration]\n")
-    print ("\nFinding on %s the NPIVs availabe.\n"
-           "This might take a few minutes...\n" % (system_vio.getVio1()))
+    global vfc
+    vfc = checkOk('Do you want add Virtual Fiber Adapter (HBA/NPIV)? (y/n): ', 'n')
+    vfc.mkCheck()
+    if vfc.answerCheck() == 'y':
+        # VIOs NPIV selection
+        print ("\nFinding on %s the NPIVs availabe.\n"
+               "This might take a few minutes...\n" % (system_vio.getVio1()))
 
-    # // simulation
-    #os.system('cat poweradm/simulation/VIO1A_NPIV')
-    #os.system('cat simulation/FCSINFO')
-    #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
-    #          system_vio.getSystem(), system_vio.getVio1()))
-    # // simulation
+        # // simulation
+        #os.system('cat poweradm/simulation/VIO1A_NPIV')
+        #os.system('cat simulation/FCSINFO')
+        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+        #          system_vio.getSystem(), system_vio.getVio1()))
+        # // simulation
 
-    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-              system_vio.getSystem(), system_vio.getVio1()))
+        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+                  system_vio.getSystem(), system_vio.getVio1()))
 
-    npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+        npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
-    print ("\nFinding on %s the NPIVs availabe.\n"
-           "This might take a few minutes...\n" % (system_vio.getVio2()))
+        print ("\nFinding on %s the NPIVs availabe.\n"
+               "This might take a few minutes...\n" % (system_vio.getVio2()))
 
-    # // simulation
-    #os.system('cat poweradm/simulation/VIO2A_NPIV')
-    #os.system('cat simulation/FCSINFO')
-    #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
-    #          system_vio.getSystem(), system_vio.getVio2()))
-    # // simulation
+        # // simulation
+        #os.system('cat poweradm/simulation/VIO2A_NPIV')
+        #os.system('cat simulation/FCSINFO')
+        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+        #          system_vio.getSystem(), system_vio.getVio2()))
+        # // simulation
 
-    os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-              system_vio.getSystem(), system_vio.getVio2()))
+        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+                  system_vio.getSystem(), system_vio.getVio2()))
 
-    npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+        npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
     # verify configuration
     global virtual_eth_adapters
     print ("\n[LPAR Configuration Validation]\n"
-           "\nCheck configuration last LPAR:\n\n"
-           "LPAR name: %s-%s hosted in %s with ID %s\n"
-           "Entitled CPU: Minimum: %.1f , Desired: %.1f, Maximum: %.1f\n"
-           "Virtual CPU : Minimum: %s , Desired: %s, Maximum: %s\n"
-           "Memory      : Minimum: %s , Desired: %s, Maximum: %s\n"
-           "NPIV        : %s: %s \t %s: %s\n"
-           % (prefix.srtVarOut(), lparname.srtVarOut(), system_vio.getSystem(), freeid.getId(),
+           "\nCheck configuration last LPAR:\n")
+    print ('*' * 80)
+    print ("LPAR name    : %s-%s hosted in %s with ID %s\n"
+           "Entitled CPU : Minimum: %.1f , Desired: %.1f, Maximum: %.1f\n"
+           "Virtual CPU  : Minimum: %s , Desired: %s, Maximum: %s\n"
+           "Memory       : Minimum: %s , Desired: %s, Maximum: %s"
+           % (prefix.strVarOut(), lparname.strVarOut(), system_vio.getSystem(), freeid.getId(),
               lparentcpumin, lparentcpu, lparentcpumax, lparvcpumin,
-              lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax,
-              system_vio.getVio1(), npiv_vio1, system_vio.getVio2(),
-              npiv_vio2))
+              lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax))
+
+    if vscsi.answerCheck() == 'y':
+        print("SCSI         : %s: 1%s \t %s: 2%s" % (system_vio.getVio1(), freeid.getId(),
+              system_vio.getVio2(), freeid.getId()))
+
+        if add_disk.answerCheck() == 'y':
+            print("DISK         : %sG" % (disk_size))
+
+    if vfc.answerCheck() == 'y':
+        print("NPIV         : %s: %s \t %s: %s" % (system_vio.getVio1(), npiv_vio1, system_vio.getVio2(),
+            npiv_vio2))
+
     count = 0
     while count <= net_length:
-        print ("Network %s: Virtual Switch: %s - VLAN: %s" % (count, net_vsw[count], net_vlan[count]))
+        print ("Network %s    : Virtual Switch: %s - VLAN: %s" % (count, net_vsw[count], net_vlan[count]))
         count += 1
         if net_length == 0:
             virtual_eth_adapters = ("10/0/%s//0/0/%s" % (net_vlan[0],net_vsw[0]))
@@ -197,6 +252,8 @@ def lparconfig():
         elif net_length == 2:
             virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" % (net_vlan[0],
                                     net_vsw[0], net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
+    print ('*' * 80)
+
 
 ###############################################################################################
 #### BACKEND                                                                               ####
@@ -206,95 +263,249 @@ def headerchange():
 
     global file_change
 
-    file_change = open("poweradm/tmp/%s_%s.sh" % (change.srtVarOut(), timestr) , 'w')
+    file_change = open("poweradm/tmp/%s_%s.sh" % (change.strVarOut(), timestr) , 'w')
     file_change.write("#!/bin/sh\n")
 
 
 def writechange():
 
-    print ('Writing file %s-%s.sh ... ' % (change.srtVarOut(), timestr))
+    #
+    # config functions to write correct action to lpar
+    #
+
+    def wchg_creating_lpar(): # message information creating LPAR
+
+        file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix.strVarOut(),
+                          lparname.strVarOut(),system_vio.getSystem()))
+
+
+    def wchg_vio_mkscsi(): # create SCSI on VIO Servers via DLPAR
+
+        file_change.write("\n\necho 'Making DLPAR on %s and %s to create VSCSI'" %
+                         ( system_vio.getVio1(), system_vio.getVio2()))
+
+        file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
+                         "-s 1%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=21\'"
+                         % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
+                         prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
+
+        file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
+                         "-s 2%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=22\'"
+                         % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
+                         prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
+
+
+    def wchg_vio_mknpiv(): # create NPIV on VIO Servers via DLPAR
+
+        file_change.write("\n\necho 'Making DLPAR on %s and %s to create FCs'" %
+                         ( system_vio.getVio1(), system_vio.getVio2()))
+
+        file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
+                          "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
+                          % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
+                          prefix.strVarOut(), lparname.strVarOut() ))
+
+        file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
+                          "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
+                          % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
+                          prefix.strVarOut(), lparname.strVarOut() ))
+
+    def wchg_vio_cfgdev(): # make cfgdev on VIOs
+
+        file_change.write("\n\necho 'Making cfgdev on %s and %s to reconize new devices'" %
+                     ( system_vio.getVio1(), system_vio.getVio2()))
+
+        file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
+                     (hmcserver, system_vio.getSystem(), system_vio.getVio1()))
+
+        file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
+                     (hmcserver, system_vio.getSystem(), system_vio.getVio2()))
+
+
+    def wchg_vio_vfcmap(): # make vfcmap on VIOS
+
+        # ---> simulation
+        #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\')" %
+        #                 (system_vio.getVio1(), freeid.getId()))
+        #
+        #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\')" %
+        #                 (system_vio.getVio2(), freeid.getId()))
+        # ---  simulation
+
+        file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
+                         ( system_vio.getVio1(), system_vio.getVio2()))
+
+
+        file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                          "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                          system_vio.getVio1(), freeid.getId()))
+
+        file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
+                          "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                          system_vio.getVio2(), freeid.getId()))
+
+        # <--- simulation
+
+        file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
+                          "$vfchost_vio1 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
+                          system_vio.getVio1(), npiv_vio1))
+
+        file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
+                          "$vfchost_vio2 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
+                              system_vio.getVio2(), npiv_vio2))
+
+
+    def wchg_vio_mkbdsp(): # add disk LPAR
+
+        file_change.write("\n\necho 'Adding disk with %s to %s-%s via %s ONLY'" %
+                         (disk_size, prefix.strVarOut(), lparname.strVarOut(), system_vio.getVio1()))
+
+        file_change.write("\n\nvhost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
+                          "| grep \"\\-C1%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                          system_vio.getVio1(), freeid.getId()))
+
+        file_change.write("\n\nvhost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
+                          "| grep \"\\-C2%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
+                          system_vio.getVio2(), freeid.getId()))
+
+        file_change.write("\n\nssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'mkbdsp -clustername "
+                          "%s -sp %s %sG -bd %s_lu1 -thick -vadapter $vhost_vio1 -tn %s_rootvg\'\"" %
+                          (hmcserver, system_vio.getSystem(), system_vio.getVio1(), cluster_name,
+                           storage_pools[storage_pools_option], disk_size, lparname.strVarOut(),
+                           lparname.strVarOut()))
+
+    def wchg_lpar(): # LPAR with Ethernet Only
+
+        file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
+                "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
+                "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
+                "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
+                "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
+                "boot_mode=%s, max_virtual_slots=40, "
+                "\\\"virtual_eth_adapters=%s\\\"'\n"
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                    lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                    lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
+                    uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters))
+
+
+    def wchg_lpar_fc(): # LPAR with Ethernet and Fiber Channel
+
+        file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
+                "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
+                "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
+                "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
+                "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
+                "boot_mode=%s, max_virtual_slots=40, "
+                "\\\"virtual_eth_adapters=%s\\\","
+                "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                    lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                    lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
+                    uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
+                    system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
+
+
+    def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
+
+
+        file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
+                "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
+                "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
+                "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
+                "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
+                "boot_mode=%s, max_virtual_slots=40, "
+                "\\\"virtual_eth_adapters=%s\\\","
+                "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                    lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                    lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
+                    uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters, vscsi_vio1, vscsi_vio2))
+
+
+    def wchg_lpar_fc_scsi(): # Ethernet, SCSI and Fiber Channel
+
+        file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
+                "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
+                "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
+                "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
+                "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
+                "boot_mode=%s, max_virtual_slots=40, "
+                "\\\"virtual_eth_adapters=%s\\\","
+                "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\","
+                "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                    lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
+                    lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
+                    uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
+                    system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId(), vscsi_vio1,
+                    vscsi_vio2))
+
+    def wchg_hmc_savecurrentconf():
+
+        file_change.write("\n\necho 'Saving %s and %s current configuration'" %
+                         ( system_vio.getVio1(), system_vio.getVio2()))
+
+        file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
+                          "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
+                         (hmcserver, system_vio.getSystem(), system_vio.getVio1(), hmcserver, system_vio.getSystem(),
+                          system_vio.getVio1()))
+
+        file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
+                          "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
+                         (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
+                          system_vio.getVio2()))
+
+
+    #
+    # End Of wchg_...
+    #
+
+    #
+    # Function writechange() starts here
+    #
+
+    print ('Writing file %s-%s.sh ... ' % (change.strVarOut(), timestr))
 
     file_change.write("\n\n#LPARID %s" % (freeid.getId()))
 
-    file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix.srtVarOut(), lparname.srtVarOut(),
-                      system_vio.getSystem()))
+    if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'y':
 
-    file_change.write("\nssh %s -l poweradm mksyscfg -r lpar -m %s -i \'name=%s-%s, "
-                      "lpar_id=%s, profile_name=%s, lpar_env=aixlinux, min_mem=%s, "
-                      "desired_mem=%s, max_mem=%s, proc_mode=%s, min_procs=%s,"
-                      "desired_procs=%s, max_procs=%s, min_proc_units=%s, desired_proc_units=%s, "
-                      "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
-                      "boot_mode=%s, max_virtual_slots=40, "
-                      "\\\"virtual_eth_adapters=%s\\\","
-                      "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
-                      % ( hmcserver, system_vio.getSystem(), prefix.srtVarOut(), lparname.srtVarOut(), freeid.getId(),
-                      lparname.srtVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
-                      lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
-                      uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
-                      system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
+        wchg_vio_mkscsi()
+        wchg_creating_lpar()
+        wchg_lpar_fc_scsi()
+        wchg_vio_mknpiv()
+        wchg_vio_cfgdev()
+        wchg_vio_vfcmap()
+        if (add_disk.answerCheck() == 'y'):
+            wchg_vio_mkbdsp()
+        wchg_hmc_savecurrentconf()
 
-    file_change.write("\n\necho 'Making DLPAR on %s and %s to create FCs'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
+    if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
-    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
-                      "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
-                      prefix.srtVarOut(), lparname.srtVarOut() ))
+        wchg_vio_mkscsi()
+        wchg_creating_lpar()
+        wchg_lpar_scsi()
+        wchg_vio_cfgdev()
+        if (add_disk.answerCheck() == 'y'):
+            wchg_vio_mkbdsp()
+        wchg_hmc_savecurrentconf()
 
-    file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
-                      "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
-                      prefix.srtVarOut(), lparname.srtVarOut() ))
+    if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'y':
 
-    file_change.write("\n\necho 'Making cfgdev on %s and %s to reconize new devices'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
+        wchg_creating_lpar()
+        wchg_lpar_fc()
+        wchg_vio_mknpiv()
+        wchg_vio_cfgdev()
+        wchg_vio_vfcmap()
+        wchg_hmc_savecurrentconf()
 
-    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio1()))
 
-    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio2()))
+    if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'n':
 
-    file_change.write("\n\necho 'Identifying the news vfchost on %s and %s'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
+        wchg_creating_lpar()
+        wchg_lpar()
 
-    # // simulation
-    #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\')" %
-    #                 (system_vio.getVio1(), freeid.getId()))
-
-    #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\')" %
-    #                 (system_vio.getVio2(), freeid.getId()))
-    # // simulation
-
-    file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C3%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                      system_vio.getVio1(), freeid.getId()))
-
-    file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                      "| grep \"\\-C4%s\" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                      system_vio.getVio2(), freeid.getId()))
-
-    file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
-
-    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter $vfchost_vio1 -fcp %s\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
-
-    file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter $vfchost_vio2 -fcp %s\'\""
-                      % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
-
-    file_change.write("\n\necho 'Saving %s and %s current configuration'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
-
-    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
-                      "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio1(), hmcserver, system_vio.getSystem(),
-                      system_vio.getVio1()))
-
-    file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
-                      "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
-                     (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
-                      system_vio.getVio2()))
 
     file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))
@@ -303,7 +514,7 @@ def writechange():
 def closechange():
     file_change.write('\n\n# File closed with success by PowerAdm\n')
     file_change.close()
-    os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (change.srtVarOut(), timestr))
+    os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (change.strVarOut(), timestr))
     os.system('cat poweradm/tmp/reserved_ids_%s >> poweradm/data/reserved_ids' % (timestr))
 
 ###############################################################################################
@@ -329,18 +540,18 @@ def exec_createlparconf():
                 newconfiglpar.mkCheck()
                 newconfiglpar.answerCheck()
                 if newconfiglpar.answerCheck() == 'n':
-                    print ('Closing the file changes/%s-%s' % (change.srtVarOut(), timestr))
+                    print ('Closing the file changes/%s-%s' % (change.strVarOut(), timestr))
 
     closechange()
 
     # check if you want executes the change/ticket after creation
     check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
-            (change.srtVarOut(), timestr), 'n')
+            (change.strVarOut(), timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing changes/ticket %s-%s' % (change.srtVarOut(), timestr))
-        exec_change_after_creation = ExecChange('%s_%s.sh' % (change.srtVarOut(), timestr))
+        print ('Runing changes/ticket %s-%s' % (change.strVarOut(), timestr))
+        exec_change_after_creation = ExecChange('%s_%s.sh' % (change.strVarOut(), timestr))
         exec_change_after_creation.runChange()
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
-                (change.srtVarOut(), timestr))
+                (change.strVarOut(), timestr))
