@@ -14,6 +14,7 @@
 - Add NPIV on two VIOs
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
+- Centralized config (poweradm/config.py)
 - **Organize your IDs!!!** You don't Know are this? Continue reading...
 
 See the screenshots (coming soon)
