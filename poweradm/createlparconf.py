@@ -129,7 +129,7 @@ def lparconfig():
         vscsi_vio1 = ("21/client/any/%s/1%s/0" % (system_vio.getVio1(), freeid.getId()))
         vscsi_vio2 = ("22/client/any/%s/2%s/0" % (system_vio.getVio2(), freeid.getId()))
 
-        if active_ssp == 'yes':
+        if active_ssp.lower() == 'yes':
             global num_disk
             add_disk = checkOk('\nDo you want add an disk to LPAR?\n'
                     '**** FUNCTION ALPHA NOT TESTED YET **** (y/n): ', 'n')
@@ -233,8 +233,9 @@ def lparconfig():
         print("SCSI         : %s: 1%s \t %s: 2%s" % (system_vio.getVio1(), freeid.getId(),
               system_vio.getVio2(), freeid.getId()))
 
-        if add_disk.answerCheck() == 'y':
-            print("DISK         : %sG" % (disk_size))
+        if active_ssp.lower() == 'yes':
+            if add_disk.answerCheck() == 'y':
+                print("DISK         : %sG" % (disk_size))
 
     if vfc.answerCheck() == 'y':
         print("NPIV         : %s: %s \t %s: %s" % (system_vio.getVio1(), npiv_vio1, system_vio.getVio2(),
@@ -477,8 +478,9 @@ def writechange():
         wchg_vio_mknpiv()
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
-        if (add_disk.answerCheck() == 'y'):
-            wchg_vio_mkbdsp()
+        if active_ssp.lower() == 'y':
+            if (add_disk.answerCheck() == 'y'):
+                wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
@@ -487,8 +489,9 @@ def writechange():
         wchg_creating_lpar()
         wchg_lpar_scsi()
         wchg_vio_cfgdev()
-        if (add_disk.answerCheck() == 'y'):
-            wchg_vio_mkbdsp()
+        if active_ssp.lower() == 'y':
+            if (add_disk.answerCheck() == 'y'):
+                wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'y':
