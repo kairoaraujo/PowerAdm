@@ -472,9 +472,9 @@ def writechange():
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'y':
 
-        wchg_vio_mkscsi()
         wchg_creating_lpar()
         wchg_lpar_fc_scsi()
+        wchg_vio_mkscsi()
         wchg_vio_mknpiv()
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
@@ -485,9 +485,9 @@ def writechange():
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
-        wchg_vio_mkscsi()
         wchg_creating_lpar()
         wchg_lpar_scsi()
+        wchg_vio_mkscsi()
         wchg_vio_cfgdev()
         if active_ssp.lower() == 'y':
             if (add_disk.answerCheck() == 'y'):
