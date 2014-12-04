@@ -9,3 +9,4 @@ poweradm/changes_executed/*.sh
 poweradm/tmp/reserved_ids*
 poweradm/tmp/*.sh
 poweradm/tmp/ids*
+screenshots/
