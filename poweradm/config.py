@@ -52,6 +52,15 @@ systems = {
 # Virtual Switches
 virtual_switches = ['VSW-GERENCIA-01', 'VSW-DADOS-01', 'VSW-BACKUP-01']
 
+# Shared Storage Pool
+#
+# Do you have active Shared Storage Pool: yes or no
+active_ssp = 'yes'
+# Cluster Name
+cluster_name = 'cls01'
+# Shared Storage Pools names
+storage_pools = ['sp01', 'sp02']
+
 # Others configurations
 # To change check the mksyscfg HMC help commands
 #

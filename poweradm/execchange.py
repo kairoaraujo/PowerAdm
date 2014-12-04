@@ -43,7 +43,7 @@ class ExecChange:
     def runChange(self):
 
         print ("\nRuning change/ticket %s" % (self.changefile))
-        os.system("echo 'sh poweradm/changes/%s'" % (self.changefile))
+        os.system("sh poweradm/changes/%s" % (self.changefile))
         os.system('mv poweradm/changes/%s poweradm/changes_executed/' % (self.changefile))
         f_change_executed = open("poweradm/changes_executed/%s" % (self.changefile), 'r')
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'

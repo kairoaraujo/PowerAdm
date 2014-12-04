@@ -2,6 +2,27 @@
 
 ## What does it do?
 
+### Principal features
+
+- Create LPAR profile on HMC
+- Supports multiple frames
+- Add virtual Ethernet (maximum 3 ethernets)
+	- Select the Virtual Switch
+	- VLAN
+- Add vSCSI on two VIOs
+	- Create Virtual SCSI server on VIO automatically
+- Add NPIV on two VIOs
+	- Make vfcmap automatically
+- Add disk on vSCSI (only if you have Shared Storage Pool)
+- Centralized config (poweradm/config.py)
+- **Organize your IDs!!!** You don't Know are this? Continue reading...
+
+See the screenshots (coming soon)
+
+In the future:
+- Deploy SO from the NIM Server
+- Web Interface
+
 Who manages environment with IBM Power through the Hardware Management Console (HMC) know that we have easy management interface to create LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc., and manage information the maximum and minimum memory and CPUs, physical devices, capped, uncapped etc.
 
 The objective of this application is to adopt a standard IDs based on LPAR ID and facilitate the creation avoiding filling more complex information, facilitating the use by analysts with a knowledge in Power not as advanced or operators.
@@ -10,7 +31,7 @@ It would be a very minimalist and simpler version of PowerVC (only on goal)
 
 Something that really consider the differential is the organization IDs.
 
-### IDs Structure 
+### IDs Structure / Organize your IDs
 
 These IDs are well organized, assist in the identification of devices, particularly in times of troubleshooting in environments with a large number of LPARs
 These IDs also help in managing the Live Partition Mobility, that is, if well organized will remain independent of the box.

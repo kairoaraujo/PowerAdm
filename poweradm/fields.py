@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# globalvar.py
+# verify.py
 #
 # Copyright (c) 2014 Kairo Araujo
 #
@@ -27,12 +27,31 @@
 #
 # Imports
 ###############################################################################################
+#
+# Importing classes/modules
 import time
 import os.path
+from globalvar import *
 from config import *
-##############################################################################################
-#
-# Global Variables
-timestr = time.strftime("%d%m%Y-%H%M%S")
-version = '0.5-beta'
+from poweradm import *
 
+
+class Fields:
+
+    def __init__(self, variable, field, textField):
+        self.variable = variable
+        self.field = field
+        self.textField = textField
+
+    def chkFieldStr(self):
+
+        while True:
+
+            self.variable = raw_input('%s' % (self.textField))
+            if (self.variable.isspace() == True) or ( self.variable == '') or (' ' in self.variable):
+                print ("%s can not be blank or contain spaces" % (self.field))
+            else:
+                break
+
+    def strVarOut(self):
+        return self.variable

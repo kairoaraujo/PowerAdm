@@ -4,8 +4,8 @@ setup.py
 MANIFEST*
 poweradm/*.pyc
 poweradm/simulation
-poweradm/changes/CRQ*
-poweradm/changes_executed/CRQ*
+poweradm/changes/*.sh
+poweradm/changes_executed/*.sh
 poweradm/tmp/reserved_ids*
 poweradm/tmp/*.sh
 poweradm/tmp/ids*
