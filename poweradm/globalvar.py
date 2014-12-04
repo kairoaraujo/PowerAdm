@@ -34,5 +34,5 @@ from config import *
 #
 # Global Variables
 timestr = time.strftime("%d%m%Y-%H%M%S")
-version = '0.4-beta'
+version = '0.5-beta'
 
