@@ -17,7 +17,7 @@
 - Centralized config (poweradm/config.py)
 - **Organize your IDs!!!** You don't Know are this? Continue reading...
 
-See the screenshots (coming soon)
+See the screen shots https://github.com/kairoaraujo/PowerAdm/wiki/screenshots
 
 In the future:
 - Deploy SO from the NIM Server
