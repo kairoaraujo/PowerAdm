@@ -126,8 +126,8 @@ def lparconfig():
     if vscsi.answerCheck() == 'y':
         global vscsi_vio1
         global vscsi_vio2
-        vscsi_vio1 = ("21/client/any/%s/1%s/0" % (system_vio.getVio1(), freeid.getId()))
-        vscsi_vio2 = ("22/client/any/%s/2%s/0" % (system_vio.getVio2(), freeid.getId()))
+        vscsi_vio1 = ("21/client//%s/1%s/0" % (system_vio.getVio1(), freeid.getId()))
+        vscsi_vio2 = ("22/client//%s/2%s/0" % (system_vio.getVio2(), freeid.getId()))
 
         if active_ssp.lower() == 'yes':
             global num_disk
