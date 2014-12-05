@@ -17,17 +17,15 @@
 - Centralized config (poweradm/config.py)
 - **Organize your IDs!!!** You don't Know are this? Continue reading...
 
-See the screen shots https://github.com/kairoaraujo/PowerAdm/wiki/screenshots
-
 In the future:
 - Deploy SO from the NIM Server
 - Web Interface
 
 Who manages environment with IBM Power through the Hardware Management Console (HMC) know that we have easy management interface to create LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc., and manage information the maximum and minimum memory and CPUs, physical devices, capped, uncapped etc.
 
-The objective of this application is to adopt a standard IDs based on LPAR ID and facilitate the creation avoiding filling more complex information, facilitating the use by analysts with a knowledge in Power not as advanced or operators.
+The objective of this tool is to adopt a standard IDs based on LPAR ID and facilitate the creation without a complex information. Is easy for analysts without skills in Power or operators.
 
-It would be a very minimalist and simpler version of PowerVC (only on goal)
+Power Adm is a free and simple tool in Python to create easily, quickly and with their standards LPARs.
 
 Something that really consider the differential is the organization IDs.
 
@@ -132,5 +130,5 @@ irectory simulation is available upon request.
 ## License
 
 This software is BSD License. Please more details in LICENSE file.
-
+IMPORTANT: IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in the United States, other countries, or both.
 
