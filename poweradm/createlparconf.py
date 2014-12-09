@@ -406,6 +406,24 @@ def writechange():
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
                     system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
 
+    def wchg_lpar_fc_wwnget():
+
+        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" % (prefix.strVarOut(), 
+        					lparname.strVarOut()))
+
+        file_change.write("\n\necho "Physical Adapter to LPAR fcs0: "$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+						 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
+
+        file_change.write("\n\necho "Physical Adapter to LPAR fcs1: "$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+                         (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
+
+        file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
+                          "lpar_names=%s-%s| awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\nfcs1 "
+                          "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(), 
+                            prefix.strVarOut(), hostname.strVarOut()))
+
 
     def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
 
@@ -482,6 +500,7 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
+        wchg_lpar_fc_wwnget()
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
@@ -502,6 +521,7 @@ def writechange():
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
         wchg_hmc_savecurrentconf()
+        wchg_lpar_fc_wwnget()
 
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'n':
