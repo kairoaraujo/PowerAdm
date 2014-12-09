@@ -1,8 +1,13 @@
 # Power Adm - Power Administration to Power.
 
-## What does it do?
+Power Adm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and also it will be able to deploy AIX Operating System in the future.
 
-### Principal features
+## Links
+
+Wiki: https://github.com/kairoaraujo/PowerAdm/wiki
+Screen shots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+
+## Principal features
 
 - Create LPAR profile on HMC
 - Supports multiple frames
@@ -15,37 +20,37 @@
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
-- **Organize your IDs!!!** You don't Know are this? Continue reading...
+- **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
 In the future:
 - Deploy SO from the NIM Server
 - Web Interface
 
-Who manages environment with IBM Power through the Hardware Management Console (HMC) know that we have easy management interface to create LPAR, but we need to manage the IDs of devices, such as virtual network, virtual fiber channel, virtual scsi etc., and manage information the maximum and minimum memory and CPUs, physical devices, capped, uncapped etc.
+Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
-The objective of this tool is to adopt a standard IDs based on LPAR ID and facilitate the creation without a complex information. Is easy for analysts without skills in Power or operators.
+The objective of this tool is to adopt a standard for IDs based on the LPAR ID and also to facilitate the LPAR creation with no need of expert knowledge, making it easier even for analysts without experienced skills in Power or operators.
 
-Power Adm is a free and simple tool in Python to create easily, quickly and with their standards LPARs.
+Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
 
-Something that really consider the differential is the organization IDs.
+Something that we really consider the differential in this tool is the IDs organization.
 
 ### IDs Structure / Organize your IDs
 
-These IDs are well organized, assist in the identification of devices, particularly in times of troubleshooting in environments with a large number of LPARs
-These IDs also help in managing the Live Partition Mobility, that is, if well organized will remain independent of the box.
+These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs
+These IDs also help managing the Live Partition Mobility. Therefore, if well organized, will always remain the same independent of the box.
 
-For this, the following rule was established:
+For this, the following rules were established:
 
-All LPAR has a maximum number of virtual devices 40 and the following structure:
+Every LPAR has a maximum number of virtual devices 40 and the following structure:
 Virtual Network IDs will be between 10 and 19
 Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)
 Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)
 
-In "VIOS" settings have the following default:
-Maximum number of virtual devices in VIO Primary is 3500 and Secondary VIO 4500 allowing a total of 500 LPARs on the set of VIOS
+"VIOS" settings have the following default:
+Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS
 
-Virtual SCSI IDs:  the VIO Primary 1 + 'LPAR ID' and on VIO Secondary 2 + 'LPAR ID'
-Fiber Channel IDs: the VIO Primary 3 + 'LPAR ID' and on VIO Secondary 4 + 'LPAR ID'
+Virtual SCSI IDs:  the Primary VIO 1 + 'LPAR ID' and on Secondary VIO 2 + 'LPAR ID'
+Fiber Channel IDs: the Primary VIO 3 + 'LPAR ID' and on Secondary VIO 4 + 'LPAR ID'
 
 Example:
 
@@ -89,7 +94,7 @@ Virtual devices:
 - 411 Fiber Channel (Client: 11 / Virtual Client: 34)
 - 412 Fiber Channel (Client: 12 / Virtual Client: 34)
 
-With this example we can see how easy it is to identify within the VIO's virtual devices, searching for the partition ID.
+In this example we can easily identify which VIO serves the virtual devices, by only looking the partition ID.
 
 Sample: Identifying AIX1 on VIOs
 
@@ -119,16 +124,14 @@ Sample: Identifying AIX1 on VIOs
 	VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
 
 
-## How is it development?
+## How is it developed?
 
-It's developing using Python and uses some Shell Scripting.
-I'm not a developer. I'm a System Administrator. Please sorry if not look great but your help is important to improve.
+It's developed using Python and uses some Shell Scripting.
+I'm a sysadmin not a developer so sorry if it is not looking great. Your help is important and kindly accept to improve the tool.
 
-If you don't have an HMC and a Power to run tests, don't worry. I've an some codes with simulation on createlparconf.py, newid.py. D
-irectory simulation is available upon request.
+If you don't have an HMC and a Power to run tests, don't worry. I've an some code with simulation on createlparconf.py, newid.py. Directory simulation is available upon request.
 
 ## License
 
 This software is BSD License. Please more details in LICENSE file.
 IMPORTANT: IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in the United States, other countries, or both.
-
