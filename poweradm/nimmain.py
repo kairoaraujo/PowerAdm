@@ -54,7 +54,7 @@ def nimmain():
 
     # find next IP on the range
     os.system("ssh -l poweradm %s cat /etc/hosts >> poweradm/tmp/hosts_%s" %
-            (newnim.getNimAddress, timestr))
+            (newnim.getNimAddress(), timestr))
     os.system("cat poweradm/data/reserved_ips >> poweradm/tmp/hosts_%s" % (timestr))
     def verifyIP(ipaddress):
         f_nim_hosts = open("poweradm/tmp/hosts_%s" % (timestr), 'r')
