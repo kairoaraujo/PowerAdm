@@ -107,6 +107,7 @@ nim_os_deploy = {
 #   'NAME OF NIM':['MANAGER IP/HOSTNAME', 'IP SERVER DEPLOY', 'IP GATEWAY DEPLOY', 'RANGE USED TO DEPLOY']
 #
 # MANAGER IP/HOSTNAME: is address to access nim server using ssh
+# IP GATEWAY DEPLOY: Gateway IP addres used by NIM Network.
 # IP SERVER DEPLOY: IP Addres of network deploy NIM (default nim interface)
 # RANGE USED TO DEPLOY: range of IPs form your NIM Network.
 #
