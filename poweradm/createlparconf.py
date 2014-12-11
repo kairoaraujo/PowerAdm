@@ -172,7 +172,8 @@ def lparconfig():
         print ("\n[LPAR Network Configuration]\n"
                "\nSelect the Virtual Switch to ethernet:")
         if (len(net_vsw) == 0) and (nim_deploy.answerCheck() == 'y'):
-                print ("\033[1;31mImportant: The first ethernet is used to deploy!\033[1;00m")
+                print ("\033[1;31mImportant: One ethernet is used to NIM deploy!\033[1;00m")
+                print ("\033[1;31m           Add one ethernet on same network of nim deploy!\033[1;00m")
         vsw_length = (len(virtual_switches))-1
         count = 0
         while count <= vsw_length:

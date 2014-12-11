@@ -51,7 +51,8 @@ class NimServer:
         self.nimserver = (nimservers_keys[nimserver_option])
         self.address = nimservers[('%s' % nimservers_keys[nimserver_option])][0]
         self.ipdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][1]
-        self.iprange = nimservers[('%s' % nimservers_keys[nimserver_option])][2]
+        self.gwdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][2]
+        self.iprange = nimservers[('%s' % nimservers_keys[nimserver_option])][3]
         ipstartend = self.iprange.split('-')
         self.ipnet = ipstartend[0].split('.')
         self.ipstart = self.ipnet[3]
@@ -66,6 +67,9 @@ class NimServer:
 
     def getNimIPDeploy(self):
         return self.ipdeploy
+
+    def getNIMGWDeploy(self):
+        return self.gwdeploy
 
     def getIPRange(self):
         return self.iprange

@@ -134,6 +134,7 @@ def nimmain():
 
         f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"\n' % (lparprefix, lparname))
         f_nim_exe.write('echo "This might take a few minutes..."\n')
+        f_nim_exe.write('echo "This might take a few minutes..."\n')
 
         f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t '
                 'ent %s-%s %s %s | grep C10-T1 | awk \'{ print $3 }\')\n' % (hmcserver, lparprefix,
