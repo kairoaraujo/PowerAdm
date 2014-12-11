@@ -132,12 +132,19 @@ def nimmain():
                 '-a lpp_source=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' %
                 (newnim.getNimAddress(), selectnimver.getSpot(), selectnimver.getMksysbLpp(), lparname))
 
-        f_nim_exe.write('\n\necho "Booting LPAR %s-%s on NIM Server"\n' % (lparprefix, lparname))
-        f_nim_exe.write('echo "This might take a few minutes..."\n')
+ 	    f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"\n' % (lparprefix, lparname))
+	    f_nim_exe.write('echo "This might take a few minutes..."\n')
 
-        f_nim_exe.write('\n\nssh -l poweradm %s lpar_netboot -M -A -n -T off -t ent -D -s auto -d auto -S %s '
-                '-G %s -C %s %s-%s %s %s\n' % (hmcserver, newnim.getNimIPDeploy(), newnim.getNIMGWDeploy(),
-                    new_ip, lparprefix, lparname, lparname, lparframe))
+	    f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t '
+			'ent %s-%s %s %s | grep C10-T1 | awk \'{ print $3 }\')\n' % (hmcserver, lparprefix,
+			lparname, lparname, lparframe))
+
+	    f_nim_exe.write('\n\necho "Booting LPAR %s-%s on NIM Server"\n' % (lparprefix, lparname))
+	    f_nim_exe.write('echo "This might take a few minutes..."\n')
+
+	    f_nim_exe.write('\n\nssh -l poweradm %s lpar_netboot -m $mac_address -T off -t ent -s '
+			'auto -d auto -S %s -C %s %s-%s %s %s\n' % (hmcserver, newnim.getNimIPDeploy(), new_ip,
+			lparprefix, lparname, lparname, lparframe))
 
         f_nim_exe.close()
 
