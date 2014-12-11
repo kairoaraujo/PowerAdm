@@ -60,8 +60,8 @@ VIOS2 - ID: 2 Maximum number of virtual IDs: 4500
 LPAR AIX1
 ID: 11
 Virtual devices:
-- 11: Network adapter data
-- 12: Network adapter backup
+- 10: Network adapter data
+- 11: Network adapter backup
 - 21: Virtual SCSI (Server: 111 VIOS1)
 - 22: Virtual SCSI (Server: 211 VIOS2)
 - 33: Fiber Channel (Server: 311 VIOS1)
@@ -70,8 +70,8 @@ Virtual devices:
 LPAR AIX1
 ID: 12
 Virtual devices:
-- 11: Network adapter data
-- 12: Network adapter backup
+- 10: Network adapter data
+- 11: Network adapter backup
 - 21: Virtual SCSI (Server: 112 VIOS1)
 - 22: Virtual SCSI (Server: 212 VIOS2)
 - 33: Fiber Channel (Server: 312 VIOS1)
