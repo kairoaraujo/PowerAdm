@@ -1,11 +1,13 @@
 How to install PowerAdm
 
+# GENERAL
+
 1. You need a *nix with Python 2.6 (>=) with access on your HMC (Hardware Management 
    Console)
 
 2. On your *nix create a user poweradm
 
-    # useradd -c " user" -m poweradm
+    # useradd -c "Power Adm user" -m poweradm
 
 3. On your *nix go to user and create ssh keys
 
@@ -51,3 +53,32 @@ How to install PowerAdm
    fcs0     aa:bb:cc:dd:ee:ff       FABRIC-A
    fcs1     aa:bb:cc:dd:ee:ff       FABRIC-B
    fcs2     aa:bb:cc:dd:ee:ff       FABRIC-C
+
+
+# Enable access on NIM Servers to Deploy SO
+
+1. On your NIM Server create user poweradm
+
+   # useradd -c "Power Adm user" -m poweradm
+
+2. Add id_dsa.pub on .ssh/authorized_keys of poweradm user
+
+   $ cd .ssh
+   $ echo 'sh-dss 
+    BBBBB3NzaC1kc3MBBBCBALvbupPLnqy6UfJjgMG5SRnnFDfD013OtBxFv9P7qoHfGKCG0Vu2
+    IhNCYttpYMmsMR+BWADo4c9oT7r92raLfVDjNW9uO5C5fatK305+sNqazbT91HDDNDKQnbpoKUqybVRC2
+    BQbPR9ESh+ws3uHdxXSQKwOSyrHO6Nwkkx9/h4TBBBAFQDZgT9MxrEUQg4uOwxhciwwdoOO9QBBBIAH37
+    x06Ia4FiCdlk3U9vuOI0QEvCKMXL+ZPFNoRcgiqiCnR2WeiaG5qM+odYWk/F/owV0Y/DmkmrrjPrgDADj
+    S1uKoSy+NMg903+4cS1B06EMtia+RmMbWkr+kQZ90WvB9C5cxofzcllnQjztQxVrZnZPmMI73/SQdS7QB
+    U9a9WwBBBIA3VAdMvP+ZO3zs57FaznMySoszxgNWxuINlcP61TQuyuCp5Bq3mFXwxFwJWPpqpbW5yHj9N
+    1+3pscSsFxEQb9YVvb1oL9c5QdPDnmXZK9BHHmNZMn+ftuzJKHgR2lynaxQ4hxTnz+xT0ywGwokeuuCnr
+    4G3Bftc70Yn9vCNjuzGQ== poweradm@linuxadm' >> authorized_keys
+
+3. Install sudo on your nimserver
+
+4. Add this entry ou your /etc/sudoers
+
+    # visudo
+    
+    "poweradm ALL=(ALL) NOPASSWD: /usr/sbin/nim *"
+

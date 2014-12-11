@@ -53,7 +53,8 @@ def nimmain():
     newnim.selectNim()
 
     # find next IP on the range
-    os.system("cat poweradm/simulation/hosts >> poweradm/tmp/hosts_%s" % (timestr))
+    os.system("ssh -l poweradm %s cat /etc/hosts >> poweradm/tmp/hosts_%s" %
+            (newnim.getNimAddress, timestr))
     os.system("cat poweradm/data/reserved_ips >> poweradm/tmp/hosts_%s" % (timestr))
     def verifyIP(ipaddress):
         f_nim_hosts = open("poweradm/tmp/hosts_%s" % (timestr), 'r')
@@ -103,28 +104,26 @@ def nimmain():
     if deploy.answerCheck() == 'y':
 
         f_nim_exe = open('poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname), 'w')
-        f_nim_reserved_ips = open ('poweradm/data/reserved_ips', 'a')
-        f_nim_reserved_ips.write('%s\n' % (new_ip))
-        f_nim_reserved_ips.close()
 
         f_nim_exe.write('\n\necho "Creating machine %s-%s on NIM Server"\n' % (lparprefix, lparname))
 
-        f_nim_exe.write('\n\nssh -l poweradm %s nim -o define -t standalone -a platform=chrp '
-                '-a netboot_kernel=mp -a if1=\"$(lsnim -t ent | awk \'{ print $1 }\' | head  -1) %s 0\" '
-                '-a cable_type1=tp %s\n' % (newnim.getNimAddress(), lparname, lparname))
+        f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o define -t standalone -a platform=chrp '
+                '-a netboot_kernel=mp -a if1=\"$(ssh -l poweradm %s lsnim -t ent | awk \'{ print $1 }\' '
+                '| head  -1) %s 0\" -a cable_type1=tp %s\n' % (newnim.getNimAddress(), newnim.getNimAddress(),
+                    lparname, lparname))
 
         f_nim_exe.write('\n\necho "Resource alocations and perform operations to %s-%s on NIM Server"\n' %
                 (lparprefix, lparname))
 
         if nim_deploy_mode.lower() == 'mksysb':
 
-            f_nim_exe.write('\n\nssh -l poweradm %s nim -o bos_inst -a source=mksysb -a spot=%s '
+            f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o bos_inst -a source=mksysb -a spot=%s '
                 '-a mksysb=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' % (newnim.getNimAddress(),
                     selectnimver.getSpot(), selectnimver.getMksysbLpp(), lparname))
 
         elif nim_deploy_mode.lower() == 'lpp':
 
-            f_nim_exe.write('\n\nssh -l poweradm %s nim -o bos_inst -a source=spot -a spot=%s '
+            f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o bos_inst -a source=spot -a spot=%s '
                 '-a lpp_source=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' %
                 (newnim.getNimAddress(), selectnimver.getSpot(), selectnimver.getMksysbLpp(), lparname))
 
@@ -143,8 +142,16 @@ def nimmain():
         f_nim_exe.close()
 
         print ('\n\nInitializing deploy OS...')
+
+        f_nim_reserved_ips = open ('poweradm/data/reserved_ips', 'a')
+        f_nim_reserved_ips.write('%s\n' % (new_ip))
+        f_nim_reserved_ips.close()
+        f_nim_deploy = open("poweradm/nim/%s" % (newdeploy.getDeploy()), 'a')
+        f_nim_deploy.write('#IP %s\n' % (new_ip))
+        f_nim_deploy.close()
+
         os.system('sh poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname))
-        os.system('mv poweradm/nim/%s-%s.nim poweradm/changes_executed/' % (lparprefix, lparname))
+        os.system('mv poweradm/nim/%s-%s.nim poweradm/nim_executed/' % (lparprefix, lparname))
         os.system('mv poweradm/changes/deploy_nim_%s-%s.nim poweradm/changes_executed/' % (lparprefix, lparname))
 
     else:

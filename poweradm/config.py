@@ -104,14 +104,16 @@ nim_os_deploy = {
 
 # NIM Serves
 # Syntax:
-#   'NAME OF NIM':['MANAGER IP/SSH', 'IP SERVER', 'RANGE USED TO DEPLOY']
+#   'NAME OF NIM':['MANAGER IP/HOSTNAME', 'IP SERVER DEPLOY', 'RANGE USED TO DEPLOY']
 #
-# MANAGER IP/SSH: is address to access nim server
-# IP SERVER: IP Addres of network deploy NIM (default nim interface)
+# MANAGER IP/HOSTNAME: is address to access nim server using ssh
+# IP SERVER DEPLOY: IP Addres of network deploy NIM (default nim interface)
 # RANGE USED TO DEPLOY: range of IPs form your NIM Network.
+#
 #   Important: supports max 24 bits network. 1-254 addresses
+#
 nimservers = {
-              'NIM1':['200.185.178.9', '10.0.0.1', '10.0.0.11-254'],
+              'NIM1':['nimserver1', '10.0.0.1', '10.0.0.11-254'],
               'NIM2':['200.185.178.30', '10.0.1.1', '10.0.1.11-254']
              }
 
