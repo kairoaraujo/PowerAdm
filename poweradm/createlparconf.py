@@ -60,7 +60,7 @@ def lparconfig():
     prefix = Fields('prefix', 'Prefix', 'Prefix (XXXX-lparname): ')
     prefix.chkFieldStr()
 
-    lparname= Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
+    lparname = Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
     lparname.chkFieldStr()
 
     check_cpu_config = 0 # check if entitled is 10% >= virtual ('if' down)
@@ -106,6 +106,12 @@ def lparconfig():
     lparmenmin = lparmem-(lparmem*mem_min/100)
     lparmenmax = (lparmem*mem_max/100)+lparmem
 
+    # prepare to os deploy
+    global nim_deploy
+    if enable_nim_deploy.lower() == 'yes':
+        nim_deploy = checkOk("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
+        nim_deploy.mkCheck()
+
     # get free id from newId.py
     global freeid
     freeid = newId('newid')
@@ -115,6 +121,7 @@ def lparconfig():
     global system_vio
     system_vio = systemVios('system', 'vio1', 'vio2')
     system_vio.selectSystemVios()
+
 
     # SCSI and DISK configuration
     print ("\n[SCSI and DISK Configuration]\n")
@@ -164,6 +171,8 @@ def lparconfig():
     while netconfiglpar.answerCheck() == 'y':
         print ("\n[LPAR Network Configuration]\n"
                "\nSelect the Virtual Switch to ethernet:")
+        if (len(net_vsw) == 0) and (nim_deploy.answerCheck() == 'y'):
+                print ("\033[1;31mImportant: The first ethernet is used to deploy!\033[1;00m")
         vsw_length = (len(virtual_switches))-1
         count = 0
         while count <= vsw_length:
@@ -420,7 +429,7 @@ def writechange():
                          (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
 
         file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
-                          "lpar_names=%s-%s| awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\nfcs1 "
+                          "lpar_names=%s-%s| awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
                           "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(),
                             prefix.strVarOut(), lparname.strVarOut()))
 
@@ -475,6 +484,19 @@ def writechange():
                          (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
                           system_vio.getVio2()))
 
+    def wchg_lpar_deploy_nim_enable():
+
+        file_change.write("\n\necho 'Enabling Deploy to %s-%s'" % (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '#PREFIX %s' > poweradm/nim/%s-%s.nim" % (prefix.strVarOut(), prefix.strVarOut(),
+            lparname.strVarOut()))
+
+        file_change.write("\n\necho '#LPARNAME %s' >> poweradm/nim/%s-%s.nim" % (lparname.strVarOut(),
+            prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '#FRAME %s' >> poweradm/nim/%s-%s.nim" % (system_vio.getSystem(),
+            prefix.strVarOut(), lparname.strVarOut()))
+
 
     #
     # End Of wchg_...
@@ -501,6 +523,8 @@ def writechange():
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
         wchg_lpar_fc_wwnget()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
@@ -512,6 +536,8 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'y':
 
@@ -522,13 +548,16 @@ def writechange():
         wchg_vio_vfcmap()
         wchg_hmc_savecurrentconf()
         wchg_lpar_fc_wwnget()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'n':
 
         wchg_creating_lpar()
         wchg_lpar()
-
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))

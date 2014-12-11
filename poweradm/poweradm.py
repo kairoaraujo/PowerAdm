@@ -31,6 +31,7 @@ from config import *
 from createlparconf import *
 from findchange import *
 from execchange import *
+from nimmain import *
 import os
 
 def main_poweradm():
@@ -41,7 +42,7 @@ def main_poweradm():
     poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
                   "2. Execute the LPAR creation.\n"
-                  "3. Deploy OS on an existing LPAR. (not implemented yet)\n"
+                  "3. Deploy OS on an existing LPAR.\n"
                   "4. Quit\n\n"
                   "Please choose an option: ")
 
@@ -64,7 +65,8 @@ def main_poweradm():
             exit
 
     elif poweradm == '3':
-        print ("3. not implemented yet\n")
+
+        nimmain()
 
     elif poweradm == '4':
         print ("4. Quit")
