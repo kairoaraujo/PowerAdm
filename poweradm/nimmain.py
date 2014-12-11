@@ -132,7 +132,7 @@ def nimmain():
                 '-a lpp_source=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' %
                 (newnim.getNimAddress(), selectnimver.getSpot(), selectnimver.getMksysbLpp(), lparname))
 
-        f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"' % (lparprefix, lparname))
+        f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"\n' % (lparprefix, lparname))
         f_nim_exe.write('echo "This might take a few minutes..."\n')
 
         f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t '
