@@ -80,5 +80,5 @@ How to install PowerAdm
 
     # visudo
     
-    "poweradm ALL=(ALL) NOPASSWD: /usr/sbin/nim *"
+    "poweradm ALL=(ALL) NOPASSWD: /usr/sbin/nim *, /usr/sbin/lsnim *, /usr/sbin/hostent * "
 

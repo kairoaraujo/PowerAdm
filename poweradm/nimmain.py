@@ -105,10 +105,15 @@ def nimmain():
 
         f_nim_exe = open('poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname), 'w')
 
+        f_nim_exe.write('\n\necho "Add host  %s-%s on NIM Server /etc/hosts"\n' % (lparprefix, lparname))
+
+        f_nim_exe.write('\n\nssh -l poweradm %s sudo hostent -a %s -h %s' % (newnim.getNimAddress(),
+            new_ip, lparname))
+
         f_nim_exe.write('\n\necho "Creating machine %s-%s on NIM Server"\n' % (lparprefix, lparname))
 
         f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o define -t standalone -a platform=chrp '
-                '-a netboot_kernel=mp -a if1=\"$(ssh -l poweradm %s lsnim -t ent | awk \'{ print $1 }\' '
+                '-a netboot_kernel=mp -a if1=\"$(ssh -l poweradm %s sudo lsnim -t ent | awk \'{ print $1 }\' '
                 '| head  -1) %s 0\" -a cable_type1=tp %s\n' % (newnim.getNimAddress(), newnim.getNimAddress(),
                     lparname, lparname))
 
@@ -153,6 +158,18 @@ def nimmain():
         os.system('sh poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname))
         os.system('mv poweradm/nim/%s-%s.nim poweradm/nim_executed/' % (lparprefix, lparname))
         os.system('mv poweradm/changes/deploy_nim_%s-%s.nim poweradm/changes_executed/' % (lparprefix, lparname))
+
+        print ('\nPlease, access HMC %s and run command below to finis OS install. '
+               '\n\t\'mkvterm -m %s -p %s-%s\' ' % (hmcserver, lparframe, lparprefix, lparname))
+
+        access_hmc = checkOk('\nDo you want access HMC on this session?(y/n): ', 'n')
+        access_hmc.mkCheck()
+        if access_hmc.answerCheck() == 'y':
+            print ('run command \'mkvterm -m %s -p %s-%s\'' % (lparframe, lparprefix, lparname))
+            os.system('ssh -l poweradm %s' % (hmcserver))
+        else:
+            print ('\nExiting...\n\n')
+            exit
 
     else:
 
