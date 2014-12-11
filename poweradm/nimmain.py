@@ -167,7 +167,9 @@ def nimmain():
         access_hmc = checkOk('\nDo you want access HMC on this session?(y/n): ', 'n')
         access_hmc.mkCheck()
         if access_hmc.answerCheck() == 'y':
+
             print ('\n\n\trun command \'mkvterm -m %s -p %s-%s\'\n\n' % (lparframe, lparprefix, lparname))
+            print ('\n\n\tTip: maybe you need press \'1 Enter\'\n\n' % (lparframe, lparprefix, lparname))
             os.system('ssh -l poweradm %s' % (hmcserver))
         else:
             print ('\nExiting...\n\n')
