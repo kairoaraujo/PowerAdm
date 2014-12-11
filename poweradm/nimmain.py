@@ -98,14 +98,14 @@ def nimmain():
                newnim.getNimIPDeploy(), selectnimver.getOsVersion()))
     print ('*' * 80)
 
-    deploy = checkOk('Proceed to Deploy?(y/n): ', 'n')
+    deploy = checkOk('\nProceed to Deploy?(y/n): ', 'n')
     deploy.mkCheck()
 
     if deploy.answerCheck() == 'y':
 
         f_nim_exe = open('poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname), 'w')
 
-        f_nim_exe.write('\n\necho "Add host  %s-%s on NIM Server /etc/hosts"\n' % (lparprefix, lparname))
+        f_nim_exe.write('\n\necho "Adding host %s-%s on NIM Server /etc/hosts"\n' % (lparprefix, lparname))
 
         f_nim_exe.write('\n\nssh -l poweradm %s sudo hostent -a %s -h %s' % (newnim.getNimAddress(),
             new_ip, lparname))
@@ -113,8 +113,8 @@ def nimmain():
         f_nim_exe.write('\n\necho "Creating machine %s-%s on NIM Server"\n' % (lparprefix, lparname))
 
         f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o define -t standalone -a platform=chrp '
-                '-a netboot_kernel=mp -a if1=\"$(ssh -l poweradm %s sudo lsnim -t ent | awk \'{ print $1 }\' '
-                '| head  -1) %s 0\" -a cable_type1=tp %s\n' % (newnim.getNimAddress(), newnim.getNimAddress(),
+                '-a netboot_kernel=mp -a if1=\\"$(ssh -l poweradm %s sudo lsnim -t ent | awk \'{ print $1 }\' '
+                '| head  -1) %s 0\\" -a cable_type1=tp %s\n' % (newnim.getNimAddress(), newnim.getNimAddress(),
                     lparname, lparname))
 
         f_nim_exe.write('\n\necho "Resource alocations and perform operations to %s-%s on NIM Server"\n' %
@@ -132,13 +132,15 @@ def nimmain():
                 '-a lpp_source=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' %
                 (newnim.getNimAddress(), selectnimver.getSpot(), selectnimver.getMksysbLpp(), lparname))
 
-        f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"\n' % (lparprefix, lparname))
+        f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"' % (lparprefix, lparname))
+        f_nim_exe.write('echo "This might take a few minutes..."\n')
 
-        f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t'
-                'ent %s-%s %s %s | grep C11-T1 | awk \'{ print $3 }\')\n' % (hmcserver, lparprefix,
+        f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t '
+                'ent %s-%s %s %s | grep C10-T1 | awk \'{ print $3 }\')\n' % (hmcserver, lparprefix,
                     lparname, lparname, lparframe))
 
         f_nim_exe.write('\n\necho "Booting LPAR %s-%s on NIM Server"\n' % (lparprefix, lparname))
+        f_nim_exe.write('echo "This might take a few minutes..."\n')
 
         f_nim_exe.write('\n\nssh -l poweradm %s lpar_netboot -m $mac_address -T off -t ent -s '
                 'auto -d auto -S %s -C %s %s-%s %s %s\n' % (hmcserver, newnim.getNimIPDeploy(), new_ip,
@@ -165,7 +167,7 @@ def nimmain():
         access_hmc = checkOk('\nDo you want access HMC on this session?(y/n): ', 'n')
         access_hmc.mkCheck()
         if access_hmc.answerCheck() == 'y':
-            print ('run command \'mkvterm -m %s -p %s-%s\'' % (lparframe, lparprefix, lparname))
+            print ('\n\n\trun command \'mkvterm -m %s -p %s-%s\n\n\'' % (lparframe, lparprefix, lparname))
             os.system('ssh -l poweradm %s' % (hmcserver))
         else:
             print ('\nExiting...\n\n')
