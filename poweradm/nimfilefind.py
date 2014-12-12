@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# finddeploynim.py
+# nimfilefind.py
 #
 # Copyright (c) 2014 Kairo Araujo
 #
@@ -33,16 +33,21 @@ import fnmatch
 from globalvar import *
 ##############################################################################################
 #
-# Class FindDeploy
+# Class FindNIMFile
 ##############################################################################################
 
-class FindDeploy:
+class NIMFileFind:
+
+    def __init__(self, title, filedir, action):
+        self.title = title
+        self.filedir = filedir
+        self.action = action
 
     def selectDeploy(self):
 
-        print ("\n[Deploy OS NIM: Select deploy]\n"
-               "\nSelect the Deploy to execute:\n")
-        listDeploys = fnmatch.filter(os.listdir("poweradm/nim/"), "*.nim")
+        print ("\n[Deploy OS NIM: %s]\n"
+               "\nSelect the Deploy:\n" % (self.title))
+        listDeploys = fnmatch.filter(os.listdir("%s" % (self.filedir)), "*.nim")
         listDeploys_length = len(listDeploys)-1
         if listDeploys_length == -1:
             print ('\033[1;31mNo Deploys found.\033[1;00m\n\n'
@@ -54,7 +59,8 @@ class FindDeploy:
         while count <= listDeploys_length:
             print ("%s : %s" % (count, listDeploys[count]))
             count += 1
-        deploy_option = int(raw_input("\nWhat's OS Deploy NIM you want execute?: "))
+        deploy_option = int(raw_input("\nWhat's OS Deploy NIM you want %s?: " %
+            (self.action)))
         self.deploy_exec = (listDeploys[deploy_option])
 
     def getDeploy(self):

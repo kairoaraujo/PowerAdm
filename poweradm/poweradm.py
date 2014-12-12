@@ -32,6 +32,7 @@ from createlparconf import *
 from findchange import *
 from execchange import *
 from nimmain import *
+from nimclear import *
 import os
 
 def main_poweradm():
@@ -43,7 +44,8 @@ def main_poweradm():
                   "1. LPAR configuration.\n"
                   "2. Execute the LPAR creation.\n"
                   "3. Deploy OS on an existing LPAR.\n"
-                  "4. Quit\n\n"
+                  "4. Clear Deployed LPAR configs.\n"
+                  "5. Quit\n\n"
                   "Please choose an option: ")
 
     if poweradm == '1':
@@ -69,7 +71,11 @@ def main_poweradm():
         nimmain()
 
     elif poweradm == '4':
-        print ("4. Quit")
+
+        nimclear()
+
+    elif poweradm == '5':
+        print ("5. Quit")
         print ("Quiting...")
         exit()
 

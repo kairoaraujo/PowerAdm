@@ -31,7 +31,7 @@ import time
 import os
 from globalvar import *
 from verify import *
-from finddeploynim import *
+from nimfilefind import *
 from getnimver import *
 from nimserver import *
 ##############################################################################################
@@ -39,7 +39,7 @@ from nimserver import *
 def nimmain():
 
     # select a machine to deploy
-    newdeploy = FindDeploy()
+    newdeploy = NIMFileFind('Select Deploy', 'poweradm/nim/', 'execute')
     newdeploy.selectDeploy()
 
 
@@ -170,6 +170,8 @@ def nimmain():
         f_nim_reserved_ips.close()
         f_nim_deploy = open("poweradm/nim/%s" % (newdeploy.getDeploy()), 'a')
         f_nim_deploy.write('#IP %s\n' % (new_ip))
+        f_nim_deploy.write('#NIMSERVER %s\n' % (newnim.getNimServer()))
+        f_nim_deploy.write('#NIMADDRESS %s\n' % (newnim.getNimAddress()))
         f_nim_deploy.close()
 
         os.system('sh poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname))
