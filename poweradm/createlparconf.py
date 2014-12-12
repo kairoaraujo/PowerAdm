@@ -45,7 +45,7 @@ from fields import *
 def changeconfig():
     print ("\n[Change/Ticket Information]\n")
     global change
-    change = Fields('change', 'Change/Ticket', 'Change or Ticket number: ')
+    change = Fields('Change/Ticket', 'Change or Ticket number: ')
     change.chkFieldStr()
 
 
@@ -57,10 +57,10 @@ def lparconfig():
 
     print ("\n[LPAR Configuration ]\n")
 
-    prefix = Fields('prefix', 'Prefix', 'Prefix (XXXX-lparname): ')
+    prefix = Fields('Prefix', 'Prefix (XXXX-lparname): ')
     prefix.chkFieldStr()
 
-    lparname = Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
+    lparname = Fields('LPAR Hostname', 'LPAR Hostname: ')
     lparname.chkFieldStr()
 
     check_cpu_config = 0 # check if entitled is 10% >= virtual ('if' down)
@@ -114,12 +114,12 @@ def lparconfig():
 
     # get free id from newId.py
     global freeid
-    freeid = newId('newid')
+    freeid = newId()
     freeid.mkId()
 
     # select a system and vios from systemVios.py
     global system_vio
-    system_vio = systemVios('system', 'vio1', 'vio2')
+    system_vio = systemVios()
     system_vio.selectSystemVios()
 
 

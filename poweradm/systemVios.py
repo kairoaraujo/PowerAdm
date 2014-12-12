@@ -38,10 +38,6 @@ from newid import *
 ##############################################################################################
 
 class systemVios:
-    def __init__(self, system, vios1, vios2):
-        self.system = system
-        self.vios1 = vios1
-        self.vios2 = vios2
 
     def selectSystemVios(self):
 

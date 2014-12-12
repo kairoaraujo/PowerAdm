@@ -38,8 +38,7 @@ from poweradm import *
 
 class Fields:
 
-    def __init__(self, variable, field, textField):
-        self.variable = variable
+    def __init__(self, field, textField):
         self.field = field
         self.textField = textField
 
