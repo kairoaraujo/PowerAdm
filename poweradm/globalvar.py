@@ -33,6 +33,6 @@ from config import *
 ##############################################################################################
 #
 # Global Variables
-timestr = time.strftime("%d%m%Y-%H%M%S")
+timestr = time.strftime("%m%d%Y-%H%M%S")
 version = '0.5-beta'
 
