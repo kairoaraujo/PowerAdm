@@ -20,17 +20,28 @@ Power Adm is a free (BSD License) and simple tool developed in Python to easily 
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
+<<<<<<< HEAD
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
+
+=======
+- **Organize your IDs!!!** You don't Know are this? Continue reading...
+>>>>>>> master
 
 In the future:
 - Web Interface
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
+<<<<<<< HEAD
 The objective of this tool is to adopt a standard for IDs based on the LPAR ID and also to facilitate the LPAR creation with no need of expert knowledge, making it easier even for analysts without experienced skills in Power or operators.
 
 Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
+=======
+The objective of this tool is to adopt a standard IDs based on LPAR ID and facilitate the creation without a complex information. Is easy for analysts without skills in Power or operators.
+
+Power Adm is a free and simple tool in Python to create easily, quickly and with their standards LPARs.
+>>>>>>> master
 
 Something that we really consider the differential in this tool is the IDs organization.
 
@@ -135,3 +146,7 @@ If you don't have an HMC and a Power to run tests, don't worry. I've an some cod
 
 This software is BSD License. Please more details in LICENSE file.
 IMPORTANT: IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in the United States, other countries, or both.
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
