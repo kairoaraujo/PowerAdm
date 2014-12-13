@@ -20,28 +20,17 @@ Power Adm is a free (BSD License) and simple tool developed in Python to easily 
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
-<<<<<<< HEAD
-- Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
-=======
-- **Organize your IDs!!!** You don't Know are this? Continue reading...
->>>>>>> master
-
 In the future:
+- Deploy SO from the NIM Server
 - Web Interface
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
-<<<<<<< HEAD
 The objective of this tool is to adopt a standard for IDs based on the LPAR ID and also to facilitate the LPAR creation with no need of expert knowledge, making it easier even for analysts without experienced skills in Power or operators.
 
 Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
-=======
-The objective of this tool is to adopt a standard IDs based on LPAR ID and facilitate the creation without a complex information. Is easy for analysts without skills in Power or operators.
-
-Power Adm is a free and simple tool in Python to create easily, quickly and with their standards LPARs.
->>>>>>> master
 
 Something that we really consider the differential in this tool is the IDs organization.
 
@@ -71,8 +60,8 @@ VIOS2 - ID: 2 Maximum number of virtual IDs: 4500
 LPAR AIX1
 ID: 11
 Virtual devices:
-- 10: Network adapter data
-- 11: Network adapter backup
+- 11: Network adapter data
+- 12: Network adapter backup
 - 21: Virtual SCSI (Server: 111 VIOS1)
 - 22: Virtual SCSI (Server: 211 VIOS2)
 - 33: Fiber Channel (Server: 311 VIOS1)
@@ -81,8 +70,8 @@ Virtual devices:
 LPAR AIX1
 ID: 12
 Virtual devices:
-- 10: Network adapter data
-- 11: Network adapter backup
+- 11: Network adapter data
+- 12: Network adapter backup
 - 21: Virtual SCSI (Server: 112 VIOS1)
 - 22: Virtual SCSI (Server: 212 VIOS2)
 - 33: Fiber Channel (Server: 312 VIOS1)
@@ -146,7 +135,3 @@ If you don't have an HMC and a Power to run tests, don't worry. I've an some cod
 
 This software is BSD License. Please more details in LICENSE file.
 IMPORTANT: IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in the United States, other countries, or both.
-<<<<<<< HEAD
-=======
-
->>>>>>> master
