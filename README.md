@@ -20,10 +20,11 @@ Power Adm is a free (BSD License) and simple tool developed in Python to easily 
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
+- Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
 In the future:
-- Deploy SO from the NIM Server
+
 - Web Interface
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
