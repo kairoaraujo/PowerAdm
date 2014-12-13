@@ -44,7 +44,7 @@ def main_poweradm():
                   "1. LPAR configuration.\n"
                   "2. Execute the LPAR creation.\n"
                   "3. Deploy OS on an existing LPAR.\n"
-                  "4. Clear NIM OS deploy configs\n"
+                  "4. Clear NIM OS deploy configs.\n"
                   "5. Quit\n\n"
                   "Please choose an option: ")
 
