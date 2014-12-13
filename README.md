@@ -5,7 +5,7 @@ Power Adm is a free (BSD License) and simple tool developed in Python to easily 
 ## Links
 
 - Wiki: https://github.com/kairoaraujo/PowerAdm/wiki
-- Screen shots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+- Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
 
 ## Principal features
 
