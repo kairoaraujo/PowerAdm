@@ -1,0 +1,120 @@
+#Requirements
+
+## General
+
+### First: 
+There are no guarantees of the author. Use at your own risk. Check the [License file](https://github.com/kairoaraujo/PowerAdm/blob/master/LICENSE).
+
+## Infrastructure
+
+You need a *nix (Linux or Unix) with Python >= 2.6 <= 3
+
+To install check the [INSTALL](https://github.com/kairoaraujo/PowerAdm/blob/master/INSTALL) file.
+
+## HMC
+
+Works with HMC v7.
+
+HMC v8 Not tested yeat
+
+## Environment to create LPAR
+
+### Maximum number of LPARs
+You need to determine the maximum number of LPAR in your environment. Try to determine a number for their memory and CPUs and the amount of frames.
+
+For example in my environment determined 500. And I think this number is relatively large.
+
+### Maximum number of Virtual Adapter on VIOs Servers
+Configuration > Manager Profiles > Virtual Adapters check 'Maximum number of Virtual Adapters'
+
+The rule:
+
+In his VIO require the Virtual Adapter Maximum Number is 3+ _"maximum number of LPARs"_ that you calculate the primary VIO and 4+ "maximum number of LPARs"_ that you calculate the secondary VIO.
+
+Remember the _Maximum number of LPARs_ I determined as 500.
+
+Example
+- On my VIO primary is 3500 
+- On my VIO secundary is 4500
+
+### Validate VIOs 'Adapter ID'
+On the VIOs Profile (Configuration > Manager Profiles > Virtual Adapters) check de largest Adapter ID.
+
+**How the Virtual Adapters in VIO are created by the Power Adm:**
+
+The rule is:
+- 1+'LPAR ID' to first virtual SCSI on Primary VIO
+- 2+'LPAR ID' to second virtual SCSI on Second VIO
+- 3+'LPAR ID' to first virtual Fiber Channel (HBA) on Primary VIO
+- 4+'LPAR ID' to second virtual Fiber Channel (HBA) on Second VIO
+
+Example:
+
+LPAR ID = 30
+
+- 130 to first virtual SCSI on Primary VIO
+- 230 to second virtual SCSI on Second VIO
+- 330 to first virtual Fiber Channel (HBA) on Primary VIO
+- 430 to second virtual Fiber Channel (HBA) on Second VIO
+
+In LPAR configuration is always this:
+- 10 to First virtual Ethernet Adapter
+- 11 to Second virtual Ethernet Adapter (if added)
+- 12 to Third virtual Ethernet Adapter (if added)
+- 21 to First virtual SCSI (if added)
+- 22 to Second virtual SCSI (if added)
+- 33 to first virtual Fiber Channel/HBA/NPIV (if added)
+- 34 to second virtual Fiber CHannel/HBA/NPIV (if added)
+
+**!! It is important to understand this to know how to adjust your environment to support the PowerAdm !!**
+
+**You will need to manually create an LPAR with ID greater than its largest existing 'Adapter ID'.**
+
+**If exist in my environment LPAR with this ID or largest must get the next.**
+
+It is easier to understand with an example:
+
+1. On my Primary VIO the largest 'Adapter ID' is 127
+
+2. On my Secound VIO the largest 'Adapter ID' is 110
+
+3. I need to manually create an LPAR with ID 28 with this configuration.
+
+4. If exists in my environment LPARs with IDs 28, 29, 30 will need to use the ID 31
+
+5. Create Manually LPAR with ID 31
+
+After creating the LPAR manually (LPAR ID 31), if I use the 'Power Adm' to create a new she will get the ID 32.
+
+Its configuration will look like in the VIO:
+- 132 to first virtual SCSI on Primary VIO
+- 232 to second virtual SCSI on Second VIO 
+- 332 to first virtual Fiber Channel (HBA) on Primary VIO
+- 432 to second virtual Fiber Channel (HBA) on Second VIO
+
+**TIPs:** 
+
+I need more two virtual Fiber Channel, how to procced?
+
+1. on the Primary VIO create manually 432
+2. on the Secound VIO create manually 332
+
+on the LPAR use free IDs: 
+- 13,15,16,17,18 and 19 free to manually use for virtual network
+- 23..29 free to manually use for virtual scsi adapters
+- 33..39 free to manually use for virtual Fiber CHannel/HBA/NPIV
+
+It's great! :+1: 
+
+## Environment to Deploy OS Using a NIM Server
+
+### NIM Server
+
+You need an NIM Server configured and working.
+ 
+ Need install SUDO on the NIM 
+ Check install on [INSTALL](https://github.com/kairoaraujo/PowerAdm/blob/master/INSTALL) file.
+
+## More help
+
+send me email: kairo [@] kairo . eti . br
