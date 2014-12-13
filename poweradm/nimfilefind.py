@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# globalvar.py
+# nimfilefind.py
 #
 # Copyright (c) 2014 Kairo Araujo
 #
@@ -28,11 +28,40 @@
 # Imports
 ###############################################################################################
 import time
-import os.path
-from config import *
+import os
+import fnmatch
+from globalvar import *
 ##############################################################################################
 #
-# Global Variables
-timestr = time.strftime("%m%d%Y-%H%M%S")
-version = '0.6-beta'
+# Class FindNIMFile
+##############################################################################################
 
+class NIMFileFind:
+
+    def __init__(self, title, filedir, action):
+        self.title = title
+        self.filedir = filedir
+        self.action = action
+
+    def selectDeploy(self):
+
+        print ("\n[Deploy OS NIM: %s]\n"
+               "\nSelect the Deploy:\n" % (self.title))
+        listDeploys = fnmatch.filter(os.listdir("%s" % (self.filedir)), "*.nim")
+        listDeploys_length = len(listDeploys)-1
+        if listDeploys_length == -1:
+            print ('\033[1;31mNo Deploys found.\033[1;00m\n\n'
+                   '- No LPAR was configured to perform deploy.\n'
+                   '- The LPAR has not yet been created.\n'
+                   '\nExiting\n')
+            exit()
+        count = 0
+        while count <= listDeploys_length:
+            print ("%s : %s" % (count, listDeploys[count]))
+            count += 1
+        deploy_option = int(raw_input("\nWhat's OS Deploy NIM you want %s?: " %
+            (self.action)))
+        self.deploy_exec = (listDeploys[deploy_option])
+
+    def getDeploy(self):
+        return self.deploy_exec

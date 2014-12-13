@@ -5,8 +5,15 @@ MANIFEST*
 poweradm/*.pyc
 poweradm/simulation
 poweradm/changes/*.sh
+poweradm/changes/*.nim
 poweradm/changes_executed/*.sh
+poweradm/changes_executed/*.nim
 poweradm/tmp/reserved_ids*
+poweradm/nim/*.nim
+poweradm/nim_executed/*.nim
 poweradm/tmp/*.sh
+poweradm/tmp/*.nim
 poweradm/tmp/ids*
+poweradm/tmp/deploy_nim*
+poweradm/tmp/hosts*
 screenshots/

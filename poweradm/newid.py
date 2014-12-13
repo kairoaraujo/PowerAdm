@@ -34,8 +34,6 @@ from config import *
 
 # get a next free id on systems
 class newId:
-    def __init__(self, newid):
-        self.newid = newid
 
     def mkId(self):
         ids = []

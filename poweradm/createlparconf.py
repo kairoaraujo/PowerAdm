@@ -45,7 +45,7 @@ from fields import *
 def changeconfig():
     print ("\n[Change/Ticket Information]\n")
     global change
-    change = Fields('change', 'Change/Ticket', 'Change or Ticket number: ')
+    change = Fields('Change/Ticket', 'Change or Ticket number: ')
     change.chkFieldStr()
 
 
@@ -57,10 +57,10 @@ def lparconfig():
 
     print ("\n[LPAR Configuration ]\n")
 
-    prefix = Fields('prefix', 'Prefix', 'Prefix (XXXX-lparname): ')
+    prefix = Fields('Prefix', 'Prefix (XXXX-lparname): ')
     prefix.chkFieldStr()
 
-    lparname= Fields('lparname', 'LPAR Hostname', 'LPAR Hostname: ')
+    lparname = Fields('LPAR Hostname', 'LPAR Hostname: ')
     lparname.chkFieldStr()
 
     check_cpu_config = 0 # check if entitled is 10% >= virtual ('if' down)
@@ -106,15 +106,22 @@ def lparconfig():
     lparmenmin = lparmem-(lparmem*mem_min/100)
     lparmenmax = (lparmem*mem_max/100)+lparmem
 
+    # prepare to os deploy
+    global nim_deploy
+    if enable_nim_deploy.lower() == 'yes':
+        nim_deploy = checkOk("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
+        nim_deploy.mkCheck()
+
     # get free id from newId.py
     global freeid
-    freeid = newId('newid')
+    freeid = newId()
     freeid.mkId()
 
     # select a system and vios from systemVios.py
     global system_vio
-    system_vio = systemVios('system', 'vio1', 'vio2')
+    system_vio = systemVios()
     system_vio.selectSystemVios()
+
 
     # SCSI and DISK configuration
     print ("\n[SCSI and DISK Configuration]\n")
@@ -164,6 +171,8 @@ def lparconfig():
     while netconfiglpar.answerCheck() == 'y':
         print ("\n[LPAR Network Configuration]\n"
                "\nSelect the Virtual Switch to ethernet:")
+        if (len(net_vsw) == 0) and (nim_deploy.answerCheck() == 'y'):
+                print ("\033[1;31mImportant: First ethernet is used to NIM deploy!\033[1;00m")
         vsw_length = (len(virtual_switches))-1
         count = 0
         while count <= vsw_length:
@@ -274,6 +283,15 @@ def writechange():
     # config functions to write correct action to lpar
     #
 
+    def wchg_checksh():
+        file_change.write("\nif [ $? != 0 ];"
+                          "then\n"
+                          "\techo 'An error has occurred. Check the actions taken.'; \n"
+                          "\texit;\n"
+                          "else\n"
+                          "\techo 'Command OK. Continuing';\n"
+                          "fi\n")
+
     def wchg_creating_lpar(): # message information creating LPAR
 
         file_change.write("\n\necho 'Creating LPAR %s-%s on %s ...'\n" % (prefix.strVarOut(),
@@ -290,11 +308,14 @@ def writechange():
                          % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
                          prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
 
+        wchg_checksh()
+
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                          "-s 2%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=22\'"
                          % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
                          prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
 
+        wchg_checksh()
 
     def wchg_vio_mknpiv(): # create NPIV on VIO Servers via DLPAR
 
@@ -305,11 +326,13 @@ def writechange():
                           "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
                           % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
                           prefix.strVarOut(), lparname.strVarOut() ))
+        wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                           "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
                           % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
                           prefix.strVarOut(), lparname.strVarOut() ))
+        wchg_checksh()
 
     def wchg_vio_cfgdev(): # make cfgdev on VIOs
 
@@ -318,9 +341,11 @@ def writechange():
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
                      (hmcserver, system_vio.getSystem(), system_vio.getVio1()))
+        wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
                      (hmcserver, system_vio.getSystem(), system_vio.getVio2()))
+        wchg_checksh()
 
 
     def wchg_vio_vfcmap(): # make vfcmap on VIOS
@@ -340,20 +365,24 @@ def writechange():
         file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio1(), freeid.getId()))
+        wchg_checksh()
 
         file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio2(), freeid.getId()))
+        wchg_checksh()
 
         # <--- simulation
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
                           "$vfchost_vio1 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio1(), npiv_vio1))
+        wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
                           "$vfchost_vio2 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
                               system_vio.getVio2(), npiv_vio2))
+        wchg_checksh()
 
 
     def wchg_vio_mkbdsp(): # add disk LPAR
@@ -364,16 +393,19 @@ def writechange():
         file_change.write("\n\nvhost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
                           "| grep \"\\-C1%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio1(), freeid.getId()))
+        wchg_checksh()
 
         file_change.write("\n\nvhost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
                           "| grep \"\\-C2%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio2(), freeid.getId()))
+        wchg_checksh()
 
         file_change.write("\n\nssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'mkbdsp -clustername "
                           "%s -sp %s %sG -bd %s_lu1 -thick -vadapter $vhost_vio1 -tn %s_rootvg\'\"" %
                           (hmcserver, system_vio.getSystem(), system_vio.getVio1(), cluster_name,
                            storage_pools[storage_pools_option], disk_size, lparname.strVarOut(),
                            lparname.strVarOut()))
+        wchg_checksh()
 
     def wchg_lpar(): # LPAR with Ethernet Only
 
@@ -388,6 +420,7 @@ def writechange():
                     lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters))
+        wchg_checksh()
 
 
     def wchg_lpar_fc(): # LPAR with Ethernet and Fiber Channel
@@ -405,6 +438,25 @@ def writechange():
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
                     system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
+        wchg_checksh()
+
+    def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
+
+        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
+                         (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+						 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
+
+        file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+                         (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
+
+        file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
+                          "lpar_names=\'%s-%s\' | awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
+                          "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(),
+                            prefix.strVarOut(), lparname.strVarOut()))
 
 
     def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
@@ -423,6 +475,7 @@ def writechange():
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters, vscsi_vio1, vscsi_vio2))
 
+        wchg_checksh()
 
     def wchg_lpar_fc_scsi(): # Ethernet, SCSI and Fiber Channel
 
@@ -441,6 +494,7 @@ def writechange():
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
                     system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId(), vscsi_vio1,
                     vscsi_vio2))
+        wchg_checksh()
 
     def wchg_hmc_savecurrentconf():
 
@@ -451,11 +505,29 @@ def writechange():
                           "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
                          (hmcserver, system_vio.getSystem(), system_vio.getVio1(), hmcserver, system_vio.getSystem(),
                           system_vio.getVio1()))
+        wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                           "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
                          (hmcserver, system_vio.getSystem(), system_vio.getVio2(), hmcserver, system_vio.getSystem(),
                           system_vio.getVio2()))
+        wchg_checksh()
+
+    def wchg_lpar_deploy_nim_enable():
+
+        file_change.write("\n\necho 'Enabling Deploy to %s-%s'" % (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '#PREFIX %s' > poweradm/nim/%s-%s.nim" % (prefix.strVarOut(), prefix.strVarOut(),
+            lparname.strVarOut()))
+        wchg_checksh()
+
+        file_change.write("\n\necho '#LPARNAME %s' >> poweradm/nim/%s-%s.nim" % (lparname.strVarOut(),
+            prefix.strVarOut(), lparname.strVarOut()))
+        wchg_checksh()
+
+        file_change.write("\n\necho '#FRAME %s' >> poweradm/nim/%s-%s.nim" % (system_vio.getSystem(),
+            prefix.strVarOut(), lparname.strVarOut()))
+        wchg_checksh()
 
 
     #
@@ -482,6 +554,9 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
+        wchg_lpar_fc_wwnget()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
@@ -493,6 +568,8 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'y':
 
@@ -502,13 +579,17 @@ def writechange():
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
         wchg_hmc_savecurrentconf()
+        wchg_lpar_fc_wwnget()
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'n':
 
         wchg_creating_lpar()
         wchg_lpar()
-
+        if nim_deploy.answerCheck() == 'y':
+            wchg_lpar_deploy_nim_enable()
 
     file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
     file_reservedids_tmp.write('%s\n' % (freeid.getId()))

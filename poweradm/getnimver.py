@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# globalvar.py
+# getnimver.py
 #
 # Copyright (c) 2014 Kairo Araujo
 #
@@ -28,11 +28,34 @@
 # Imports
 ###############################################################################################
 import time
-import os.path
+from globalvar import *
 from config import *
 ##############################################################################################
 #
-# Global Variables
-timestr = time.strftime("%m%d%Y-%H%M%S")
-version = '0.6-beta'
+# Class GetNimVer
+##############################################################################################
 
+class GetNimVer:
+    def selectOsVersion(self):
+
+        print ("\n[DEPLOY OS Nim Server Configuration]\n"
+               "\nSelect the version OS for LPAR")
+        nim_os_deploy_keys = list(nim_os_deploy.keys())
+        nim_os_deploy_length = (len(nim_os_deploy.keys()))-1
+        count = 0
+        while count <= nim_os_deploy_length:
+            print ("%s : %s" % (count, nim_os_deploy_keys[count]))
+            count += 1
+        nim_os_deploy_option = int(raw_input("Version: "))
+        self.osversion = (nim_os_deploy_keys[nim_os_deploy_option])
+        self.mksysblpp = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][0]
+        self.spot = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][1]
+
+    def getOsVersion(self):
+        return self.osversion
+
+    def getMksysbLpp(self):
+        return self.mksysblpp
+
+    def getSpot(self):
+        return self.spot
