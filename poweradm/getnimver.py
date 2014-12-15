@@ -46,8 +46,14 @@ class GetNimVer:
         while count <= nim_os_deploy_length:
             print ("%s : %s" % (count, nim_os_deploy_keys[count]))
             count += 1
-        nim_os_deploy_option = int(raw_input("Version: "))
-        self.osversion = (nim_os_deploy_keys[nim_os_deploy_option])
+
+        while True:
+            try:
+	        nim_os_deploy_option = int(raw_input("Version: "))
+        	self.osversion = (nim_os_deploy_keys[nim_os_deploy_option])
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (nim_os_deploy_length))	
         self.mksysblpp = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][0]
         self.spot = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][1]
 

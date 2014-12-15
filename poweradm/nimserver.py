@@ -47,8 +47,15 @@ class NimServer:
         while count <= nimservers_length:
             print ("%s : %s" % (count, nimservers_keys[count]))
             count += 1
-        nimserver_option = int(raw_input("NIM Server: "))
-        self.nimserver = (nimservers_keys[nimserver_option])
+
+        while True:
+            try:
+		nimserver_option = int(raw_input("NIM Server: "))
+        	self.nimserver = (nimservers_keys[nimserver_option])
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (nimservers_length))
+
         self.address = nimservers[('%s' % nimservers_keys[nimserver_option])][0]
         self.ipdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][1]
         self.gwdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][2]

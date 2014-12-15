@@ -313,8 +313,8 @@ def writechange():
 
     def wchg_vio_mkscsi(): # create SCSI on VIO Servers via DLPAR
 
-        file_change.write("\n\necho 'Making DLPAR on %s and %s to create VSCSI'" %
-                         ( system_vio.getVio1(), system_vio.getVio2()))
+        file_change.write("\n\necho 'Making DLPAR on %s to create VSCSI'" %
+                         ( system_vio.getVio1()))
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                          "-s 1%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=21\'"
@@ -322,6 +322,9 @@ def writechange():
                          prefix.strVarOut(), lparname.strVarOut(), freeid.getID()))
 
         wchg_checksh()
+
+        file_change.write("\n\necho 'Making DLPAR on %s to create VSCSI'" %
+                         ( system_vio.getVio2()))
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                          "-s 2%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=22\'"
@@ -332,14 +335,17 @@ def writechange():
 
     def wchg_vio_mknpiv(): # create NPIV on VIO Servers via DLPAR
 
-        file_change.write("\n\necho 'Making DLPAR on %s and %s to create FCs'" %
-                         ( system_vio.getVio1(), system_vio.getVio2()))
+        file_change.write("\n\necho 'Making DLPAR on %s to create FCs'" %
+                         ( system_vio.getVio1()))
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                           "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
                           % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getID(),
                           prefix.strVarOut(), lparname.strVarOut() ))
         wchg_checksh()
+
+        file_change.write("\n\necho 'Making DLPAR on %s to create FCs'" %
+                         ( system_vio.getVio2()))
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                           "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
@@ -349,15 +355,20 @@ def writechange():
 
     def wchg_vio_cfgdev(): # make cfgdev on VIOs
 
-        file_change.write("\n\necho 'Making cfgdev on %s and %s to reconize new devices'" %
-                     ( system_vio.getVio1(), system_vio.getVio2()))
+        file_change.write("\n\necho 'Making cfgdev on %s to reconize new devices'" %
+                     ( system_vio.getVio1()))
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
                      (hmcserver, system_vio.getSystem(), system_vio.getVio1()))
+
         wchg_checksh()
+
+        file_change.write("\n\necho 'Making cfgdev on %s to reconize new devices'" %
+                     ( system_vio.getVio2()))
 
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
                      (hmcserver, system_vio.getSystem(), system_vio.getVio2()))
+
         wchg_checksh()
 
 
@@ -371,14 +382,17 @@ def writechange():
         #                 (system_vio.getVio2(), freeid.getID()))
         # ---  simulation
 
-        file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
-                         ( system_vio.getVio1(), system_vio.getVio2()))
-
+        file_change.write("\n\necho 'Getting vfchost on %s to connect the NPIV'" %
+                         ( system_vio.getVio1()))
 
         file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio1(), freeid.getID()))
         wchg_checksh()
+
+
+        file_change.write("\n\necho 'Getting vfchost on %s to connect the NPIV'" %
+                         ( system_vio.getVio2()))
 
         file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
@@ -387,14 +401,20 @@ def writechange():
 
         # <--- simulation
 
+        file_change.write("\n\necho 'Making vfcmap on %s to connect the NPIV'" %
+                         ( system_vio.getVio1()))
+
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
                           "$vfchost_vio1 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
                           system_vio.getVio1(), npiv_vio1))
         wchg_checksh()
 
+        file_change.write("\n\necho 'Making vfcmap on %s to connect the NPIV'" %
+                         ( system_vio.getVio2()))
+
         file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
                           "$vfchost_vio2 -fcp %s\'\"" % (hmcserver, system_vio.getSystem(),
-                              system_vio.getVio2(), npiv_vio2))
+                          system_vio.getVio2(), npiv_vio2))
         wchg_checksh()
 
 
@@ -455,15 +475,19 @@ def writechange():
 
     def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
 
+        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
+                         (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '' ")
 
         file_change.write("\n\necho '*************************************************************' ")
 
-        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
+        file_change.write("\n\necho 'Physical HBA and LPAR %s-%s NPIV:'" %
                          (prefix.strVarOut(), lparname.strVarOut()))
 
         file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
                          "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-						 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
+			 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
 
         file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
                          "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
@@ -475,6 +499,8 @@ def writechange():
                             prefix.strVarOut(), lparname.strVarOut()))
 
         file_change.write("\n\necho '*************************************************************' ")
+
+        file_change.write("\n\necho '' ")
 
     def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
 
@@ -515,14 +541,17 @@ def writechange():
 
     def wchg_hmc_savecurrentconf():
 
-        file_change.write("\n\necho 'Saving %s and %s current configuration'" %
-                         ( system_vio.getVio1(), system_vio.getVio2()))
+        file_change.write("\n\necho 'Saving %s current configuration'" %
+                         ( system_vio.getVio1()))
 
         file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                           "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
                          (hmcserver, system_vio.getSystem(), system_vio.getVio1(), hmcserver, system_vio.getSystem(),
                           system_vio.getVio1()))
         wchg_checksh()
+
+        file_change.write("\n\necho 'Saving %s current configuration'" %
+                         ( system_vio.getVio1()))
 
         file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                           "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %

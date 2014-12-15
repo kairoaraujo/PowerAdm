@@ -53,8 +53,15 @@ class FindChange:
         while count <= listChanges_length:
             print ("%s : %s" % (count, listChanges[count]))
             count += 1
-        change_option = int(raw_input("\nWhat's change/ticket id you want execute?: "))
-        self.change_exec = (listChanges[change_option])
+
+        while True:
+            try:
+	    	change_option = int(raw_input("\nWhat's change/ticket id you want execute?: "))
+        	self.change_exec = (listChanges[change_option])
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (listChanges_length))
+
 
     def getChange(self):
         """ Returns the file change/ticket """

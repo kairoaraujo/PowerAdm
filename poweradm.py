@@ -29,5 +29,8 @@
 ###############################################################################################
 from poweradm.poweradm import main_poweradm
 
-main_poweradm()
-""" Import the main of PowerAdm """
+try:
+    main_poweradm()
+    """ Import the main of PowerAdm """
+except(KeyboardInterrupt):
+   print ("\n\nCtrl+C pressed! Exiting without save.\n")
