@@ -59,8 +59,14 @@ class NIMFileFind:
         while count <= listDeploys_length:
             print ("%s : %s" % (count, listDeploys[count]))
             count += 1
-        deploy_option = int(raw_input("\nWhat's OS Deploy NIM you want %s?: " %
-            (self.action)))
+
+        while True:
+            try:
+                deploy_option = int(raw_input("\nWhat's OS Deploy NIM you want %s?: " % (self.action)))
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (listDeploys_length))
+
         self.deploy_exec = (listDeploys[deploy_option])
 
     def getDeploy(self):
