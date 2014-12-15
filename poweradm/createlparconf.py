@@ -442,6 +442,9 @@ def writechange():
 
     def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
 
+
+        file_change.write("\n\necho '*************************************************************' ")
+
         file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
                          (prefix.strVarOut(), lparname.strVarOut()))
 
@@ -458,6 +461,7 @@ def writechange():
                           "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(),
                             prefix.strVarOut(), lparname.strVarOut()))
 
+        file_change.write("\n\necho '*************************************************************' ")
 
     def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
 
@@ -554,9 +558,9 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
-        wchg_lpar_fc_wwnget()
         if nim_deploy.answerCheck() == 'y':
             wchg_lpar_deploy_nim_enable()
+        wchg_lpar_fc_wwnget()
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'n':
 
@@ -579,10 +583,9 @@ def writechange():
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
         wchg_hmc_savecurrentconf()
-        wchg_lpar_fc_wwnget()
         if nim_deploy.answerCheck() == 'y':
             wchg_lpar_deploy_nim_enable()
-
+        wchg_lpar_fc_wwnget()
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'n':
 
@@ -611,7 +614,7 @@ def exec_createlparconf():
     headerchange()
 
     configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
-    newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n)' , 'y')
+    newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
     while configlpar.answerCheck() == 'n':
         while newconfiglpar.answerCheck() == 'y':
             lparconfig()
