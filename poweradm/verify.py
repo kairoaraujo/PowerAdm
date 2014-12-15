@@ -34,7 +34,7 @@ import os.path
 from globalvar import *
 from config import *
 
-class checkOk:
+class CheckOK:
 
     def __init__(self, question, answer):
         self.question = question

@@ -98,7 +98,7 @@ def nimmain():
                newnim.getNimIPDeploy(), selectnimver.getOsVersion()))
     print ('*' * 80)
 
-    deploy = checkOk('\nProceed to Deploy?(y/n): ', 'n')
+    deploy = CheckOK('\nProceed to Deploy?(y/n): ', 'n')
     deploy.mkCheck()
 
     if deploy.answerCheck() == 'y':
@@ -181,7 +181,7 @@ def nimmain():
         print ('\nPlease, access HMC %s and run command below to finis OS install. '
                '\n\t\'mkvterm -m %s -p %s-%s\' ' % (hmcserver, lparframe, lparprefix, lparname))
 
-        access_hmc = checkOk('\nDo you want access HMC on this session?(y/n): ', 'n')
+        access_hmc = CheckOK('\nDo you want access HMC on this session?(y/n): ', 'n')
         access_hmc.mkCheck()
         if access_hmc.answerCheck() == 'y':
 

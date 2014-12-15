@@ -30,3 +30,4 @@
 from poweradm.poweradm import main_poweradm
 
 main_poweradm()
+""" Import the main of PowerAdm """

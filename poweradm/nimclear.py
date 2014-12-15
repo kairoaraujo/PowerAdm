@@ -61,7 +61,7 @@ def nimclear():
             lpar = line.split()
             lparnimaddress = lpar[1]
 
-    rmhostnim = checkOk('Proceed to Remove?(y/n): ', 'n')
+    rmhostnim = CheckOK('Proceed to Remove?(y/n): ', 'n')
     rmhostnim.mkCheck()
 
     if rmhostnim.answerCheck() == 'y':

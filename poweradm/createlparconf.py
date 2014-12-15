@@ -109,7 +109,7 @@ def lparconfig():
     # prepare to os deploy
     global nim_deploy
     if enable_nim_deploy.lower() == 'yes':
-        nim_deploy = checkOk("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
+        nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
 
     # get free id from newId.py
@@ -127,7 +127,7 @@ def lparconfig():
     print ("\n[SCSI and DISK Configuration]\n")
     global vscsi
     global add_disk
-    vscsi = checkOk('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
+    vscsi = CheckOK('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
     vscsi.mkCheck()
 
     if vscsi.answerCheck() == 'y':
@@ -138,7 +138,7 @@ def lparconfig():
 
         if active_ssp.lower() == 'yes':
             global num_disk
-            add_disk = checkOk('\nDo you want add an disk to LPAR?\n'
+            add_disk = CheckOK('\nDo you want add an disk to LPAR?\n'
                     '**** FUNCTION ALPHA NOT TESTED YET **** (y/n): ', 'n')
             add_disk.mkCheck()
 
@@ -167,7 +167,7 @@ def lparconfig():
     # get network configuration
     net_vlan = []
     net_vsw = []
-    netconfiglpar = checkOk('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
+    netconfiglpar = CheckOK('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
     while netconfiglpar.answerCheck() == 'y':
         print ("\n[LPAR Network Configuration]\n"
                "\nSelect the Virtual Switch to ethernet:")
@@ -191,7 +191,7 @@ def lparconfig():
 
     print ("\n\n[NPIV HBA Configuration]\n")
     global vfc
-    vfc = checkOk('Do you want add Virtual Fiber Adapter (HBA/NPIV)? (y/n): ', 'n')
+    vfc = CheckOK('Do you want add Virtual Fiber Adapter (HBA/NPIV)? (y/n): ', 'n')
     vfc.mkCheck()
     if vfc.answerCheck() == 'y':
         # VIOs NPIV selection
@@ -613,8 +613,8 @@ def exec_createlparconf():
     changeconfig()
     headerchange()
 
-    configlpar = checkOk('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
-    newconfiglpar = checkOk('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
+    configlpar = CheckOK('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
+    newconfiglpar = CheckOK('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
     while configlpar.answerCheck() == 'n':
         while newconfiglpar.answerCheck() == 'y':
             lparconfig()
@@ -632,7 +632,7 @@ def exec_createlparconf():
     closechange()
 
     # check if you want executes the change/ticket after creation
-    check_exec_createlpar = checkOk('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
+    check_exec_createlpar = CheckOK('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
             (change.strVarOut(), timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':

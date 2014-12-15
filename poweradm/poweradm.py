@@ -36,6 +36,7 @@ from nimclear import *
 import os
 
 def main_poweradm():
+    """ Main (and main menu) of PowerAdm """
 
     os.system('clear')
     print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n" % version)
@@ -49,14 +50,17 @@ def main_poweradm():
                   "Please choose an option: ")
 
     if poweradm == '1':
+        """ LPAR configuration. """
 
         exec_createlparconf()
 
     elif poweradm == '2':
+        """ Execute the LPAR creation."""
 
-        exec_findlpar = findChange('changenum')
+        # Find the File Change/Ticket using class FindChange()
+        exec_findlpar = FindChange()
         exec_findlpar.selectChange()
-        check_exec_findlpar = checkOk('\nDo you want execute change/ticket %s? (y/n): ' %
+        check_exec_findlpar = CheckOK('\nDo you want execute change/ticket %s? (y/n): ' %
                 (exec_findlpar.getChange()), 'n')
         check_exec_findlpar.mkCheck()
         if check_exec_findlpar.answerCheck() == 'y':
@@ -67,10 +71,12 @@ def main_poweradm():
             exit
 
     elif poweradm == '3':
+        """ Deploy OS on an existing LPAR. """
 
         nimmain()
 
     elif poweradm == '4':
+        """ Clear NIM OS deploy configs. """
 
         nimclear()
 

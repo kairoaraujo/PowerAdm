@@ -33,15 +33,14 @@ import fnmatch
 from globalvar import *
 ##############################################################################################
 #
-# Class findChange
+# Class FindChange
 ##############################################################################################
 
-class findChange:
-
-    def __init__(self, change_exec):
-        self.change_exec = change_exec
+class FindChange:
+    """ Find existents changes/ticket to execute """
 
     def selectChange(self):
+        """ Select the change/ticket file """
 
         print ("\n[LPAR creation]\n"
                "\nSelect the Change/Ticket to execute:\n")
@@ -58,4 +57,5 @@ class findChange:
         self.change_exec = (listChanges[change_option])
 
     def getChange(self):
+        """ Returns the file change/ticket """
         return self.change_exec
