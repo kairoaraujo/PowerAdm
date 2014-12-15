@@ -33,7 +33,7 @@ import commands
 from globalvar import *
 from config import *
 from newid import *
-from systemVios import *
+from systemvios import *
 from verify import *
 from execchange import *
 from fields import *
@@ -112,14 +112,14 @@ def lparconfig():
         nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
 
-    # get free id from newId.py
+    # get free id from newID.py
     global freeid
-    freeid = newId()
-    freeid.mkId()
+    freeid = NewID()
+    freeid.mkID()
 
     # select a system and vios from systemVios.py
     global system_vio
-    system_vio = systemVios()
+    system_vio = SystemVios()
     system_vio.selectSystemVios()
 
 
@@ -133,8 +133,8 @@ def lparconfig():
     if vscsi.answerCheck() == 'y':
         global vscsi_vio1
         global vscsi_vio2
-        vscsi_vio1 = ("21/client//%s/1%s/0" % (system_vio.getVio1(), freeid.getId()))
-        vscsi_vio2 = ("22/client//%s/2%s/0" % (system_vio.getVio2(), freeid.getId()))
+        vscsi_vio1 = ("21/client//%s/1%s/0" % (system_vio.getVio1(), freeid.getID()))
+        vscsi_vio2 = ("22/client//%s/2%s/0" % (system_vio.getVio2(), freeid.getID()))
 
         if active_ssp.lower() == 'yes':
             global num_disk
@@ -162,7 +162,13 @@ def lparconfig():
                     while count <= storage_pools_length:
                         print ("%s : %s" % (count, storage_pools[count]))
                         count +=1
-                    storage_pools_option = int(input("Storage Pool: "))
+
+                    while True:
+                        try:
+                            storage_pools_option = int(input("Storage Pool: "))
+                            break
+                        except (IndexError):
+                            print('\tERROR: Select an existing option between 0 and %s.' % (storage_pools_length))
 
     # get network configuration
     net_vlan = []
@@ -178,8 +184,15 @@ def lparconfig():
         while count <= vsw_length:
             print ("%s : %s" % (count, virtual_switches[count]))
             count +=1
-        vsw_option = int(input("Virtual Switch: "))
-        net_vsw.append(virtual_switches[vsw_option])
+
+        while True:
+            try:
+                vsw_option = int(input("Virtual Switch: "))
+                net_vsw.append(virtual_switches[vsw_option])
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
+
         net_vlan.append(input("Ethernet VLAN (%s): " % virtual_switches[vsw_option]))
         net_length = len(net_vsw)-1
         if net_length == 2:
@@ -234,13 +247,13 @@ def lparconfig():
            "Entitled CPU : Minimum: %.1f , Desired: %.1f, Maximum: %.1f\n"
            "Virtual CPU  : Minimum: %s , Desired: %s, Maximum: %s\n"
            "Memory       : Minimum: %s , Desired: %s, Maximum: %s"
-           % (prefix.strVarOut(), lparname.strVarOut(), system_vio.getSystem(), freeid.getId(),
+           % (prefix.strVarOut(), lparname.strVarOut(), system_vio.getSystem(), freeid.getID(),
               lparentcpumin, lparentcpu, lparentcpumax, lparvcpumin,
               lparvcpu, lparvcpumax, lparmenmin, lparmem, lparmenmax))
 
     if vscsi.answerCheck() == 'y':
-        print("SCSI         : %s: 1%s \t %s: 2%s" % (system_vio.getVio1(), freeid.getId(),
-              system_vio.getVio2(), freeid.getId()))
+        print("SCSI         : %s: 1%s \t %s: 2%s" % (system_vio.getVio1(), freeid.getID(),
+              system_vio.getVio2(), freeid.getID()))
 
         if active_ssp.lower() == 'yes':
             if add_disk.answerCheck() == 'y':
@@ -305,15 +318,15 @@ def writechange():
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                          "-s 1%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=21\'"
-                         % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
-                         prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
+                         % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getID(),
+                         prefix.strVarOut(), lparname.strVarOut(), freeid.getID()))
 
         wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                          "-s 2%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=22\'"
-                         % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
-                         prefix.strVarOut(), lparname.strVarOut(), freeid.getId()))
+                         % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getID(),
+                         prefix.strVarOut(), lparname.strVarOut(), freeid.getID()))
 
         wchg_checksh()
 
@@ -324,13 +337,13 @@ def writechange():
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                           "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
-                          % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getId(),
+                          % (hmcserver, system_vio.getSystem(), system_vio.getVio1(), freeid.getID(),
                           prefix.strVarOut(), lparname.strVarOut() ))
         wchg_checksh()
 
         file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                           "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
-                          % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getId(),
+                          % (hmcserver, system_vio.getSystem(), system_vio.getVio2(), freeid.getID(),
                           prefix.strVarOut(), lparname.strVarOut() ))
         wchg_checksh()
 
@@ -352,10 +365,10 @@ def writechange():
 
         # ---> simulation
         #file_change.write("\n\nvfchost_vio1=$(cat simulation/%s| grep \"\\-C3%s\" | awk \'{ print $1 }\')" %
-        #                 (system_vio.getVio1(), freeid.getId()))
+        #                 (system_vio.getVio1(), freeid.getID()))
         #
         #file_change.write("\n\nvfchost_vio2=$(cat simulation/%s| grep \"\\-C4%s\" | awk \'{ print $1 }\')" %
-        #                 (system_vio.getVio2(), freeid.getId()))
+        #                 (system_vio.getVio2(), freeid.getID()))
         # ---  simulation
 
         file_change.write("\n\necho 'Making vfcmap on %s and %s to connect the NPIV'" %
@@ -364,12 +377,12 @@ def writechange():
 
         file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                          system_vio.getVio1(), freeid.getId()))
+                          system_vio.getVio1(), freeid.getID()))
         wchg_checksh()
 
         file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
                           "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                          system_vio.getVio2(), freeid.getId()))
+                          system_vio.getVio2(), freeid.getID()))
         wchg_checksh()
 
         # <--- simulation
@@ -392,12 +405,12 @@ def writechange():
 
         file_change.write("\n\nvhost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
                           "| grep \"\\-C1%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                          system_vio.getVio1(), freeid.getId()))
+                          system_vio.getVio1(), freeid.getID()))
         wchg_checksh()
 
         file_change.write("\n\nvhost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
                           "| grep \"\\-C2%s \" | awk \'{ print $1 }\')" % (hmcserver, system_vio.getSystem(),
-                          system_vio.getVio2(), freeid.getId()))
+                          system_vio.getVio2(), freeid.getID()))
         wchg_checksh()
 
         file_change.write("\n\nssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'mkbdsp -clustername "
@@ -416,7 +429,7 @@ def writechange():
                 "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
                 "boot_mode=%s, max_virtual_slots=40, "
                 "\\\"virtual_eth_adapters=%s\\\"'\n"
-                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getID(),
                     lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters))
@@ -433,11 +446,11 @@ def writechange():
                 "boot_mode=%s, max_virtual_slots=40, "
                 "\\\"virtual_eth_adapters=%s\\\","
                 "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
-                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getID(),
                     lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
-                    system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId()))
+                    system_vio.getVio1(), freeid.getID(), system_vio.getVio2(), freeid.getID()))
         wchg_checksh()
 
     def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
@@ -474,7 +487,7 @@ def writechange():
                 "boot_mode=%s, max_virtual_slots=40, "
                 "\\\"virtual_eth_adapters=%s\\\","
                 "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
-                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getID(),
                     lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters, vscsi_vio1, vscsi_vio2))
@@ -492,11 +505,11 @@ def writechange():
                 "\\\"virtual_eth_adapters=%s\\\","
                 "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\","
                 "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
-                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getId(),
+                % ( hmcserver, system_vio.getSystem(), prefix.strVarOut(), lparname.strVarOut(), freeid.getID(),
                     lparname.strVarOut(), lparmenmin*1024, lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                     lparvcpu, lparvcpumax, lparentcpumin, lparentcpu, lparentcpumax, sharing_mode,
                     uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters,
-                    system_vio.getVio1(), freeid.getId(), system_vio.getVio2(), freeid.getId(), vscsi_vio1,
+                    system_vio.getVio1(), freeid.getID(), system_vio.getVio2(), freeid.getID(), vscsi_vio1,
                     vscsi_vio2))
         wchg_checksh()
 
@@ -544,7 +557,7 @@ def writechange():
 
     print ('Writing file %s-%s.sh ... ' % (change.strVarOut(), timestr))
 
-    file_change.write("\n\n#LPARID %s" % (freeid.getId()))
+    file_change.write("\n\n#LPARID %s" % (freeid.getID()))
 
     if (vscsi.answerCheck()) == 'y' and (vfc.answerCheck()) == 'y':
 
@@ -595,7 +608,7 @@ def writechange():
             wchg_lpar_deploy_nim_enable()
 
     file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
-    file_reservedids_tmp.write('%s\n' % (freeid.getId()))
+    file_reservedids_tmp.write('%s\n' % (freeid.getID()))
     file_reservedids_tmp.close()
 
 def closechange():

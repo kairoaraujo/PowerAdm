@@ -31,13 +31,12 @@ import time
 import os.path
 from globalvar import *
 from config import *
-from newid import *
 ##############################################################################################
 #
 # Class systemVios
 ##############################################################################################
 
-class systemVios:
+class SystemVios:
 
     def selectSystemVios(self):
 
@@ -49,8 +48,15 @@ class systemVios:
         while count <= systems_length:
             print ("%s : %s" % (count, systems_keys[count]))
             count += 1
-        system_option = int(raw_input("System: "))
-        self.system = (systems_keys[system_option])
+
+        while True:
+            try:
+                system_option = int(raw_input("System: "))
+                self.system = (systems_keys[system_option])
+                break
+            except (IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (systems_length))
+
         self.vio1 = systems[('%s' % systems_keys[system_option])][0]
         self.vio2 = systems[('%s' % systems_keys[system_option])][1]
 

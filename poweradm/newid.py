@@ -33,9 +33,9 @@ from globalvar import *
 from config import *
 
 # get a next free id on systems
-class newId:
+class NewID:
 
-    def mkId(self):
+    def mkID(self):
         ids = []
         systems_keys = list(systems.keys())
         systems_length = (len(systems.keys()))-1
@@ -61,5 +61,5 @@ class newId:
         fileids.close()
         os.system('rm poweradm/tmp/ids_%s' % (timestr))
 
-    def getId(self):
+    def getID(self):
         return self.newid
