@@ -551,7 +551,7 @@ def writechange():
         wchg_checksh()
 
         file_change.write("\n\necho 'Saving %s current configuration'" %
-                         ( system_vio.getVio1()))
+                         ( system_vio.getVio2()))
 
         file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                           "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
