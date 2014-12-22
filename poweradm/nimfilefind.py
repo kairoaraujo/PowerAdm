@@ -45,7 +45,7 @@ class NIMFileFind:
 
     def selectDeploy(self):
 
-        print ("\n[Deploy OS NIM: %s]\n"
+        print ("\n[DEPLOY OS NIM: %s]\n"
                "\nSelect the Deploy:\n" % (self.title))
         listDeploys = fnmatch.filter(os.listdir("%s" % (self.filedir)), "*.nim")
         listDeploys_length = len(listDeploys)-1

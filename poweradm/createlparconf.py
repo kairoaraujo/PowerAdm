@@ -43,7 +43,7 @@ from fields import *
 ###############################################################################################
 
 def changeconfig():
-    print ("\n[Change/Ticket Information]\n")
+    print ("\n[CHANGE/TICKET INFORMATION]\n")
     global change
     change = Fields('Change/Ticket', 'Change or Ticket number: ')
     change.chkFieldStr()
@@ -55,7 +55,7 @@ def lparconfig():
     global lparvcpumin, lparvcpumax, lparmem, lparmenmin, lparmenmax
     global npiv_vio1, npiv_vio2
 
-    print ("\n[LPAR Configuration ]\n")
+    print ("\n[LPAR CONFIGURATION ]\n")
 
     prefix = Fields('Prefix', 'Prefix (XXXX-lparname): ')
     prefix.chkFieldStr()
@@ -112,6 +112,30 @@ def lparconfig():
         nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
 
+    """ get network to deploy using nim (only if nim deploy is enabled) """
+    if nim_deploy.answerCheck() == 'y':
+
+        print ("\n[DEPLOY NETWORK SELECTION]\n")
+        print ("\033[1;31mImportant: This configuration is temporaly. Used only to deploy!\033[1;00m")
+        print ("\033[1;31m           LPAR network configuration is made in [LPAR NETWORK CONFIGURATION]\033[1;00m")
+        print ("\nSelect the Virtual Switch to deploy:")
+        vsw_length = (len(virtual_switches))-1
+        count = 0
+        while count <= vsw_length:
+            print ("%s : %s" % (count, virtual_switches[count]))
+            count +=1
+
+        while True:
+            try:
+                vsw_option = int(input("Virtual Switch: "))
+                vsw_deploy = virtual_switches[vsw_option]
+                break
+            except(IndexError):
+                print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
+
+        vlan_deploy = input("Ethernet VLAN (%s): " % virtual_switches[vsw_option])
+
+
     # get free id from newID.py
     global freeid
     freeid = NewID()
@@ -124,7 +148,7 @@ def lparconfig():
 
 
     # SCSI and DISK configuration
-    print ("\n[SCSI and DISK Configuration]\n")
+    print ("\n[SCSI AND DISK CONFIGURATION]\n")
     global vscsi
     global add_disk
     vscsi = CheckOK('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
@@ -170,15 +194,16 @@ def lparconfig():
                         except (IndexError):
                             print('\tERROR: Select an existing option between 0 and %s.' % (storage_pools_length))
 
+
     # get network configuration
     net_vlan = []
     net_vsw = []
     netconfiglpar = CheckOK('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
     while netconfiglpar.answerCheck() == 'y':
-        print ("\n[LPAR Network Configuration]\n"
-               "\nSelect the Virtual Switch to ethernet:")
+        print ("\n[LPAR NETWORK CONFIGURATION]\n")
         if (len(net_vsw) == 0) and (nim_deploy.answerCheck() == 'y'):
-                print ("\033[1;31mImportant: First ethernet is used to NIM deploy!\033[1;00m")
+                print ("\033[1;31mImportant: This is default network config to LPAR!\033[1;00m")
+        print ("\nSelect the Virtual Switch to ethernet:")
         vsw_length = (len(virtual_switches))-1
         count = 0
         while count <= vsw_length:
@@ -194,6 +219,14 @@ def lparconfig():
                 print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
 
         net_vlan.append(input("Ethernet VLAN (%s): " % virtual_switches[vsw_option]))
+
+        # Check if VLAN exists on VIOs
+        vlan_list = commands.getoutput('ssh -l poweradm %s lshwres  -r virtualio --rsubtype vswitch -m %s -F | grep %s' %
+                (hmcserver, system_vio.getSystem(), virtual_switches[vsw_option]))
+
+        if '%s' % (net_vlan[-1]) not in vlan_list:
+            print ("\033[1;31mImportant: VLAN %s need to be registered on VIOS!\033[1;00m" % (net_vlan[-1]))
+
         net_length = len(net_vsw)-1
         if net_length == 2:
             print ('Sorry. Maximum initial interface is 3. Continuing..')
@@ -221,6 +254,10 @@ def lparconfig():
         os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
                   system_vio.getSystem(), system_vio.getVio1()))
 
+        """ get the file with comments if exists """
+        if os.path.isfile('npiv/%s-%s' % ( system_vio.getSystem(), system_vio.getVio1())):
+            os.system('cat npiv/%s-%s' % ( system_vio.getSystem(), system_vio.getVio1()))
+
         npiv_vio1 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
 
         print ("\nFinding on %s the NPIVs availabe.\n"
@@ -236,10 +273,16 @@ def lparconfig():
         os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
                   system_vio.getSystem(), system_vio.getVio2()))
 
-        npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio1()))
+
+        """ get the file with comments if exists """
+        if os.path.isfile('npiv/%s-%s' % ( system_vio.getSystem(), system_vio.getVio2())):
+            os.system('cat npiv/%s-%s' % ( system_vio.getSystem(), system_vio.getVio2()))
+
+        npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (system_vio.getVio2()))
 
     # verify configuration
     global virtual_eth_adapters
+    global virtual_eth_adapters_final
     print ("\n[LPAR Configuration Validation]\n"
            "\nCheck configuration last LPAR:\n")
     print ('*' * 80)
@@ -265,6 +308,7 @@ def lparconfig():
 
     count = 0
     while count <= net_length:
+
         print ("Network %s    : Virtual Switch: %s - VLAN: %s" % (count, net_vsw[count], net_vlan[count]))
         count += 1
         if net_length == 0:
@@ -276,6 +320,28 @@ def lparconfig():
             virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" % (net_vlan[0],
                                     net_vsw[0], net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
     print ('*' * 80)
+
+
+    # temporaly and final NIM deploy virtual ethernet settings
+    if nim_deploy.answerCheck() == 'y':
+
+        if net_length == 0:
+            virtual_eth_adapters = ("10/0/%s//0/0/%s" % (vlan_deploy, vsw_deploy))
+            virtual_eth_adapters_final = ("10/0/%s//0/0/%s" % (net_vlan[0],net_vsw[0]))
+
+        elif net_length == 1:
+            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s" % (vlan_deploy, vsw_deploy,
+                                    net_vlan[1],net_vsw[1]))
+
+            virtual_eth_adapters_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s" % (net_vlan[0],net_vsw[0],
+                                    net_vlan[1],net_vsw[1]))
+
+        elif net_length == 2:
+            virtual_eth_adapters = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
+                    (vlan_deploy, vsw_deploy, net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
+
+            virtual_eth_adapters_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
+                (net_vlan[0], net_vsw[0], net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
 
 
 ###############################################################################################
@@ -473,34 +539,6 @@ def writechange():
                     system_vio.getVio1(), freeid.getID(), system_vio.getVio2(), freeid.getID()))
         wchg_checksh()
 
-    def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
-
-        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
-                         (prefix.strVarOut(), lparname.strVarOut()))
-
-        file_change.write("\n\necho '' ")
-
-        file_change.write("\n\necho '*************************************************************' ")
-
-        file_change.write("\n\necho 'Physical HBA and LPAR %s-%s NPIV:'" %
-                         (prefix.strVarOut(), lparname.strVarOut()))
-
-        file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
-                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-			 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
-
-        file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
-                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-                         (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
-
-        file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
-                          "lpar_names=\'%s-%s\' | awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
-                          "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(),
-                            prefix.strVarOut(), lparname.strVarOut()))
-
-        file_change.write("\n\necho '*************************************************************' ")
-
-        file_change.write("\n\necho '' ")
 
     def wchg_lpar_scsi(): # LPAR with Ethernet and SCSI
 
@@ -574,6 +612,39 @@ def writechange():
         file_change.write("\n\necho '#FRAME %s' >> poweradm/nim/%s-%s.nim" % (system_vio.getSystem(),
             prefix.strVarOut(), lparname.strVarOut()))
         wchg_checksh()
+
+        file_change.write("\n\necho '#VLAN_FINAL %s' >> poweradm/nim/%s-%s.nim" % (virtual_eth_adapters_final,
+            prefix.strVarOut(), lparname.strVarOut()))
+        wchg_checksh()
+
+    def wchg_lpar_fc_wwnget(): # Get physical and LPAR NPIV wwn
+
+        file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
+                         (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '' ")
+
+        file_change.write("\n\necho '*************************************************************' ")
+
+        file_change.write("\n\necho 'Physical HBA and LPAR %s-%s NPIV:'" %
+                         (prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+			 (hmcserver, system_vio.getSystem(), system_vio.getVio1(), npiv_vio1))
+
+        file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
+                         "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
+                         (hmcserver, system_vio.getSystem(), system_vio.getVio2(), npiv_vio2))
+
+        file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
+                          "lpar_names=\'%s-%s\' | awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
+                          "(active,inactive):\\t\"$12 }\'" % (hmcserver, system_vio.getSystem(),
+                            prefix.strVarOut(), lparname.strVarOut()))
+
+        file_change.write("\n\necho '*************************************************************' ")
+
+        file_change.write("\n\necho '' ")
 
 
     #

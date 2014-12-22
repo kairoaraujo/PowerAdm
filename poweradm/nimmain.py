@@ -39,7 +39,7 @@ from nimserver import *
 def nimmain():
 
     # select a machine to deploy
-    newdeploy = NIMFileFind('Select Deploy', 'poweradm/nim/', 'execute')
+    newdeploy = NIMFileFind('Select Deploy', 'poweradm/nim/', 'EXECUTE')
     newdeploy.selectDeploy()
 
 
@@ -87,10 +87,13 @@ def nimmain():
         if line.startswith('#FRAME'):
             lpar = line.split()
             lparframe = lpar[1]
+        if line.startswith('#VLAN_FINAL'):
+            lpar = line.split()
+            lparvlans = lpar[1]
     f_nim_deploy.close()
 
     # verify the config
-    print ('\n[Deploy SO NIM: Check deploy]\n')
+    print ('\n[DEPLOY SO NIM: Check deploy]\n')
     print ('*' * 80)
     print ('Server: %s-%s (IP Client: %s)\n'
            'NIM Server: %s (IP Server: %s)\n'
@@ -113,6 +116,8 @@ def nimmain():
                             "else\n"
                             "\techo 'Command OK. Continuing';\n"
                             "fi\n")
+
+        f_nim_exe.write('#!/bin/sh\n')
 
         f_nim_exe.write('\n\necho "Adding host %s-%s on NIM Server /etc/hosts"\n' % (lparprefix, lparname))
 
@@ -160,6 +165,10 @@ def nimmain():
                 'auto -d auto -S %s -C %s %s-%s %s %s\n' % (hmcserver, newnim.getNimIPDeploy(), new_ip,
                     lparprefix, lparname, lparname, lparframe))
         f_nimexe_chksh()
+
+        print ('\n\nChange VLAN on profile to final config')
+        f_nim_exe.write('\n\nssh -l poweradm %s chsyscfg -r prof -m %s -i \'lpar_name=%s-%s, name=%s, '
+                        '\"virtual_eth_adapters=%s\"\'' % ( hmcserver, lparframe, lparprefix, lparname, lparname, lparvlans))
 
         f_nim_exe.close()
 
