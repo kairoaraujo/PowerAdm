@@ -1,0 +1,5 @@
+
+FCS		| SWITCH SAN	| FUNCTION
+------------------------------------------
+fcs0		| SW592		| NPIV DISK
+fcs1		| SW593		| NPIV DISK

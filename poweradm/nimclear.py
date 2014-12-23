@@ -39,7 +39,7 @@ from nimserver import *
 def nimclear():
 
     # select a machine to deploy
-    nimrm = NIMFileFind('Select Deploy', 'poweradm/nim_executed/', 'remove')
+    nimrm = NIMFileFind('Select Deploy', 'poweradm/nim_executed/', 'REMOVE')
     nimrm.selectDeploy()
 
     # get variables
@@ -113,7 +113,10 @@ def nimclear():
         file_reservedips.close()
         file_reservedips = open('poweradm/data/reserved_ips', 'w')
         for lineips in line_reservedips:
-            file_reservedips.write(lineips.replace((lparip), "#%s" % (lparip)))
+	    try:
+                file_reservedips.write(lineips.replace((lparip), "#%s" % (lparip)))
+            except(ValueError):
+		print ("OK - IP used in the past. Clear sucessfull too")
             file_reservedips.close()
 
         print ('\nExiting.\n\n')

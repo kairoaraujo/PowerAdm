@@ -31,7 +31,7 @@ How to install PowerAdm
 
 6. On your HMC import id_dsa public to poweradm
 
-    # hscroot@hmc1:~> mkauthkeys -u lpar2rrd -a 'ssh-dss
+    # hscroot@hmc1:~> mkauthkeys -u poweradm -a 'ssh-dss
     BBBBB3NzaC1kc3MBBBCBALvbupPLnqy6UfJjgMG5SRnnFDfD013OtBxFv9P7qoHfGKCG0Vu2
     IhNCYttpYMmsMR+BWADo4c9oT7r92raLfVDjNW9uO5C5fatK305+sNqazbT91HDDNDKQnbpoKUqybVRC2
     BQbPR9ESh+ws3uHdxXSQKwOSyrHO6Nwkkx9/h4TBBBAFQDZgT9MxrEUQg4uOwxhciwwdoOO9QBBBIAH37
@@ -45,11 +45,12 @@ How to install PowerAdm
 
 8. Edit the config.py with your enviorment configs
 
-9. ** Not Working yet ** On your VIOS NPIV is recommended create on padmin home the 
-   file FCSINFO with relevant informations. See example:
+9. Optional: NPIV comments. If you want more informations about your npiv. Create on
+di npiv/ files using the syntax npiv/SYSTEM-VIO.
+Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
    
-   FCSINFO:
-   fcs      WWN                     SAN SWITCH
+   COMMENTS:
+   FCS      WWN                     SAN SWITCH
    fcs0     aa:bb:cc:dd:ee:ff       FABRIC-A
    fcs1     aa:bb:cc:dd:ee:ff       FABRIC-B
    fcs2     aa:bb:cc:dd:ee:ff       FABRIC-C
