@@ -168,7 +168,7 @@ def nimmain():
 
         print ('\n\nChange VLAN on profile to final config')
         f_nim_exe.write('\n\nssh -l poweradm %s chsyscfg -r prof -m %s -i \'lpar_name=%s-%s, name=%s, '
-                        '\"virtual_eth_adapters=%s\"\'' % ( hmcserver, lparframe, lparprefix, lparname, lparname, lparvlans))
+                        '\\\"virtual_eth_adapters=%s\\\"\'' % ( hmcserver, lparframe, lparprefix, lparname, lparname, lparvlans))
 
         f_nim_exe.close()
 
