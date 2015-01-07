@@ -111,9 +111,12 @@ def lparconfig():
     if enable_nim_deploy.lower() == 'yes':
         nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
+	nim_deploy = nim_deploy.answerCheck()
+    else:
+	nim_deploy = 'n'
 
     """ get network to deploy using nim (only if nim deploy is enabled) """
-    if nim_deploy.answerCheck() == 'y':
+    if nim_deploy == 'y':
 
         print ("\n[DEPLOY NETWORK SELECTION]\n")
         print ("\033[1;31mImportant: This configuration is temporaly. Used only to deploy!\033[1;00m")
@@ -201,7 +204,7 @@ def lparconfig():
     netconfiglpar = CheckOK('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
     while netconfiglpar.answerCheck() == 'y':
         print ("\n[LPAR NETWORK CONFIGURATION]\n")
-        if (len(net_vsw) == 0) and (nim_deploy.answerCheck() == 'y'):
+        if (len(net_vsw) == 0) and (nim_deploy == 'y'):
                 print ("\033[1;31mImportant: This is default network config to LPAR!\033[1;00m")
         print ("\nSelect the Virtual Switch to ethernet:")
         vsw_length = (len(virtual_switches))-1
@@ -323,7 +326,7 @@ def lparconfig():
 
 
     # temporaly and final NIM deploy virtual ethernet settings
-    if nim_deploy.answerCheck() == 'y':
+    if nim_deploy == 'y':
 
         if net_length == 0:
             virtual_eth_adapters = ("10/0/%s//0/0/%s" % (vlan_deploy, vsw_deploy))
@@ -671,7 +674,7 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
-        if nim_deploy.answerCheck() == 'y':
+        if nim_deploy == 'y':
             wchg_lpar_deploy_nim_enable()
         wchg_lpar_fc_wwnget()
 
@@ -685,7 +688,7 @@ def writechange():
             if (add_disk.answerCheck() == 'y'):
                 wchg_vio_mkbdsp()
         wchg_hmc_savecurrentconf()
-        if nim_deploy.answerCheck() == 'y':
+        if nim_deploy == 'y':
             wchg_lpar_deploy_nim_enable()
 
     if (vscsi.answerCheck()) == 'n' and (vfc.answerCheck()) == 'y':
@@ -696,7 +699,7 @@ def writechange():
         wchg_vio_cfgdev()
         wchg_vio_vfcmap()
         wchg_hmc_savecurrentconf()
-        if nim_deploy.answerCheck() == 'y':
+        if nim_deploy == 'y':
             wchg_lpar_deploy_nim_enable()
         wchg_lpar_fc_wwnget()
 
@@ -704,7 +707,7 @@ def writechange():
 
         wchg_creating_lpar()
         wchg_lpar()
-        if nim_deploy.answerCheck() == 'y':
+        if nim_deploy == 'y':
             wchg_lpar_deploy_nim_enable()
 
     file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
