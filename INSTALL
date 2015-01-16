@@ -5,18 +5,18 @@ How to install PowerAdm
 #
 #######################################################################################
 
-1. You need a *nix with Python 2.6 (>=) with access on your HMC (Hardware Management 
+1. You need a *nix machine with Python 2.6 (>=) and access to your HMC (Hardware Management 
    Console)
 
 2. On your *nix create a user poweradm
 
     # useradd -c "Power Adm user" -m poweradm
 
-3. On your *nix go to user and create ssh keys
+3. On your *nix create the poweradm user ssh keys
 
     # ssh-keygen -t dsa
 
-4. On your HMC create account operator to poweradm
+4. On your HMC create an account operator to poweradm
 
     # hscroot@hmc1:~> mkhmcusr -u poweradm -a hmcoperator --passwd abc1234
 
@@ -49,7 +49,7 @@ How to install PowerAdm
 8. Edit the config.py with your enviorment configs
 
 9. Optional: NPIV comments. If you want more informations about your npiv. Create on
-di npiv/ files using the syntax npiv/SYSTEM-VIO.
+dir npiv/ files using the syntax npiv/SYSTEM-VIO.
 Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
    
    COMMENTS:
@@ -59,7 +59,7 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
    fcs2     aa:bb:cc:dd:ee:ff       FABRIC-C
 
 #
-# Enable access on NIM Servers to Deploy SO
+# Enable access on the NIM Servers in order to OS Deploy
 #
 ######################################################################################
 
@@ -80,9 +80,9 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
     1+3pscSsFxEQb9YVvb1oL9c5QdPDnmXZK9BHHmNZMn+ftuzJKHgR2lynaxQ4hxTnz+xT0ywGwokeuuCnr
     4G3Bftc70Yn9vCNjuzGQ== poweradm@linuxadm' >> authorized_keys
 
-3. Install sudo on your nimserver
+3. Install the sudo on your nimserver
 
-4. Add this entry ou your /etc/sudoers
+4. Add this entry to /etc/sudoers on the nimserver machine
 
     # visudo
     
@@ -93,9 +93,9 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
 #
 #######################################################################################
 
-TIP: The PowerAdm needs working great using ASCII/Text mode.
+TIP: The PowerAdm needs to work using ASCII/Text mode.
 
-1. Make login on VMware vCenter Orchestrator using the vCenter Orchestrator Client
+1. Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
 
 2. Change the view from 'Run' to 'Design'
 
@@ -113,13 +113,13 @@ TIP: The PowerAdm needs working great using ASCII/Text mode.
 
 7. Go to the 'Workflows' folder
 
-8. Create on 'Custon' folder the new folder 'PowerAdm'
+8. Create on 'Custom' folder a new folder named 'PowerAdm'
 
 9. Left clic on 'PowerAdm' folder and click on 'Import workflows..'
 
 10. Left click on workflow PowerAdm and click on 'Edit'
 
-11. In General change the Attributes Values:
+11. In General, change the Attribute Values:
     - powerAdmAddres [IP address of your server with PowerAdm]
     - powerAdmUser [Username of PowerAdm]
     - powerAdmPassword [Password PowerAdm user]
