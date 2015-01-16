@@ -35,6 +35,7 @@ from globalvar import *
 from config import *
 from newid import *
 from systemvios import *
+from execchange import *
 ##############################################################################################
 try:
 
@@ -348,7 +349,10 @@ try:
               npiv_vio1, npiv_vio2, veth, veth_final, system_option, vio1, vio2))
         print ("*"*80)
 
+        """ Execute the LPAR creation """
         if action == "create":
+
+            """ Print the lpar configuration final """
             print ("*"*80)
             print('Config validation: \n\n'
                   'Change/Ticket: %s\n'
@@ -375,6 +379,7 @@ try:
                    npiv_vio1, npiv_vio2, veth, veth_final, system_option, vio1, vio2))
             print ("*"*80)
 
+            """ Make a file change """
             newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                                  lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
                                  npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
@@ -382,9 +387,13 @@ try:
             newchange.writechange()
             newchange.closechange()
 
+            """ Print and get created change file """
             print (newchange.returnChange())
+            change_file = newchange.returnChange()
 
-
+            """ Run change **** LPAR creation **** """
+            mkchange = ExecChange(change_file)
+            mkchange.runChange()
 
 #
 # HELP
@@ -419,4 +428,5 @@ try:
 
 except(AttributeError,IndexError):
     print ('Please use %s [option] [parameters]. Use -h to help.' % sys.argv[0])
+    exit(1)
 
