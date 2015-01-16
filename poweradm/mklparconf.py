@@ -101,7 +101,7 @@ class MakeLPARConf():
 
         global file_change
 
-        file_change = open("poweradm/tmp/%s_%s.sh" % (self.change, timestr) , 'w')
+        file_change = open("%s/poweradm/tmp/%s_%s.sh" % (pahome, self.change, timestr) , 'w')
         file_change.write("#!/bin/sh\n")
 
 
@@ -340,19 +340,19 @@ class MakeLPARConf():
 
             file_change.write("\n\necho 'Enabling Deploy to %s-%s'" % (self.prefix, self.lparname))
 
-            file_change.write("\n\necho '#PREFIX %s' > poweradm/nim/%s-%s.nim" % (self.prefix, self.prefix,
+            file_change.write("\n\necho '#PREFIX %s' > %s/poweradm/nim/%s-%s.nim" % (self.prefix, pahome, self.prefix,
                                 self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#LPARNAME %s' >> poweradm/nim/%s-%s.nim" % (self.lparname,
+            file_change.write("\n\necho '#LPARNAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.lparname, pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#FRAME %s' >> poweradm/nim/%s-%s.nim" % (self.system,
+            file_change.write("\n\necho '#FRAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.system, pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#VLAN_FINAL %s' >> poweradm/nim/%s-%s.nim" % (self.veth_final,
+            file_change.write("\n\necho '#VLAN_FINAL %s' >> %s/poweradm/nim/%s-%s.nim" % ( self.veth_final, pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
@@ -448,13 +448,17 @@ class MakeLPARConf():
             if self.nim_deploy == 'y':
                 wchg_lpar_deploy_nim_enable()
 
-        file_reservedids_tmp = open('poweradm/tmp/reserved_ids_%s' %(timestr), 'ab')
+        file_reservedids_tmp = open('%s/poweradm/tmp/reserved_ids_%s' %(pahome, timestr), 'ab')
         file_reservedids_tmp.write('%s\n' % (self.lparid))
         file_reservedids_tmp.close()
 
     def closechange(self):
         file_change.write('\n\n# File closed with success by PowerAdm\n')
         file_change.close()
-        os.system('mv poweradm/tmp/%s_%s.sh poweradm/changes/' % (self.change, timestr))
-        os.system('cat poweradm/tmp/reserved_ids_%s >> poweradm/data/reserved_ids' % (timestr))
+        os.system('mv %s/poweradm/tmp/%s_%s.sh %s/poweradm/changes/' % (pahome, self.change, timestr, pahome))
+        os.system('cat %s/poweradm/tmp/reserved_ids_%s >> %s/poweradm/data/reserved_ids' % (pahome, timestr, pahome))
+
+
+    def returnChange(self):
+        return('%s/poweradm/changes/%s_%s.sh' % (pahome, self.change, timestr))
 

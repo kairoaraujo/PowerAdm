@@ -134,13 +134,13 @@ def lparconfig():
 
         while True:
             try:
-                vsw_option = int(input("Virtual Switch: "))
+                vsw_option = int(input("Virtual Switch to Deploy: "))
                 vsw_deploy = virtual_switches[vsw_option]
                 break
             except(IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
 
-        vlan_deploy = input("Ethernet VLAN (%s): " % virtual_switches[vsw_option])
+        vlan_deploy = input("VLAN deploy (%s): " % virtual_switches[vsw_option])
 
 
     # get free id from newID.py
@@ -170,7 +170,7 @@ def lparconfig():
         global stgpool
 
         if active_ssp.lower() == 'yes':
-            add_disk = CheckOK('\nDo you want add an disk to LPAR?\n'
+            add_disk = CheckOK('\nDo you want add an disk from Storage Pool to LPAR?\n'
                     '**** FUNCTION ALPHA NOT TESTED YET **** (y/n): ', 'n')
             add_disk.mkCheck()
             add_disk = add_disk.answerCheck()
@@ -360,6 +360,8 @@ def lparconfig():
 
             veth_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
                 (net_vlan[0], net_vsw[0], net_vlan[1], net_vsw[1], net_vlan[2], net_vsw[2]))
+    else:
+        veth_final = veth
 
 
 ###############################################################################################

@@ -39,6 +39,7 @@ from config import *
 class SystemVios:
 
     def selectSystemVios(self):
+        ''' Selection in ASCII mode Systems and VIOS '''
 
         print ("\n[LPAR host Configuration]\n"
                "\nSelect the system host for LPAR")
@@ -61,13 +62,30 @@ class SystemVios:
         self.vio2 = systems[('%s' % systems_keys[system_option])][1]
 
     def getSystem(self):
+        ''' Get the System selected on selectSystemVios() '''
         return self.system
 
     def getVio1(self):
+        ''' Get the VIO1 by Systemselected on selectSystemVios() '''
         return self.vio1
 
     def getVio2(self):
+        ''' Get the VIO2 by System selected on selectSystemVios() '''
         return self.vio2
 
+    def printSystemList(self):
+        ''' Get the list of Systems '''
+        systems_keys = list(systems.keys())
+        systems_length = (len(systems.keys()))-1
+        count = 0
+        while count <= systems_length:
+            print ("%s" % (systems_keys[count]))
+            count += 1
 
+    def returnVio1 (self, system_option):
+        return (systems[system_option][0])
+
+
+    def returnVio2 (self, system_option):
+        return (systems[system_option][1])
 

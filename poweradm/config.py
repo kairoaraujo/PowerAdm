@@ -34,6 +34,9 @@
 # BASIC CONFIGS
 #
 
+# PowerAdm installation path
+pahome='/home/poweradm/PowerAdm'
+
 # hmc server
 hmcserver = 'myhmcserver'
 
@@ -59,7 +62,7 @@ systems = {
           }
 
 # Virtual Switches
-virtual_switches = ['VSW-GERENCIA-01', 'VSW-DADOS-01', 'VSW-BACKUP-01']
+virtual_switches = ['VSW-MANAGER-01', 'VSW-DATA-01', 'VSW-BACKUP-01']
 
 #
 # SHARED STORAGE POOL CONFIGS
@@ -138,3 +141,5 @@ boot_mode = 'norm'
 # Enable/Disable monitoring
 conn_monitoring = '1'
 
+# Debug api parser
+api_debug = 'no'
