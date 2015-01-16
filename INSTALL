@@ -1,6 +1,9 @@
 How to install PowerAdm
 
+#
 # GENERAL
+#
+#######################################################################################
 
 1. You need a *nix with Python 2.6 (>=) with access on your HMC (Hardware Management 
    Console)
@@ -55,8 +58,10 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
    fcs1     aa:bb:cc:dd:ee:ff       FABRIC-B
    fcs2     aa:bb:cc:dd:ee:ff       FABRIC-C
 
-
+#
 # Enable access on NIM Servers to Deploy SO
+#
+######################################################################################
 
 1. On your NIM Server create user poweradm
 
@@ -82,4 +87,43 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
     # visudo
     
     "poweradm ALL=(ALL) NOPASSWD: /usr/sbin/nim *, /usr/sbin/lsnim *, /usr/sbin/hostent * "
+
+#
+# VMware vCenter Orchestrator Workflow
+#
+#######################################################################################
+
+TIP: The PowerAdm needs working great using ASCII/Text mode.
+
+1. Make login on VMware vCenter Orchestrator using the vCenter Orchestrator Client
+
+2. Change the view from 'Run' to 'Design'
+
+3. Go to the 'Action'
+
+4. Create folder 'org.poweradm.basic'
+
+5. Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
+
+6. Select all actions in the vCO folder of PowerAdm package.
+   - getVSW
+   - getSystemList
+   - getAddSSPDisk
+   - getNPIV
+
+7. Go to the 'Workflows' folder
+
+8. Create on 'Custon' folder the new folder 'PowerAdm'
+
+9. Left clic on 'PowerAdm' folder and click on 'Import workflows..'
+
+10. Left click on workflow PowerAdm and click on 'Edit'
+
+11. In General change the Attributes Values:
+    - powerAdmAddres [IP address of your server with PowerAdm]
+    - powerAdmUser [Username of PowerAdm]
+    - powerAdmPassword [Password PowerAdm user]
+    - powerAdmPath [path installation]
+
+
 
