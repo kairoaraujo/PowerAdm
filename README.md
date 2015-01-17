@@ -13,12 +13,6 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
 - VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
-## Latest release
-
-- v0.8-beta
-
-   - VMware vCenter Orchestrator workflow/support
-   - minor bug fixes
 
 ## Principal features
 
@@ -38,6 +32,14 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
+## Latest release
+
+https://github.com/kairoaraujo/PowerAdm/releases
+
+- v0.8-beta
+
+   - VMware vCenter Orchestrator workflow/support
+   - minor bug fixes
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
