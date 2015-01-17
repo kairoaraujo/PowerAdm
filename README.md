@@ -13,6 +13,13 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
 - VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
+## Latest release
+
+- v0.8-beta
+
+   - VMware vCenter Orchestrator workflow/support
+   - minor bug fixes
+
 ## Principal features
 
 - Text Interface
