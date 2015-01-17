@@ -114,10 +114,6 @@ def lparconfig():
     if enable_nim_deploy.lower() == 'yes':
         nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
-        nim_deploy = nim_deploy.answerCheck()
-    else:
-        nim_deploy = 'n'
-
 
     """ get network to deploy using nim (only if nim deploy is enabled) """
     if nim_deploy == 'y':

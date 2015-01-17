@@ -31,9 +31,6 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
-In the future:
-
-- Web Interface
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
@@ -42,6 +39,11 @@ The objective of this tool is to adopt a standard for IDs based on the LPAR ID a
 Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
 
 Something that we really consider the differential in this tool is the IDs organization.
+
+In the future:
+
+- Web Interface
+- vCO workflow/interface deploy OS Deploys using NIM
 
 ### IDs Structure / Organize your IDs
 
