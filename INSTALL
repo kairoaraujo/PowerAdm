@@ -89,7 +89,7 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
     "poweradm ALL=(ALL) NOPASSWD: /usr/sbin/nim *, /usr/sbin/lsnim *, /usr/sbin/hostent * "
 
 #
-# VMware vCenter Orchestrator Workflow
+# VMware vCenter Orchestrator Workflow for PowerAdm
 #
 #######################################################################################
 
@@ -101,9 +101,9 @@ TIP: The PowerAdm needs to work using ASCII/Text mode.
 
 3. Go to the 'Action'
 
-4. Create folder 'org.poweradm.basic'
+4. Create new module (folder) 'org.poweradm.basic'
 
-5. Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
+5. Left clic on new module (folder) 'org.poweradm.basic' and click on 'Import action...'.
 
 6. Select all actions in the vCO folder of PowerAdm package.
    - getVSW
@@ -117,13 +117,19 @@ TIP: The PowerAdm needs to work using ASCII/Text mode.
 
 9. Left clic on 'PowerAdm' folder and click on 'Import workflows..'
 
-10. Left click on workflow PowerAdm and click on 'Edit'
+10. Left clic on workflow PowerAdm and click on 'Edit'
 
 11. In General, change the Attribute Values:
     - powerAdmAddres [IP address of your server with PowerAdm]
     - powerAdmUser [Username of PowerAdm]
     - powerAdmPassword [Password PowerAdm user]
     - powerAdmPath [path installation]
+
+12. Save and Close
+
+13. Continue Anyway (2x)
+
+More informations visit https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
 
 

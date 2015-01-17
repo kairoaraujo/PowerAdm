@@ -1,22 +1,28 @@
-# Power Adm - Power Administration to Power.
+# PowerAdm - Power Administration to Power.
 
-Power Adm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and also it will be able to deploy AIX Operating System in the future.
+PowerAdm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and deploy AIX Operating System using NIM Server.
+PowerAdm uses a single configuration file and  a simple menu/interface in text mode (Like a smitty).
+Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
 
 ## Links
 
-- Wiki: https://github.com/kairoaraujo/PowerAdm/wiki
+- Website: http://poweradm.org
 - Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+- Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
+- VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
 ## Principal features
 
-- Create LPAR profile on HMC
+- Text Interface
+- Works with VMware vCenter Orchestrator (vCO)
+- Create Logical Partition (LPAR) profile
 - Supports multiple frames
-- Add virtual Ethernet (maximum 3 ethernets)
+- Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
 	- Select the Virtual Switch
 	- VLAN
 - Add vSCSI on two VIOs
 	- Create Virtual SCSI server on VIO automatically
-- Add NPIV on two VIOs
+- Add HBA/NPIV(vfchost) on two VIOs
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
@@ -135,4 +141,9 @@ If you don't have an HMC and a Power to run tests, don't worry. I've an some cod
 ## License
 
 This software is BSD License. Please more details in LICENSE file.
-IMPORTANT: IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in the United States, other countries, or both.
+
+IMPORTANT: 
+IBM, PowerVM (a.k.a. VIOS), smitty are registered trademarks of IBM Corporation in the United States, other countries, or both.
+
+VMware, vCenter, vCenter Orchestrator are registered trademarks of VMware Inc in
+the United States, other countries, or both.
