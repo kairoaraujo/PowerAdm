@@ -1,7 +1,9 @@
 # PowerAdm - Power Administration to Power.
 
 PowerAdm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and deploy AIX Operating System using NIM Server.
+
 PowerAdm uses a single configuration file and  a simple menu/interface in text mode (Like a smitty).
+
 Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
 
 ## Links
