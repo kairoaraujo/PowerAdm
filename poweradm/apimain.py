@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Power Adm
-# vmomain.py
+# apimain.py
 #
 # Copyright (c) 2015 Kairo Araujo
 #
@@ -24,6 +24,8 @@
 # Important:
 # IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation in
 # the United States, other countries, or both.
+# VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
+# States, other countries, or both.
 #
 # Imports
 ###############################################################################################
