@@ -30,16 +30,7 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Centralized config (poweradm/config.py)
 - Deploy SO from the NIM Server
-- **Organize your IDs!!!** Don't you know what is it? Keep reading...
-
-## Latest release
-
-https://github.com/kairoaraujo/PowerAdm/releases
-
-- v0.8-beta
-
-   - VMware vCenter Orchestrator workflow/support
-   - minor bug fixes
+- **Organize your IDs!!!** Don't you know what is it? Keep 
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
 
@@ -53,6 +44,17 @@ In the future:
 
 - Web Interface
 - vCO workflow/interface deploy OS Deploys using NIM
+
+reading...
+
+## Latest release
+
+https://github.com/kairoaraujo/PowerAdm/releases
+
+- v0.8-beta
+
+   - VMware vCenter Orchestrator workflow/support
+   - minor bug fixes
 
 ### IDs Structure / Organize your IDs
 
