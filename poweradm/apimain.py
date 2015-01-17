@@ -390,8 +390,8 @@ try:
             newchange.closechange()
 
             """ Print and get created change file """
-            print (newchange.returnChange())
             change_file = newchange.returnChange()
+            print (change_file)
 
             """ Run change **** LPAR creation **** """
             mkchange = ExecChange(change_file)
