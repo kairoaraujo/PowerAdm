@@ -43,19 +43,20 @@ class ExecChange:
     def runChange(self):
 
         print ("\nRuning change/ticket %s" % (self.changefile))
-        os.system("sh poweradm/changes/%s" % (self.changefile))
-        os.system('mv poweradm/changes/%s poweradm/changes_executed/' % (self.changefile))
-        f_change_executed = open("poweradm/changes_executed/%s" % (self.changefile), 'r')
+        os.system("sh %s/poweradm/changes/%s" % (pahome, self.changefile))
+        os.system('mv %s/poweradm/changes/%s %s/poweradm/changes_executed/' % (pahome,
+                 self.changefile, pahome))
+        f_change_executed = open("%s/poweradm/changes_executed/%s" % (pahome, self.changefile), 'r')
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
                 % (self.changefile))
         for line in f_change_executed.readlines():
             if line.startswith('#LPARID'):
                 lparidcreated = line.split()
                 print ('Removing ID %s from reserved ids' % (lparidcreated[1]))
-                file_reservedids = open('poweradm/data/reserved_ids')
+                file_reservedids = open('%s/poweradm/data/reserved_ids' % (pahome))
                 line_reservedids = file_reservedids.readlines()
                 file_reservedids.close()
-                file_reservedids = open('poweradm/data/reserved_ids', 'w')
+                file_reservedids = open('%s/poweradm/data/reserved_ids' % (pahome), 'w')
                 for lineids in line_reservedids:
                     file_reservedids.write(lineids.replace((lparidcreated[1]), "0"))
                 file_reservedids.close()
