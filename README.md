@@ -57,28 +57,37 @@ https://github.com/kairoaraujo/PowerAdm/releases
 
 ### IDs Structure / Organize your IDs
 
-These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs
+These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs.
 These IDs also help managing the Live Partition Mobility. Therefore, if well organized, will always remain the same independent of the box.
 
 For this, the following rules were established:
 
 Every LPAR has a maximum number of virtual devices 40 and the following structure:
-Virtual Network IDs will be between 10 and 19
-Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)
-Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)
+- Virtual Network IDs will be between 10 and 19
+- Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)
+- Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)
 
 "VIOS" settings have the following default:
-Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS
+Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS.
 
-Virtual SCSI IDs:  the Primary VIO 1 + 'LPAR ID' and on Secondary VIO 2 + 'LPAR ID'
-Fiber Channel IDs: the Primary VIO 3 + 'LPAR ID' and on Secondary VIO 4 + 'LPAR ID'
+Other sample: If the maximum number of LPAR is 100 the number is changed to 3100 (VIO Primary) and 4100 (VIO Secundary)
+
+Continuing...
+
+Virtual SCSI IDs:  
+- Primary VIO 1 + 'LPAR ID'
+- Secondary VIO 2 + 'LPAR ID'
+
+Fiber Channel IDs: 
+- Primary VIO 3 + 'LPAR ID' 
+- Secondary VIO 4 + 'LPAR ID'
 
 **Example:**
 
-- VIOS1 - ID: 1 
+- VIOS1 - ID: 1 (ever)
    - Maximum number of virtual IDs: 3500
 
-- VIOS2 - ID: 2 
+- VIOS2 - ID: 2 (ever)
    - Maximum number of virtual IDs: 4500
 
 LPAR AIX1
