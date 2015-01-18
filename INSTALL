@@ -93,7 +93,7 @@ Example: npiv/P1-8205-E6D-SN06A07AT-VIO1A
 #
 #######################################################################################
 
-TIP: The PowerAdm needs to work using ASCII/Text mode.
+TIP: The PowerAdm must be configured and running in text mode/ASCII.
 
 1. Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
 
@@ -130,6 +130,5 @@ TIP: The PowerAdm needs to work using ASCII/Text mode.
 13. Continue Anyway (2x)
 
 More informations visit https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
-
 
 
