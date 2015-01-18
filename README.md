@@ -74,47 +74,54 @@ Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondar
 Virtual SCSI IDs:  the Primary VIO 1 + 'LPAR ID' and on Secondary VIO 2 + 'LPAR ID'
 Fiber Channel IDs: the Primary VIO 3 + 'LPAR ID' and on Secondary VIO 4 + 'LPAR ID'
 
-Example:
+**Example:**
 
-VIOS1 - ID: 1 Maximum number of virtual IDs: 3500
-VIOS2 - ID: 2 Maximum number of virtual IDs: 4500
+- VIOS1 - ID: 1 
+   - Maximum number of virtual IDs: 3500
 
-LPAR AIX1
-ID: 11
-Virtual devices:
-- 11: Network adapter data
-- 12: Network adapter backup
-- 21: Virtual SCSI (Server: 111 VIOS1)
-- 22: Virtual SCSI (Server: 211 VIOS2)
-- 33: Fiber Channel (Server: 311 VIOS1)
-- 34: Fiber Channel (Server: 411 VIOS2)
+- VIOS2 - ID: 2 
+   - Maximum number of virtual IDs: 4500
 
 LPAR AIX1
-ID: 12
-Virtual devices:
-- 11: Network adapter data
-- 12: Network adapter backup
-- 21: Virtual SCSI (Server: 112 VIOS1)
-- 22: Virtual SCSI (Server: 212 VIOS2)
-- 33: Fiber Channel (Server: 312 VIOS1)
-- 34: Fiber Channel (Server: 412 VIOS2)
+
+- LPAR ID: 11
+- Virtual devices:
+   - 11: Network adapter data
+   - 12: Network adapter backup
+   - 21: Virtual SCSI (Server: 111 VIOS1)
+   - 22: Virtual SCSI (Server: 211 VIOS2)
+   - 33: Fiber Channel (Server: 311 VIOS1)
+   - 34: Fiber Channel (Server: 411 VIOS2)
+
+LPAR AIX2
+
+- LPAR ID: 12
+- Virtual devices:
+   - 11: Network adapter data
+   - 12: Network adapter backup
+   - 21: Virtual SCSI (Server: 112 VIOS1)
+   - 22: Virtual SCSI (Server: 212 VIOS2)
+   - 33: Fiber Channel (Server: 312 VIOS1)
+   - 34: Fiber Channel (Server: 412 VIOS2)
 
 
 VIOS1
-ID: 1
-Virtual devices:
-- 111 Virtual SCSI (Client ID: 11 / Virtual Client: 21)
-- 112 Virtual SCSI (Client ID: 12 / Virtual Client: 21)
-- 311 Fiber Channel (Client ID: 11 / Virtual Client: 33)
-- 312 Fiber Channel (Client ID: 12 / Virtual Client: 33)
+
+- LPAR ID: 1
+- Virtual devices:
+   - 111 Virtual SCSI (Client ID: 11 / Virtual Client: 21)
+   - 112 Virtual SCSI (Client ID: 12 / Virtual Client: 21)
+   - 311 Fiber Channel (Client ID: 11 / Virtual Client: 33)
+   - 312 Fiber Channel (Client ID: 12 / Virtual Client: 33)
 
 VIOS2
-ID: 2
-Virtual devices:
-- 211 Virtual SCSI (Client: 11 / Virtual Client: 22)
-- 212 Virtual SCSI (Client: 12 / Virtual Client: 22)
-- 411 Fiber Channel (Client: 11 / Virtual Client: 34)
-- 412 Fiber Channel (Client: 12 / Virtual Client: 34)
+
+- LPAR ID: 2
+- Virtual devices:
+   - 211 Virtual SCSI (Client: 11 / Virtual Client: 22)
+   - 212 Virtual SCSI (Client: 12 / Virtual Client: 22)
+   - 411 Fiber Channel (Client: 11 / Virtual Client: 34)
+   - 412 Fiber Channel (Client: 12 / Virtual Client: 34)
 
 In this example we can easily identify which VIO serves the virtual devices, by only looking the partition ID.
 
