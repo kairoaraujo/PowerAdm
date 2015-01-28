@@ -43,10 +43,9 @@ class ExecChange:
     def runChange(self):
 
         print ("\nRuning change/ticket %s" % (self.changefile))
-        os.system("sh %s/poweradm/changes/%s" % (pahome, self.changefile))
-        os.system('mv %s/poweradm/changes/%s %s/poweradm/changes_executed/' % (pahome,
-                 self.changefile, pahome))
-        f_change_executed = open("%s/poweradm/changes_executed/%s" % (pahome, self.changefile), 'r')
+        os.system("sh %s" % (self.changefile))
+        f_change_executed = open(self.changefile, 'r')
+        os.system('mv %s %s/poweradm/changes_executed/' % (self.changefile, pahome))
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
                 % (self.changefile))
         for line in f_change_executed.readlines():

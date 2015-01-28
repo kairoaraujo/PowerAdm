@@ -38,6 +38,7 @@ from config import *
 from newid import *
 from systemvios import *
 from execchange import *
+from mklparconf import *
 ##############################################################################################
 try:
 
@@ -384,7 +385,7 @@ try:
             """ Make a file change """
             newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                                  lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
-                                 npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
+                                 npiv_vio1, npiv_vio2, veth, veth_final, system_option, vio1, vio2)
             newchange.headerchange()
             newchange.writechange()
             newchange.closechange()
