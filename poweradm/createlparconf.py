@@ -382,6 +382,9 @@ def exec_createlparconf():
     configlpar = CheckOK('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
     newconfiglpar = CheckOK('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
 
+    # Count of LPAR
+    lpar_count = 0
+
     # While config is not OK create a config
     while configlpar.answerCheck() == 'n':
 
@@ -393,7 +396,11 @@ def exec_createlparconf():
             newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                     lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
                     npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
-            newchange.headerchange()
+
+            # verify if is first lpar to create header.
+            if lpar_count == 0:
+                newchange.headerchange()
+                lpar_count += 1
 
             configlpar.mkCheck()
             configlpar.answerCheck()
