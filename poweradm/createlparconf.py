@@ -114,6 +114,7 @@ def lparconfig():
     if enable_nim_deploy.lower() == 'yes':
         nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
+	nim_deploy = nim_deploy.answerCheck()
 
     """ get network to deploy using nim (only if nim deploy is enabled) """
     if nim_deploy == 'y':
@@ -206,6 +207,11 @@ def lparconfig():
             stgpool = 'none'
             disk_size = 0
             add_disk = 'n'
+
+    else:
+        stgpool = 'none'
+        disk_size = 0
+        add_disk = 'n'
 
 
     # get network configuration
@@ -414,7 +420,7 @@ def exec_createlparconf():
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
         print ('Runing changes/ticket %s-%s' % (change, timestr))
-        exec_change_after_creation = ExecChange('%s_%s.sh' % (change, timestr))
+        exec_change_after_creation = ExecChange('%s/poweradm/changes/%s_%s.sh' % (pahome, change, timestr))
         exec_change_after_creation.runChange()
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %

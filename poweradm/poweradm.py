@@ -64,7 +64,7 @@ def main_poweradm():
                 (exec_findlpar.getChange()), 'n')
         check_exec_findlpar.mkCheck()
         if check_exec_findlpar.answerCheck() == 'y':
-            exec_change = ExecChange('%s' % (exec_findlpar.getChange()))
+            exec_change = ExecChange('%s/poweradm/changes/%s' % (pahome, exec_findlpar.getChange()))
             exec_change.runChange()
         else:
             print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))
