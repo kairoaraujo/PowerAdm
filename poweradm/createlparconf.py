@@ -76,6 +76,7 @@ def lparconfig():
                 print ('\tERROR: LPAR Entitled needs a flot: Example: 0.1, 1.2, 2.4 etc')
 
         lparentcpumin = lparentcpu-(lparentcpu*cpu_min/100)
+        lparentcpumin = round(lparentcpumin, 1)
         if lparentcpumin < 0.10:
             lparentcpumin = 0.1
         lparentcpumax = (lparentcpu*cpu_max/100)+lparentcpu
