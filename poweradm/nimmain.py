@@ -187,7 +187,7 @@ def nimmain():
         os.system('mv poweradm/nim/%s-%s.nim poweradm/nim_executed/' % (lparprefix, lparname))
         os.system('mv poweradm/changes/deploy_nim_%s-%s.nim poweradm/changes_executed/' % (lparprefix, lparname))
 
-        print ('\nPlease, access HMC %s and run command below to finis OS install. '
+        print ('\nPlease, access HMC %s and run command below to finish OS install. '
                '\n\t\'mkvterm -m %s -p %s-%s\' ' % (hmcserver, lparframe, lparprefix, lparname))
 
         access_hmc = CheckOK('\nDo you want access HMC on this session?(y/n): ', 'n')

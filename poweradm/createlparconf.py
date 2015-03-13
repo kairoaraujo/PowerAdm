@@ -302,6 +302,10 @@ def lparconfig():
 
         npiv_vio2 = raw_input('\nWhat HBA (ex: fcs0) you want to use for NPIV to %s?: ' % (vio2))
 
+    else:
+        npiv_vio1 = 'none'
+        npiv_vio2 = 'none'
+
     # verify configuration
     global veth
     global veth_final
