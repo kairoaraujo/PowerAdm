@@ -79,6 +79,7 @@ class MakeLPARConf():
 
         # verify entitle cpu and set min and maximum
         lparentcpumin = self.lparentcpu-(self.lparentcpu*cpu_min/100)
+        lparentcpumin = round(lparentcpumin, 1)
         if lparentcpumin < 0.10:
             lparentcpumin = 0.1
         lparentcpumax = (self.lparentcpu*cpu_max/100)+self.lparentcpu
@@ -257,7 +258,7 @@ class MakeLPARConf():
                     % ( hmcserver, self.system, self.prefix, self.lparname, self.lparid,
                         self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
                         self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, sharing_mode,
-                        uncap_weight, conn_monitoring, boot_mode, virtual_eth_adapters))
+                        uncap_weight, conn_monitoring, boot_mode, self.veth))
             wchg_checksh()
 
 
