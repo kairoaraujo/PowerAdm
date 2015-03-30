@@ -4,7 +4,7 @@
 # Power Adm
 # main.py
 #
-# Copyright (c) 2014 Kairo Araujo
+# Copyright (c) 2014, 2015 Kairo Araujo
 #
 # It was created for personal use. There are no guarantees of the author.
 # Use at your own risk.
@@ -33,20 +33,22 @@ from findchange import *
 from execchange import *
 from nimmain import *
 from nimclear import *
+import tbmain
 import os
 
 def main_poweradm():
     """ Main (and main menu) of PowerAdm """
 
     os.system('clear')
-    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014 Kairo Araujo - BSD License ]\n" % version)
+    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014, 2015 Kairo Araujo - BSD License ]\n" % version)
 
     poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
                   "2. Execute the LPAR creation.\n"
                   "3. Deploy OS on an existing LPAR.\n"
                   "4. Clear NIM OS deploy configs.\n"
-                  "5. Quit\n\n"
+                  "5. Troubleshooting.\n"
+                  "6. Quit.\n\n"
                   "Please choose an option: ")
 
     if poweradm == '1':
@@ -81,7 +83,11 @@ def main_poweradm():
         nimclear()
 
     elif poweradm == '5':
-        print ("5. Quit")
+
+        tbmain.tbmain()
+
+    elif poweradm == '6':
+        print ("6. Quit")
         print ("Quiting...")
         exit()
 

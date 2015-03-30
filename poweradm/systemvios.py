@@ -4,7 +4,7 @@
 # Power Adm
 # systemVios.py
 #
-# Copyright (c) 2014 Kairo Araujo
+# Copyright (c) 2014, 2015 Kairo Araujo
 #
 # It was created for personal use. There are no guarantees of the author.
 # Use at your own risk.
@@ -37,6 +37,7 @@ from config import *
 ##############################################################################################
 
 class SystemVios:
+    ''' Select, List and Show Systems and VIOs from configuration. '''
 
     def selectSystemVios(self):
         ''' Selection in ASCII mode Systems and VIOS '''
@@ -58,20 +59,38 @@ class SystemVios:
             except (IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (systems_length))
 
+        number_vios = len(systems[('%s' % systems_keys[system_option])])
+
         self.vio1 = systems[('%s' % systems_keys[system_option])][0]
         self.vio2 = systems[('%s' % systems_keys[system_option])][1]
+
+        if number_vios == 4:
+            self.vionet1 = systems[('%s' % systems_keys[system_option])][2]
+            self.vionet2 = systems[('%s' % systems_keys[system_option])][3]
+
+        elif number_vios == 2:
+            self.vionet1 = self.vio1
+            self.vionet2 = self.vio2
 
     def getSystem(self):
         ''' Get the System selected on selectSystemVios() '''
         return self.system
 
     def getVio1(self):
-        ''' Get the VIO1 by Systemselected on selectSystemVios() '''
+        ''' Get the NPIV/SCSI VIO1 by Systemselected on selectSystemVios() '''
         return self.vio1
 
     def getVio2(self):
-        ''' Get the VIO2 by System selected on selectSystemVios() '''
+        ''' Get the NPIV/SCSI VIO2 by System selected on selectSystemVios() '''
         return self.vio2
+
+    def getVioNet1(self):
+        ''' Get the network VIO1 by System selected on selectSystemVios() '''
+        return self.vionet1
+
+    def getVioNet2(self):
+        ''' Get the network VIO2 by System selected on selectSystemVios() '''
+        return self.vionet2
 
     def printSystemList(self):
         ''' Get the list of Systems '''
@@ -83,9 +102,10 @@ class SystemVios:
             count += 1
 
     def returnVio1 (self, system_option):
+        ''' Indicating the system, returns de NPIV/SCSI VIO1 '''
         return (systems[system_option][0])
 
-
     def returnVio2 (self, system_option):
+        ''' Indicating the system, returns de NPIV/SCSI VIO1 '''
         return (systems[system_option][1])
 

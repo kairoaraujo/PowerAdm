@@ -49,16 +49,19 @@ cpu_min = 50
 cpu_max = 100
 
 # Systems and VIOS NPIV
-# Important: Require two vios. If you have only one vio repeat the vio.
-# Syntax: 'SYSTEM NAME':['VIO1','VIO2']
+# Important: Require two vios NPIV. If you have only one vio repeat the vio name 
+#            as first example "'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],"
+#            If you have four vios, put the two first the NPIV and the two last
+#            the network VIOS as secound example "'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],"
+# Syntax: 'SYSTEM NAME':['VIO1','VIO2','VIONET1','VIONET2']
 # - SYSTEM NAME: Is exactly name of your managed system.
 # - VIO1: is exactly name of your VIO Primary partition.
 # - VIO2: is exactly name of your VIO Secundary partition.
 #
 systems = {
-           'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'],
-           'P1-8205-E6D-SN06A07BT':['VIO1B','VIO2B'],
-           'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']
+           'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],
+           'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],
+           'P1-8205-E6D-SN06A07CT':['VIO1C','VIO2C']
           }
 
 # Virtual Switches
