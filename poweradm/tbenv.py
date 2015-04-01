@@ -74,7 +74,7 @@ class TBEnv:
         print ('# \033[94m %s \033[1;00m - Check NPIV configuration and state' % vios1)
         print ('\033[94m#\033[1;00m' * 80)
 	
-	lsnpivs.run(config.hmcserver, system, vios1)	
+	lsnpivs.run(config.hmcserver, system, vios1, 'all')	
 
   	print ('\n\n') 
 	print ('\033[94m#\033[1;00m' * 80)
@@ -82,7 +82,7 @@ class TBEnv:
         print ('\033[94m#\033[1;00m' * 80)
 
 	
-	lsnpivs.run(config.hmcserver, system, vios2)	
+	lsnpivs.run(config.hmcserver, system, vios2, 'all')	
 
 
 

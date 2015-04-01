@@ -31,15 +31,20 @@ import os
 import commands
 ##############################################################################################
 
-def run(hmcserver, system, vios):
+def run(hmcserver, system, vios, fc):
     ''' Run NPIV check on VIOs
-          - hmcserver HMC Address or hostname
-          - exactly system name of Power System
-          - exactly name of VIOS LPAR
+          - hmcserver: HMC Address or hostname
+          - system: exactly system name of Power System
+          - vios: exactly name of VIOS LPAR
+	  - fc: all for all fcs or specific fc (sample: fcs0)
     '''
-
-    os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'lsnports'" | grep fcs > /tmp/%s.%s.lsnports" % (hmcserver, system, vios, system, vios))
-    os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'errlog'" | grep fcs > /tmp/%s.%s.fcs.errlog" % (hmcserver, system, vios, system, vios))
+    if fc == 'all':
+        os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'lsnports'" | grep fcs > /tmp/%s.%s.lsnports" % (hmcserver, system, vios, system, vios))
+        os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'errlog'" | grep fcs > /tmp/%s.%s.fcs.errlog" % (hmcserver, system, vios, system, vios))
+    else:
+        os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'lsnports'" | grep '%s ' > /tmp/%s.%s.lsnports" % (hmcserver, system, vios, fc, system, vios))
+        os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'errlog'" | grep '%s ' > /tmp/%s.%s.fcs.errlog" % (hmcserver, system, vios, fc, system, vios))
+       
 
     with open('/tmp/%s.%s.lsnports' % (system, vios)) as lsnports:
         for line in lsnports:

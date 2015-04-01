@@ -93,7 +93,7 @@ class SystemVios:
         return self.vionet2
 
     def printSystemList(self):
-        ''' Get the list of Systems '''
+        ''' printthe list of Systems '''
         systems_keys = list(systems.keys())
         systems_length = (len(systems.keys()))-1
         count = 0
@@ -101,11 +101,51 @@ class SystemVios:
             print ("%s" % (systems_keys[count]))
             count += 1
 
+    def getSystemList(self):
+        ''' Get the list of Systems '''
+	return systems.keys()
+
     def returnVio1 (self, system_option):
-        ''' Indicating the system, returns de NPIV/SCSI VIO1 '''
+        ''' Indicating the system, returns the NPIV/SCSI VIO1 '''
         return (systems[system_option][0])
 
     def returnVio2 (self, system_option):
-        ''' Indicating the system, returns de NPIV/SCSI VIO1 '''
+        ''' Indicating the system, returns the NPIV/SCSI VIO1 '''
         return (systems[system_option][1])
 
+    def returnNetVio1 (self, system_option):
+        ''' Indicating the system, returns the NETWORK VIO1 '''
+ 
+        number_vios = len(systems.get(system_option))
+
+        self.vio1 = systems.get(system_option)[0]
+        self.vio2 = systems.get(system_option)[1]
+
+        if number_vios == 4:
+            self.vionet1 = systems.get(system_option)[2]
+            self.vionet2 = systems.get(system_option)[3]
+
+        elif number_vios == 2:
+            self.vionet1 = self.vio1
+            self.vionet2 = self.vio2
+
+        return self.vionet1
+
+
+    def returnNetVio2 (self, system_option):
+        ''' Indicating the system, returns the NETWORK VIO2 '''
+
+        number_vios = len(systems.get(system_option))
+
+        self.vio1 = systems.get(system_option)[0]
+        self.vio2 = systems.get(system_option)[1]
+
+        if number_vios == 4:
+            self.vionet1 = systems.get(system_option)[2]
+            self.vionet2 = systems.get(system_option)[3]
+
+        elif number_vios == 2:
+            self.vionet1 = self.vio1
+            self.vionet2 = self.vio2
+
+        return self.vionet2

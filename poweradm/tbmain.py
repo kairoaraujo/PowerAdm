@@ -31,6 +31,7 @@ import time
 import os
 import globalvar
 import tbenv
+import tblpar
 ##############################################################################################
 
 def tbmain():
@@ -45,16 +46,39 @@ def tbmain():
         envtb = raw_input("\n[Troubleshooting Environment]\n\n"
                           "Select a option\n\n"
                           "1. Check SEAs (by lsseas).\n"
-			  "2. Check NPIVs.\n\n"
+            			  "2. Check NPIVs.\n\n"
                           "Please choose an option: ")
 
         if envtb == '1':
-           env = tbenv.TBEnv()
-           env.lsseas()
-        
-	elif envtb == '2':
-           env = tbenv.TBEnv()
-           env.lsnpivs()
+            env = tbenv.TBEnv()
+            env.lsseas()
+
+        elif envtb == '2':
+            env = tbenv.TBEnv()
+            env.lsnpivs()
+
+    if patb == '2':
+        lpar_id = raw_input("\n[Troubleshooting LPAR]\n\n"
+                            "LPAR ID: ")
+        tblpar_option = raw_input("\n[Troubleshooting Environment]\n\n"
+                                 "Select a option\n\n"
+                                 "1. All (full)\n"
+                                 "2. SCSI \n"
+                                 "3. FC (NPIV)\n"
+                                 "4. Network\n"
+                                 "Please choose an option: ")
+        if tblpar_option == '1':
+            tblpar.run(lpar_id, 'all')
+
+        if tblpar_option == '2':
+            tblpar.run(lpar_id, 'vscsi')
+
+        if tblpar_option == '3':
+            tblpar.run(lpar_id, 'vfc')
+
+        if tblpar_option == '4':
+           tblpar.run(lpar_id, 'vnet')
+
 
 
 
