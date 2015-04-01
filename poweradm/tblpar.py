@@ -294,7 +294,7 @@ def run( id_search, tb_option):
 
     print "\n\n"
     print "\033[94m#\033[1;00m" * 84
-    print "\033[94m# LPAR NAME: %s - ID: 100 - getting LPAR information and state\033[1;00m" % lpar_name
+    print ("\033[94m# LPAR NAME: %s - ID: %s - getting LPAR information and state\033[1;00m" % (lpar_name, lpar_search))
     print "\033[94m#\033[1;00m" * 84
 
     print "\nLPAR NAME: %s\n" % lpar_name
