@@ -82,8 +82,8 @@ def vscsi():
                 for l_lsmap in lsmap:
                     if l_lsmap.startswith( 'VTD' ):
                         new_vtd = l_lsmap.split()
-			if new_vtd[1] == 'NO':
-			    break
+                        if new_vtd[1] == 'NO':
+                            break
                         vtd_list.append(new_vtd[1])
                 if len(vtd_list) != 0:
                     print "`.... VTD allocated list: %s " % (', '.join(vtd_list))
@@ -120,7 +120,11 @@ def vfc():
     lpardata = find_lpar.split('virtual_fc_adapters')
     lpardata_spl1 = lpardata[1].split('"""')
     lpardata_spl2 = lpardata_spl1[0].split('=""')
-    lpar_fcs = lpardata_spl2[1].split('"",""')
+    try:
+        lpar_fcs = lpardata_spl2[1].split('"",""')
+    except(IndexError):
+        print "LPAR withtout FC/HBA"
+        exit()
     len_lpar_fcs = len(lpar_fcs)-1
     count = 0
     # check all fcs existent on LPAR
@@ -291,14 +295,44 @@ def run( id_search, tb_option):
         elif lpar_info[0] in ('virtual_scsi_adapters'):
         	virtual_scsi_adapters = lpar_info[1]
 
+    lpar_status_data = commands.getoutput("lssyscfg -m %s -r lpar -F state:rmc_state:boot_mode:curr_profile --filter lpar_names=%s" %
+            (system, lpar_name))
+
+    lpar_status = lpar_status_data.split(':')
+    # lpar status
+    lpar_state = lpar_status[0]
+
+    if lpar_state == 'Running':
+        lpar_state = ("\033[32m%s\033[1;00m" % lpar_state)
+    else:
+        lpar_state = ("\033[32m%s\033[1;00m" % lpar_state)
+    lpar_rmc = lpar_status[1]
+
+    # lpar hmc(dlpar) satus
+    if lpar_rmc == 'active':
+        lpar_rmc = ("\033[32m%s\033[1;00m" % lpar_rmc)
+    else:
+        lpar_rmc = ("\033[32m%s\033[1;00m" % lpar_rmc)
+
+    # lpar boot mode
+    lpar_boot_mode = lpar_status[2]
+    if lpar_boot_mode == 'norm':
+        lpar_boot_mode = ("\033[32mNormal\033[1;00m")
+    else:
+        lpar_boot_mode = ("\033[32m%s\033[1;00m" % lpar_boot_mode)
+
+    lpar_curr_profile = lpar_status[3]
 
     print "\n\n"
     print "\033[94m#\033[1;00m" * 84
     print ("\033[94m# LPAR NAME: %s - ID: %s - getting LPAR information and state\033[1;00m" % (lpar_name, lpar_search))
     print "\033[94m#\033[1;00m" * 84
 
-    print "\nLPAR NAME: %s\n" % lpar_name
-    print "Host server: %s\n" % system
+    print "-" *84
+    print ("\nLPAR NAME: %s\t | Current Profile: %s\t | Host Server: %s\n" % (lpar_name, lpar_curr_profile, system))
+    print "-" *84
+    print ("LPAR Status: %s\t | RMC Status (DLPAR): %\t | Boot Mode: %s" % (lpar_state, lpar_rmc, lpar_boot_mode))
+    print "-" *84
 
     print "\033[94mConfiguration\033[1;00m"
     print "\033[94m-\033[1;00m" * 84
