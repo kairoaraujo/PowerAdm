@@ -299,7 +299,6 @@ def run( id_search, tb_option):
             (config.hmcserver, system, lpar_name))
 
     lpar_status = lpar_status_data.split(':')
-    print lpar_status
     # lpar status
     lpar_state = lpar_status[0]
 
