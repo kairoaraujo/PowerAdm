@@ -177,10 +177,6 @@ def vfc():
             # run lsnpiv on specific NPIV interface
             if fcp[1] != '\033[31mnone\033[1;00m':
                  lsnpivs.run(config.hmcserver, system, fcs_configs[3], fcp[1])
-                 print "\n\033[94mVerify NPIV state\033[1;00m"
-                 print "\033[94m------ ---- -----\033[1;00m"
-                 print ("Checking the NPIV \033[36m%s\033[1;00m state on VIO \033[36m%s\033[1;00m" %
-                      (fcp[1], fcs_configs[3]))
 
             else:
                  print ("\n\033[31mDon't have connection to NPIV on VIO \033[36m%s\033[1;00m\n" % (fcs_configs[3]))
