@@ -104,10 +104,10 @@ def vscsi():
                             backing_device_list.append(new_backing_device[2])
 
                     # if Backing Device is empty without devices print none or the list
-                    if len(backing_device_list) != 0:
-                        print "`.... Backing Device allocated list: %s \n" % (', '.join(backing_device_list))
-                    else:
-                        print "`.... Backing Device allocated list: none\n"
+                if len(backing_device_list) != 0:
+                    print "`.... Backing Device allocated list: %s \n" % (', '.join(backing_device_list))
+                else:
+                    print "`.... Backing Device allocated list: none\n"
 
 def vfc():
     ''' Execute the virtual FC troubleshooting '''
@@ -295,31 +295,32 @@ def run( id_search, tb_option):
         elif lpar_info[0] in ('virtual_scsi_adapters'):
         	virtual_scsi_adapters = lpar_info[1]
 
-    lpar_status_data = commands.getoutput("lssyscfg -m %s -r lpar -F state:rmc_state:boot_mode:curr_profile --filter lpar_names=%s" %
-            (system, lpar_name))
+    lpar_status_data = commands.getoutput("ssh -l poweradm %s lssyscfg -m %s -r lpar -F state:rmc_state:boot_mode:curr_profile --filter lpar_names=%s" %
+            (config.hmcserver, system, lpar_name))
 
     lpar_status = lpar_status_data.split(':')
+    print lpar_status
     # lpar status
     lpar_state = lpar_status[0]
 
     if lpar_state == 'Running':
         lpar_state = ("\033[32m%s\033[1;00m" % lpar_state)
     else:
-        lpar_state = ("\033[32m%s\033[1;00m" % lpar_state)
+        lpar_state = ("\033[31m%s\033[1;00m" % lpar_state)
     lpar_rmc = lpar_status[1]
 
     # lpar hmc(dlpar) satus
     if lpar_rmc == 'active':
         lpar_rmc = ("\033[32m%s\033[1;00m" % lpar_rmc)
     else:
-        lpar_rmc = ("\033[32m%s\033[1;00m" % lpar_rmc)
+        lpar_rmc = ("\033[31m%s\033[1;00m" % lpar_rmc)
 
     # lpar boot mode
     lpar_boot_mode = lpar_status[2]
     if lpar_boot_mode == 'norm':
         lpar_boot_mode = ("\033[32mNormal\033[1;00m")
     else:
-        lpar_boot_mode = ("\033[32m%s\033[1;00m" % lpar_boot_mode)
+        lpar_boot_mode = ("\033[31m%s\033[1;00m" % lpar_boot_mode)
 
     lpar_curr_profile = lpar_status[3]
 
@@ -328,11 +329,9 @@ def run( id_search, tb_option):
     print ("\033[94m# LPAR NAME: %s - ID: %s - getting LPAR information and state\033[1;00m" % (lpar_name, lpar_search))
     print "\033[94m#\033[1;00m" * 84
 
-    print "-" *84
-    print ("\nLPAR NAME: %s\t | Current Profile: %s\t | Host Server: %s\n" % (lpar_name, lpar_curr_profile, system))
-    print "-" *84
-    print ("LPAR Status: %s\t | RMC Status (DLPAR): %\t | Boot Mode: %s" % (lpar_state, lpar_rmc, lpar_boot_mode))
-    print "-" *84
+    print ("\n+ LPAR NAME: %s\t| Current Profile: %s\n+ Host Server: %s" % (lpar_name, lpar_curr_profile, system))
+    print ("+ LPAR Status")
+    print ("`.... Current Status: %s\n`.... RMC Status (DLPAR): %s\n`.... Boot Mode: %s\n" % (lpar_state, lpar_rmc, lpar_boot_mode))
 
     print "\033[94mConfiguration\033[1;00m"
     print "\033[94m-\033[1;00m" * 84
