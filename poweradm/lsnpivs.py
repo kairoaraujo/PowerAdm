@@ -44,7 +44,7 @@ def run(hmcserver, system, vios, fc):
     else:
         os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'lsnports'" | grep '%s ' > /tmp/%s.%s.lsnports" % (hmcserver, system, vios, fc, system, vios))
         os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'errlog'" | grep '%s ' > /tmp/%s.%s.fcs.errlog" % (hmcserver, system, vios, fc, system, vios))
-       
+
 
     with open('/tmp/%s.%s.lsnports' % (system, vios)) as lsnports:
         for line in lsnports:
@@ -144,10 +144,10 @@ def run(hmcserver, system, vios, fc):
 
             if speed_port[3] != speed_running[3]:
                 print ("Speed Port (supported): \033[1;34m%s\033[1;00m %s" % (speed_port[3], speed_port[4]))
-                print ("Speed Port (running): \033[1;33m%s\033[1;00m %s" % (speed_port[3], speed_port[4]))
+                print ("Speed Port (running): \033[1;33m%s\033[1;00m %s" % (speed_running[3], speed_running[4]))
             else:
                 print ("Speed Port (supported): \033[1;34m%s\033[1;00m %s" % (speed_port[3], speed_port[4]))
-                print ("Speed Port (running): \033[1;34m%s\033[1;00m %s" % (speed_port[3], speed_port[4]))
+                print ("Speed Port (running): \033[1;34m%s\033[1;00m %s" % (speed_running[3], speed_running[4]))
 
             print wwpn
 
