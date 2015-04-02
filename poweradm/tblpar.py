@@ -74,10 +74,10 @@ def vscsi():
             # get informations on vhost on VIOS and save on temporaly file
     	    os.system("ssh -l poweradm %s viosvrcmd -m %s "
                 "-p %s -c \"\'lsmap -vadapter %s\'\" > /tmp/%s.lsmap.%s" %
-                (config.hmcserver, system, scsi_configs[3], vhost, system, lpar_search))
+                (config.hmcserver, system, scsi_configs[3], vhost, system, lpar_id))
 
             # open temp file to get VTD informations
-    	    with open("/tmp/%s.lsmap.%s" % (system, lpar_search )) as lsmap:
+    	    with open("/tmp/%s.lsmap.%s" % (system, lpar_id )) as lsmap:
      	        vtd_list = []
                 for l_lsmap in lsmap:
                     if l_lsmap.startswith( 'VTD' ):
@@ -91,7 +91,7 @@ def vscsi():
                     print "`.... VTD allocated list: none"
 
             # open temp file to get Backing device informations
-    	    with open("/tmp/%s.lsmap.%s" % (system, lpar_search)) as lsmap:
+    	    with open("/tmp/%s.lsmap.%s" % (system, lpar_id)) as lsmap:
 
                 backing_device_list = []
                 for l_lsmap in lsmap:
@@ -144,10 +144,10 @@ def vfc():
         print "`.... vfchost: %s" % vfchost
         os.system("ssh -l poweradm %s viosvrcmd -m %s "
                 "-p %s -c \"\'lsmap -npiv -vadapter %s\'\" > /tmp/%s.lsmap.npiv.%s" %
-                (config.hmcserver, system, fcs_configs[3], vfchost, system, lpar_search))
+                (config.hmcserver, system, fcs_configs[3], vfchost, system, lpar_id))
 
         # open the temp file with vfchost informations
-        with open("/tmp/%s.lsmap.npiv.%s" % (system, lpar_search)) as lsmap_npiv:
+        with open("/tmp/%s.lsmap.npiv.%s" % (system, lpar_id)) as lsmap_npiv:
             for l_lsmap_npiv in lsmap_npiv:
                 if l_lsmap_npiv.startswith('Status'):
                     fc_status = l_lsmap_npiv.split(':')
@@ -242,21 +242,9 @@ def vnet():
             print ("\n This SEA has the same configuration of the last adapter.\n")
             vsw = eth_configs[6]
 
-def run( id_search, tb_option):
-    ''' Run the initial search for LPAR by ID '''
 
-
-    global find_lpar, system, lpar_search
-    lpar_search = id_search
-    # find lpar by the ID
-    for system in systems:
-        find_lpar = commands.getoutput('ssh -l poweradm %s lssyscfg -r prof -m %s --filter lpar_ids=%s' % (config.hmcserver, system, id_search))
-        if ("lpar_id=%s" % id_search) in find_lpar:
-            break
-    if ('HSCL8011 The partition ID "%s" was not found.' % id_search) == find_lpar:
-        print "\n\nLPAR not found."
-	exit()
-
+def info():
+    ''' Get basic informations of LPAR '''
 
     # get some informations about lpar
     lpardata = find_lpar.split(',')
@@ -266,6 +254,10 @@ def run( id_search, tb_option):
         # lpar name
         if lpar_info[0] in ('lpar_name'):
     	    lpar_name = lpar_info[1]
+
+	# lpar id
+	if lpar_info[0] in ('lpar_id'):
+            lpar_id = lpar_info[1]
 
         # entitled cpu
         elif lpar_info[0] in ('desired_proc_units'):
@@ -299,6 +291,7 @@ def run( id_search, tb_option):
             (config.hmcserver, system, lpar_name))
 
     lpar_status = lpar_status_data.split(':')
+    print lpar_status
     # lpar status
     lpar_state = lpar_status[0]
 
@@ -325,7 +318,7 @@ def run( id_search, tb_option):
 
     print "\n\n"
     print "\033[94m#\033[1;00m" * 84
-    print ("\033[94m# LPAR NAME: %s - ID: %s - getting LPAR information and state\033[1;00m" % (lpar_name, lpar_search))
+    print ("\033[94m# LPAR NAME: %s - ID: %s - getting LPAR information and state\033[1;00m" % (lpar_name, lpar_id))
     print "\033[94m#\033[1;00m" * 84
 
     print ("\n+ LPAR NAME: %s\t| Current Profile: %s\n+ Host Server: %s" % (lpar_name, lpar_curr_profile, system))
@@ -335,7 +328,7 @@ def run( id_search, tb_option):
     print "\033[94mConfiguration\033[1;00m"
     print "\033[94m-\033[1;00m" * 84
 
-    print "+ ID: %s\n" % lpar_search
+    print "+ ID: %s\n" % lpar_id
     print "+ Virtual CPU: %s" % desired_procs
     print "`.... Min Virtual CPU (DLPAR): %s" % min_procs
     print "`.... Max Virtual CPU (DLPAR): %s\n" % min_procs
@@ -346,24 +339,94 @@ def run( id_search, tb_option):
     print "`.... Min Memory (DLPAR): %s" % min_mem
     print "`.... Max Memory (DLPAR): %s\n" % max_mem
 
+
+def run(lpar_search, search_type, tb_option):
+    ''' Run the initial search for LPAR by ID '''
+
+    global find_lpar, system, lpar_id
+    lpar_id = lpar_search
+
+    # find lpar by the ID
+    if search_type == 'by_id':
+        # looping in the all systems
+    	for system in systems:
+            find_lpar = commands.getoutput('ssh -l poweradm %s lssyscfg -r prof -m %s --filter lpar_ids=%s' %
+                        (config.hmcserver, system, lpar_search))
+            # search
+            if ("lpar_id=%s" % lpar_search) in find_lpar:
+                break
+            if ('HSCL8011 The partition ID "%s" was not found.' % lpar_search) == find_lpar:
+                print "\n\nLPAR not found."
+                exit()
+
+    # find lpar by the string
+    elif search_type == 'by_str':
+        # looping in the all systems
+    	for system in systems:
+            # put results on temp file
+            find_lpar = os.system("ssh -l poweradm %s lssyscfg -r prof -m %s -F lpar_name | grep -i %s >> /tmp/search.%s" %
+	                              (config.hmcserver, system, lpar_search, globalvar.timestr))
+            # open temp file
+            with open('/tmp/search.%s' % (globalvar.timestr)) as search_lpar_str:
+                lpar_count = 0 # number of lpars
+                lpar_list = [] # list of lpars
+                print ("\n\n[LPAR with %s in the name]" % lpar_search)
+
+                # list of LPARs
+                for l_search_lpar_str in search_lpar_str:
+                    l_search_lpar_str = l_search_lpar_str.replace('\n','')
+                    print ("%s.\t%s" % (lpar_count, l_search_lpar_str))
+                    lpar_list.append(l_search_lpar_str)
+                    lpar_count += 1
+
+                # check if found one lpar at least
+                if len(lpar_list) == 0:
+                    print "\nNot found LPAR with %s.\n" % lpar_search
+                    exit()
+
+                # select lpar (test if number is out of index)
+                while True:
+                    try:
+                        lpar_option = int(raw_input("\nPlease select the LPAR: "))
+                        lpar_search = lpar_list[lpar_option]
+                        break
+                    except(IndexError):
+                        print('\tERROR: Select an existing option between 0 and %s.' % (len(lpar_list)-1))
+
+                # get data of LPAR chosen
+                for system in systems:
+                    find_lpar = commands.getoutput('ssh -l poweradm %s lssyscfg -r prof -m %s --filter lpar_names=%s' %
+                            (config.hmcserver, system, lpar_search))
+                    if ("lpar_name=%s" % lpar_search) in find_lpar:
+                        break
+
+
     # get the vios, not used yet :P
     npiv_vios = systemvios.SystemVios()
     npiv_vios_list = [npiv_vios.returnVio1(system), npiv_vios.returnVio2(system)]
 
     # run all checks (vscsi, vfc and vnet)
     if tb_option == 'all':
+	info()
         vscsi()
         vfc()
         vnet()
 
+    # run info check
+    if tb_option == 'info':
+	info()
+
     # run vscsi check
     elif tb_option == 'vscsi':
+	info()
         vscsi()
 
     # run vfc check
     elif tb_option == 'vfc':
+	info()
         vfc()
     # run fc check
     elif tb_option == 'vnet':
+	info()
         vnet()
 
