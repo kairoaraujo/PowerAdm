@@ -199,6 +199,9 @@ def vnet():
     vsw = '' # it's used to check if is the same VSW, if it's don't print again the SEA status, unecessary.
     # looping to get ethernet informations
     for l_lpar_eths in lpar_eths:
+        # lpar with one ethernet, with fc and scsi the second valus is "virtual_fc_adapters
+        if l_lpar_eths.startswith('"'):
+            break
         eth_configs = l_lpar_eths.split('/')
         print "+ C%s" % eth_configs[0]
         print "`.... VLAN: %s" % eth_configs[2]
@@ -291,7 +294,6 @@ def info():
             (config.hmcserver, system, lpar_name))
 
     lpar_status = lpar_status_data.split(':')
-    print lpar_status
     # lpar status
     lpar_state = lpar_status[0]
 
@@ -355,9 +357,9 @@ def run(lpar_search, search_type, tb_option):
             # search
             if ("lpar_id=%s" % lpar_search) in find_lpar:
                 break
-            if ('HSCL8011 The partition ID "%s" was not found.' % lpar_search) == find_lpar:
-                print "\n\nLPAR not found."
-                exit()
+        if ('HSCL8011 The partition ID "%s" was not found.' % lpar_search) == find_lpar:
+            print "\n\nLPAR not found."
+            exit()
 
     # find lpar by the string
     elif search_type == 'by_str':
