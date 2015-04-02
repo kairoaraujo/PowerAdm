@@ -39,7 +39,7 @@ def tbmain():
 
     # main menu
     patb = raw_input("\n[Troubleshooting options]\n\n"
-                  "Select a option\n\n"
+                  "Select an option\n\n"
                   "1. Verify environment.\n"
                   "2. Verify specific LPAR.\n\n"
                   "Please choose an option: ")
@@ -47,7 +47,7 @@ def tbmain():
     # environment menu
     if patb == '1':
         envtb = raw_input("\n[Troubleshooting Environment]\n\n"
-                          "Select a option\n\n"
+                          "Select an option\n\n"
                           "1. Check SEAs (by lsseas).\n"
             		  "2. Check NPIVs.\n\n"
                           "Please choose an option: ")
@@ -82,7 +82,7 @@ def tbmain():
 
 	# LPAR types of check
 	tblpar_option = raw_input("\n[Troubleshooting LPAR]\n\n"
-                                 "Select a option\n\n"
+                                 "Select an option\n\n"
                                  "1. All (Info, vSCSI, vFC and vNetwork)\n"
 				 "2. Info (basic info as DLPAR, ID, memory, cpu etc)\n"
                                  "3. vSCSI \n"

@@ -112,7 +112,7 @@ def vscsi():
 def vfc():
     ''' Execute the virtual FC troubleshooting '''
 
-    print "\n\033[94mNPVI\033[1;00m"
+    print "\n\033[94mNPIV\033[1;00m"
     print "\033[94m----\033[1;00m"
 
 
@@ -221,6 +221,8 @@ def vnet():
                         "-p %s -c \"\'entstat -all %s\'\" | grep -E \'%s|^    ent\'" % (config.hmcserver, system, l_net_vios, l_find_sea_vio, eth_configs[6]))
                 if eth_configs[2] in find_vsw:
                     seas.append(l_find_sea_vio)
+		else:
+		    seas.append("\033[33mnot found\033[1;00m")
         print ("`.... VIOS(SEA): %s(%s), %s(%s)\n" % (net_vio.returnNetVio1(system), seas[0], net_vio.returnNetVio2(system), seas[1]))
 
         print "\033[94mSEA status\033[1;00m"
@@ -230,14 +232,20 @@ def vnet():
         if vsw != eth_configs[6]:
 
             print ("Checking the \033[36m%s\033[1;00m on VIOS \033[36m%s\033[1;00m ...\n" % ( seas[0], net_vio.returnNetVio1(system)))
-
-            os.system ("ksh %s/poweradm/tools/lsseas -c %s %s %s %s" %
-                    (config.pahome, config.hmcserver, system, net_vio.returnNetVio1(system), seas[0]))
+	    
+	    if seas[0] == '\033[33mnot found\033[1;00m':
+	        print ('Please check maanual, I cant found the specific SEA for VLAN')
+            else:
+                os.system ("ksh %s/poweradm/tools/lsseas -c %s %s %s %s" %
+                        (config.pahome, config.hmcserver, system, net_vio.returnNetVio1(system), seas[0]))
 
             print ("\nChecking the \033[36m%s\033[1;00m on VIOS \033[36m%s\033[1;00m ...\n" % ( seas[1], net_vio.returnNetVio2(system)))
 
-            os.system ("ksh %s/poweradm/tools/lsseas -c %s %s %s %s" %
-                    (config.pahome, config.hmcserver, system, net_vio.returnNetVio2(system), seas[1]))
+	    if seas[1] == '\033[33mnot found\033[1;00m':
+	        print ('Please check maanual, I cant found the specific SEA for VLAN')
+            else:
+                os.system ("ksh %s/poweradm/tools/lsseas -c %s %s %s %s" %
+                        (config.pahome, config.hmcserver, system, net_vio.returnNetVio1(system), seas[1]))
 
             print ("\n")
 
@@ -368,39 +376,39 @@ def run(lpar_search, search_type, tb_option):
             # put results on temp file
             find_lpar = os.system("ssh -l poweradm %s lssyscfg -r prof -m %s -F lpar_name | grep -i %s >> /tmp/search.%s" %
 	                              (config.hmcserver, system, lpar_search, globalvar.timestr))
-            # open temp file
-            with open('/tmp/search.%s' % (globalvar.timestr)) as search_lpar_str:
-                lpar_count = 0 # number of lpars
-                lpar_list = [] # list of lpars
-                print ("\n\n[LPAR with %s in the name]" % lpar_search)
+        # open temp file
+        with open('/tmp/search.%s' % (globalvar.timestr)) as search_lpar_str:
+            lpar_count = 0 # number of lpars
+            lpar_list = [] # list of lpars
+            print ("\n\n[LPAR with %s in the name]" % lpar_search)
 
-                # list of LPARs
-                for l_search_lpar_str in search_lpar_str:
-                    l_search_lpar_str = l_search_lpar_str.replace('\n','')
-                    print ("%s.\t%s" % (lpar_count, l_search_lpar_str))
-                    lpar_list.append(l_search_lpar_str)
-                    lpar_count += 1
+            # list of LPARs
+            for l_search_lpar_str in search_lpar_str:
+                l_search_lpar_str = l_search_lpar_str.replace('\n','')
+                print ("%s.\t%s" % (lpar_count, l_search_lpar_str))
+                lpar_list.append(l_search_lpar_str)
+                lpar_count += 1
 
-                # check if found one lpar at least
-                if len(lpar_list) == 0:
-                    print "\nNot found LPAR with %s.\n" % lpar_search
-                    exit()
+            # check if found one lpar at least
+            if len(lpar_list) == 0:
+                print "\nNot found LPAR with %s.\n" % lpar_search
+                exit()
 
-                # select lpar (test if number is out of index)
-                while True:
-                    try:
-                        lpar_option = int(raw_input("\nPlease select the LPAR: "))
-                        lpar_search = lpar_list[lpar_option]
-                        break
-                    except(IndexError):
-                        print('\tERROR: Select an existing option between 0 and %s.' % (len(lpar_list)-1))
+            # select lpar (test if number is out of index)
+            while True:
+		try:
+		    lpar_option = int(raw_input("\nPlease select the LPAR: "))
+                    lpar_search = lpar_list[lpar_option]
+                    break
+                except(IndexError):
+                    print('\tERROR: Select an existing option between 0 and %s.' % (len(lpar_list)-1))
 
                 # get data of LPAR chosen
-                for system in systems:
-                    find_lpar = commands.getoutput('ssh -l poweradm %s lssyscfg -r prof -m %s --filter lpar_names=%s' %
+            for system in systems:
+                find_lpar = commands.getoutput('ssh -l poweradm %s lssyscfg -r prof -m %s --filter lpar_names=%s' %
                             (config.hmcserver, system, lpar_search))
-                    if ("lpar_name=%s" % lpar_search) in find_lpar:
-                        break
+                if ("lpar_name=%s" % lpar_search) in find_lpar:
+		    break
 
 
     # get the vios, not used yet :P
