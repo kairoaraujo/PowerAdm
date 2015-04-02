@@ -60,6 +60,9 @@ def vscsi():
     else:
         # looping for all scsi
         for l_lpar_vscsi in lpar_vscsi:
+            # specific case with one scsi
+            if l_lpar_vscsi.startswith('"'):
+                break
             scsi_configs = l_lpar_vscsi.split('/')
             print "+ C%s" % scsi_configs[0]
             print "`.... VIOS: %s" % scsi_configs[3]
@@ -232,7 +235,7 @@ def vnet():
         if vsw != eth_configs[6]:
 
             print ("Checking the \033[36m%s\033[1;00m on VIOS \033[36m%s\033[1;00m ...\n" % ( seas[0], net_vio.returnNetVio1(system)))
-	    
+
 	    if seas[0] == '\033[33mnot found\033[1;00m':
 	        print ('Please check maanual, I cant found the specific SEA for VLAN')
             else:
