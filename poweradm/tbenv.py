@@ -45,20 +45,20 @@ class TBEnv:
         system = netvios.getSystem()
         netvios1 = netvios.getVioNet1()
         netvios2 = netvios.getVioNet2()
-       
-  	print ('\n\n') 
+
+  	print ('\n\n')
 	print ('\033[94m#\033[1;00m' * 80)
         print ('# \033[94m %s \033[1;00m - Check SEA configuration and state' % netvios1)
         print ('\033[94m#\033[1;00m' * 80)
 
-        os.system("ksh %s/poweradm/tools/lsseas -c %s %s %s" % (config.pahome, config.hmcserver, system, netvios1))
+        os.system("ksh %s/poweradm/tools/lsseas -c %s %s %s all" % (config.pahome, config.hmcserver, system, netvios1))
 
-  	print ('\n\n') 
+  	print ('\n\n')
 	print ('\033[94m#\033[1;00m' * 80)
         print ('# \033[94m %s \033[1;00m - Check SEA configuration and state' % netvios2)
         print ('\033[94m#\033[1;00m' * 80)
 
-        os.system("ksh %s/poweradm/tools/lsseas -c %s %s %s" % (config.pahome, config.hmcserver, system, netvios2))
+        os.system("ksh %s/poweradm/tools/lsseas -c %s %s %s all" % (config.pahome, config.hmcserver, system, netvios2))
 
     def lsnpivs(self):
         print ("\n[Troubleshooting - NPIV] Select Server]\n"
@@ -68,21 +68,21 @@ class TBEnv:
         system = vios.getSystem()
         vios1 = vios.getVio1()
         vios2 = vios.getVio2()
-       
-  	print ('\n\n') 
+
+  	print ('\n\n')
 	print ('\033[94m#\033[1;00m' * 80)
         print ('# \033[94m %s \033[1;00m - Check NPIV configuration and state' % vios1)
         print ('\033[94m#\033[1;00m' * 80)
-	
-	lsnpivs.run(config.hmcserver, system, vios1, 'all')	
 
-  	print ('\n\n') 
+	lsnpivs.run(config.hmcserver, system, vios1, 'all')
+
+  	print ('\n\n')
 	print ('\033[94m#\033[1;00m' * 80)
         print ('# \033[94m %s \033[1;00m - Check NPIV configuration and state' % vios2)
         print ('\033[94m#\033[1;00m' * 80)
 
-	
-	lsnpivs.run(config.hmcserver, system, vios2, 'all')	
+
+	lsnpivs.run(config.hmcserver, system, vios2, 'all')
 
 
 
