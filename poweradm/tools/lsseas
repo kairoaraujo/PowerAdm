@@ -35,6 +35,7 @@
 v_hmc="$2"
 v_system="$3"
 v_vios="$4"
+v_specific_sea="$5"
 
 
 # Function f_sort_a_numbered_line 
@@ -370,7 +371,12 @@ fi
 
 # Get all Shared Ethernet Adapters 
 #v_seas=$(${v_ioscli_bin} lsdev -virtual -field name description | awk '$2 == "Shared" && $3 == "Ethernet" && $4 == "Adapter" {print $1}')
-v_seas=$(ssh -l poweradm $v_hmc viosvrcmd -m $v_system -p $v_vios -c "'lsdev -virtual -field name description'" | awk '$2 == "Shared" && $3 == "Ethernet" && $4 == "Adapter" {print $1}')
+
+if [[ $v_specific_sea == "all" ]]; then
+	v_seas=$(ssh -l poweradm $v_hmc viosvrcmd -m $v_system -p $v_vios -c "'lsdev -virtual -field name description'" | awk '$2 == "Shared" && $3 == "Ethernet" && $4 == "Adapter" {print $1}')
+else
+	v_seas=$(ssh -l poweradm $v_hmc viosvrcmd -m $v_system -p $v_vios -c "'lsdev -dev $v_specific_sea -field name description'" | awk '$2 == "Shared" && $3 == "Ethernet" && $4 == "Adapter" {print $1}')
+fi
 
 for v_sea in ${v_seas} ; do
   # Get enstat for all Shared Ethernet Adapters
