@@ -190,6 +190,8 @@ def vfc():
         count += 1
 
 def vnet():
+    ''' Execute virtual Network troubleshooting for LPAR '''
+
     print "\n\033[94mNetwork\033[1;00m"
     print "\033[94m-------\033[1;00m\n"
 
@@ -273,6 +275,10 @@ def info():
 	if lpar_info[0] in ('lpar_id'):
             lpar_id = lpar_info[1]
 
+        # sharing mode of cpu (capped/uncapped)
+        if lpar_info[0] in ('sharing_mode'):
+            sharing_mode = lpar_info[1]
+
         # entitled cpu
         elif lpar_info[0] in ('desired_proc_units'):
         	lpar_ent_cpu = lpar_info[1]
@@ -342,6 +348,7 @@ def info():
     print "\033[94m-\033[1;00m" * 84
 
     print "+ ID: %s\n" % lpar_id
+    print "+ CPU Sharing Mode: %s\n" % sharing_mode
     print "+ Virtual CPU: %s" % desired_procs
     print "`.... Min Virtual CPU (DLPAR): %s" % min_procs
     print "`.... Max Virtual CPU (DLPAR): %s\n" % min_procs
@@ -354,7 +361,19 @@ def info():
 
 
 def run(lpar_search, search_type, tb_option):
-    ''' Run the initial search for LPAR by ID '''
+    ''' Run the initial search for LPAR by ID 
+
+        Args:
+          lpar_search (str): LPAR id or part of name. If ID arg search_type needs 'by_id', if a part of name
+                             needs 'by_str'.
+          search_type (str): 'by_id' or 'by_str' is used in combination with arg lpar_search.
+          tb_option (str): troubleshooting options are:
+                info: for basic informations about LPAR
+                vnet: for virtual network LPAR troubleshooting
+                vfc: for virtual Fiber Channel LPAR troubleshooting
+                vscsi: for virtual SCSI LPAR troubleshooting
+                all: for info, vnet, vfc and vscsi.
+    '''
 
     global find_lpar, system, lpar_id
     lpar_id = lpar_search
