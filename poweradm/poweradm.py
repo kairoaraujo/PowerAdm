@@ -1,30 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-# Power Adm
-# main.py
-#
-# Copyright (c) 2014, 2015 Kairo Araujo
-#
-# It was created for personal use. There are no guarantees of the author.
-# Use at your own risk.
-#
-# Permission to use, copy, modify, and distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
-#
-# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
-# Important:
-# IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in
-# the United States, other countries, or both.
-#
+'''
+PowerAdm
+poweradm.py
+
+Copyright (c) 2014, 2015 Kairo Araujo
+
+It was created for personal use. There are no guarantees of the author.
+Use at your own risk.
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation in
+the United States, other countries, or both.
+VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
+States, other countries, or both.
+'''
+
 # Imports
 ###############################################################################################
 from config import *
@@ -37,7 +39,7 @@ import tbmain
 import os
 
 def main_poweradm():
-    """ Main (and main menu) of PowerAdm """
+    ''' Main text menu of PowerAdm. '''
 
     os.system('clear')
     print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014, 2015 Kairo Araujo - BSD License ]\n" % version)
@@ -52,12 +54,12 @@ def main_poweradm():
                   "Please choose an option: ")
 
     if poweradm == '1':
-        """ LPAR configuration. """
+        ''' LPAR configuration. '''
 
         exec_createlparconf()
 
     elif poweradm == '2':
-        """ Execute the LPAR creation."""
+        ''' Execute the LPAR creation.'''
 
         # Find the File Change/Ticket using class FindChange()
         exec_findlpar = FindChange()
@@ -73,12 +75,12 @@ def main_poweradm():
             exit
 
     elif poweradm == '3':
-        """ Deploy OS on an existing LPAR. """
+        ''' Deploy OS on an existing LPAR. '''
 
         nimmain()
 
     elif poweradm == '4':
-        """ Clear NIM OS deploy configs. """
+        ''' Clear NIM OS deploy configs. '''
 
         nimclear()
 
