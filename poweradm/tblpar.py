@@ -226,8 +226,7 @@ def vnet():
                         "-p %s -c \"\'entstat -all %s\'\" | grep -E \'%s|^    ent\'" % (config.hmcserver, system, l_net_vios, l_find_sea_vio, eth_configs[6]))
                 if eth_configs[2] in find_vsw:
                     seas.append(l_find_sea_vio)
-		else:
-		    seas.append("\033[33mnot found\033[1;00m")
+
         print ("`.... VIOS(SEA): %s(%s), %s(%s)\n" % (net_vio.returnNetVio1(system), seas[0], net_vio.returnNetVio2(system), seas[1]))
 
         print "\033[94mSEA status\033[1;00m"
