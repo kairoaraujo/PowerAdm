@@ -13,7 +13,7 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 ## Links
 
 - Website: http://poweradm.org
-- Deploy Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+- Deploy Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots  
 - Troubleshooting Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting
 - Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
 - VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
@@ -26,16 +26,16 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Create Logical Partition (LPAR) profile
 - Supports multiple frames
 - Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
-	- Select the Virtual Switch
-	- VLAN
+    - Select the Virtual Switch
+    - VLAN
 - Add vSCSI on two VIOs
-	- Create Virtual SCSI server on VIO automatically
+    - Create Virtual SCSI server on VIO automatically
 - Add HBA/NPIV(vfchost) on two VIOs
-	- Make vfcmap automatically
+    - Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Troubleshooting help
-	- Environment (SEA and NPIV)
-	- Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
+    - Environment (SEA and NPIV)
+    - Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
 - Centralized config (poweradm/config.py)
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
@@ -143,30 +143,30 @@ In this example we can easily identify which VIO serves the virtual devices, by 
 
 Sample: Identifying AIX1 on VIOs
 
-	padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
-	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+    padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+    vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
 
-	padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
-	SVSA            Physloc                                      Client Partition ID
-	--------------- -------------------------------------------- ------------------
-	vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+    padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
+    SVSA            Physloc                                      Client Partition ID
+    --------------- -------------------------------------------- ------------------
+    vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
 
-	VTD                   NO VIRTUAL TARGET DEVICE FOUND
+    VTD                   NO VIRTUAL TARGET DEVICE FOUND
 
 
-	padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
-	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
+    padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+    vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
 
-	padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
-	Name          Physloc                            ClntID ClntName       ClntOS
-	------------- ---------------------------------- ------ -------------- -------
-	vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
+    padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
+    Name          Physloc                            ClntID ClntName       ClntOS
+    ------------- ---------------------------------- ------ -------------- -------
+    vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
 
-	Status:LOGGED_IN
-	FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
-	Ports logged in:2
-	Flags:a<LOGGED_IN,STRIP_MERGE>
-	VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
+    Status:LOGGED_IN
+    FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
+    Ports logged in:2
+    Flags:a<LOGGED_IN,STRIP_MERGE>
+    VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
 
 
 ## How is it developed?
