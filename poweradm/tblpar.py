@@ -208,6 +208,7 @@ def vnet():
         if l_lpar_eths.startswith('"'):
             break
         eth_configs = l_lpar_eths.split('/')
+
         print "+ C%s" % eth_configs[0]
         print "`.... VLAN: %s" % eth_configs[2]
         print "`.... VIRTUAL SWITCH: %s" % eth_configs[6]
@@ -223,9 +224,12 @@ def vnet():
             find_sea_vio_data = find_sea_vio.split()
             for l_find_sea_vio in find_sea_vio_data:
                 find_vsw = commands.getoutput("ssh -l poweradm %s viosvrcmd -m %s "
-                        "-p %s -c \"\'entstat -all %s\'\" | grep -E \'%s|^    ent\'" % (config.hmcserver, system, l_net_vios, l_find_sea_vio, eth_configs[6]))
+                        "-p %s -c \"\'entstat -all %s\'\" | grep -E \'%s|^    ent\'" %
+                        (config.hmcserver, system, l_net_vios, l_find_sea_vio, eth_configs[6]))
+                # found sea add in seas list
                 if eth_configs[2] in find_vsw:
                     seas.append(l_find_sea_vio)
+
 
         print ("`.... VIOS(SEA): %s(%s), %s(%s)\n" % (net_vio.returnNetVio1(system), seas[0], net_vio.returnNetVio2(system), seas[1]))
 
@@ -360,7 +364,7 @@ def info():
 
 
 def run(lpar_search, search_type, tb_option):
-    ''' Run the initial search for LPAR by ID 
+    ''' Run the initial search for LPAR by ID
 
         Args:
           lpar_search (str): LPAR id or part of name. If ID arg search_type needs 'by_id', if a part of name
@@ -406,9 +410,12 @@ def run(lpar_search, search_type, tb_option):
             # list of LPARs
             for l_search_lpar_str in search_lpar_str:
                 l_search_lpar_str = l_search_lpar_str.replace('\n','')
-                print ("%s.\t%s" % (lpar_count, l_search_lpar_str))
-                lpar_list.append(l_search_lpar_str)
-                lpar_count += 1
+
+                # if LPAR is moved using LPM the lpar is listed duplicated
+                if (len(lpar_list) == 0 ) or (lpar_list[-1] != l_search_lpar_str):
+                    print ("%s.\t%s" % (lpar_count, l_search_lpar_str))
+                    lpar_list.append(l_search_lpar_str)
+                    lpar_count += 1
 
             # check if found one lpar at least
             if len(lpar_list) == 0:
