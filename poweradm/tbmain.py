@@ -81,32 +81,32 @@ def tbmain():
         else:
 	        exit()
 
-    # LPAR types of check
-    tblpar_option = raw_input("\n[Troubleshooting LPAR]\n\n"
-                                 "Select an option\n\n"
-                                 "1. All (Info, vSCSI, vFC and vNetwork)\n"
-                                 "2. Info (basic info as DLPAR, ID, memory, cpu etc)\n"
-                                 "3. vSCSI \n"
-                                 "4. vFC (NPIV)\n"
-                                 "5. vNetwork\n"
-                                 "Please choose an option: ")
-    # all check
-    if tblpar_option == '1':
-        tblpar.run(lpar_search, search_type,  'all')
+        # LPAR types of check
+        tblpar_option = raw_input("\n[Troubleshooting LPAR]\n\n"
+                                     "Select an option\n\n"
+                                     "1. All (Info, vSCSI, vFC and vNetwork)\n"
+                                     "2. Info (basic info as DLPAR, ID, memory, cpu etc)\n"
+                                     "3. vSCSI \n"
+                                     "4. vFC (NPIV)\n"
+                                     "5. vNetwork\n"
+                                     "Please choose an option: ")
+        # all check
+        if tblpar_option == '1':
+            tblpar.run(lpar_search, search_type,  'all')
 
-    # info check
-    elif tblpar_option == '2':
-        tblpar.run(lpar_search, search_type, 'info')
+        # info check
+        elif tblpar_option == '2':
+            tblpar.run(lpar_search, search_type, 'info')
 
-    # vscsi check
-    elif tblpar_option == '3':
-        tblpar.run(lpar_search, search_type, 'vscsi')
+        # vscsi check
+        elif tblpar_option == '3':
+            tblpar.run(lpar_search, search_type, 'vscsi')
 
-	# vfc check
-    elif tblpar_option == '4':
-        tblpar.run(lpar_search, search_type, 'vfc')
+    	# vfc check
+        elif tblpar_option == '4':
+            tblpar.run(lpar_search, search_type, 'vfc')
 
-    # vnet check
-    elif tblpar_option == '5':
-        tblpar.run(lpar_search, search_type, 'vnet')
+        # vnet check
+        elif tblpar_option == '5':
+            tblpar.run(lpar_search, search_type, 'vnet')
 
