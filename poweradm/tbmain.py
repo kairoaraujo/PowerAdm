@@ -32,6 +32,7 @@ import os
 import globalvar
 import tbenv
 import tblpar
+import fields
 ##############################################################################################
 
 def tbmain():
@@ -49,9 +50,9 @@ def tbmain():
         envtb = raw_input("\n[Troubleshooting Environment]\n\n"
                           "Select an option\n\n"
                           "1. Check SEAs (by lsseas).\n"
-            		  "2. Check NPIVs.\n\n"
+            		      "2. Check NPIVs.\n\n"
                           "Please choose an option: ")
-	# environment actions SEA and NPIV
+	    # environment actions SEA and NPIV
         if envtb == '1':
             env = tbenv.TBEnv()
             env.lsseas()
@@ -64,48 +65,48 @@ def tbmain():
     if patb == '2':
         type_search = raw_input("\n[Troubleshooting LPAR]\n\n"
                             	"1. Specific LPAR ID.\n"
-				"2. Find LPAR. \n\n"
-				"Please choose an option: ")
+				                "2. Find LPAR. \n\n"
+				                "Please choose an option: ")
+        # LPAR by ID
+        if type_search == '1':
+	        lpar_search = raw_input("\nLPAR ID: ")
+	        search_type = 'by_id'
 
-	# LPAR by ID
-	if type_search == '1':
-	    lpar_search = raw_input("\nLPAR ID: ")
-	    search_type = 'by_id'
-	
-	# LPAR by name
-	elif type_search == '2':
-	    lpar_search = raw_input("\nLPAR name or part of name: ")
-	    search_type = 'by_str'
+        # LPAR by name
+        elif type_search == '2':
+            lpar_string = fields.Fields('The search', '\nLPAR name or part of name: ')
+            lpar_string.chkFieldStr()
+            lpar_search = lpar_string.strVarOut()
+            search_type = 'by_str'
         else:
-	    exit()
-        
+	        exit()
 
-	# LPAR types of check
-	tblpar_option = raw_input("\n[Troubleshooting LPAR]\n\n"
+    # LPAR types of check
+    tblpar_option = raw_input("\n[Troubleshooting LPAR]\n\n"
                                  "Select an option\n\n"
                                  "1. All (Info, vSCSI, vFC and vNetwork)\n"
-				 "2. Info (basic info as DLPAR, ID, memory, cpu etc)\n"
+                                 "2. Info (basic info as DLPAR, ID, memory, cpu etc)\n"
                                  "3. vSCSI \n"
                                  "4. vFC (NPIV)\n"
                                  "5. vNetwork\n"
                                  "Please choose an option: ")
-        # all check
-        if tblpar_option == '1':
-            tblpar.run(lpar_search, search_type,  'all')
-	
-	# info check
-        elif tblpar_option == '2':
-            tblpar.run(lpar_search, search_type, 'info')
+    # all check
+    if tblpar_option == '1':
+        tblpar.run(lpar_search, search_type,  'all')
 
-	# vscsi check
-        elif tblpar_option == '3':
-            tblpar.run(lpar_search, search_type, 'vscsi')
+    # info check
+    elif tblpar_option == '2':
+        tblpar.run(lpar_search, search_type, 'info')
+
+    # vscsi check
+    elif tblpar_option == '3':
+        tblpar.run(lpar_search, search_type, 'vscsi')
 
 	# vfc check
-        elif tblpar_option == '4':
-            tblpar.run(lpar_search, search_type, 'vfc')
+    elif tblpar_option == '4':
+        tblpar.run(lpar_search, search_type, 'vfc')
 
-	# vnet check
-        elif tblpar_option == '5':
-            tblpar.run(lpar_search, search_type, 'vnet')
+    # vnet check
+    elif tblpar_option == '5':
+        tblpar.run(lpar_search, search_type, 'vnet')
 
