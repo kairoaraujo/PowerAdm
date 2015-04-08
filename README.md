@@ -6,14 +6,15 @@ PowerAdm uses a single configuration file and  a simple menu/interface in text m
 
 Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
 
-![Text Mode](http://kairo.freeshell.org/poweradm/poweradm.png "Text Mode")
+![Text Mode](http://kairo.freeshell.org/poweradm/PowerAdm-0.9-beta.png "Text Mode")
 
 ![vCO Workflow](http://kairo.freeshell.org/poweradm/vCO/vCO-config-approval.png "vCO Workflow")
 
 ## Links
 
 - Website: http://poweradm.org
-- Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+- Deploy Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots	
+- Troubleshooting Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting
 - Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
 - VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
@@ -32,6 +33,9 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 - Add HBA/NPIV(vfchost) on two VIOs
 	- Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
+- Troubleshooting help
+	- Environment (SEA and NPIV)
+	- Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
 - Centralized config (poweradm/config.py)
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
