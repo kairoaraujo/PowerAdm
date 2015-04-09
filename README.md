@@ -57,12 +57,6 @@ In the future:
 
 https://github.com/kairoaraujo/PowerAdm/releases
 
-- v0.8-beta
-
-   - VMware vCenter Orchestrator workflow/support
-   - Minor bug fix
-   - Minor improves 
-
 ### IDs Structure / Organize your IDs
 
 These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs.
