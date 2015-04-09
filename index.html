@@ -22,14 +22,14 @@
 
 
         <ul>
-          <li><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download <strong>Releases</strong></a></li>
-          <li><a href="https://github.com/kairoaraujo/PowerAdm/wiki/requirements">Requirements<strong>Requiremens</strong></strong></a> </li>
+          <li><a href="https://github.com/kairoaraujo/PowerAdm/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/kairoaraujo/PowerAdm">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
         <h1>
-<a id="poweradm---power-administration-to-power" class="anchor" href="#poweradm---power-administration-to-power" aria-hidden="true"><span class="octicon octicon-link"></span></a>PowerAdm - Power Administration to Power.</h1>
+<a id="poweradm---ibm-powerpowervm-administration-tool" class="anchor" href="#poweradm---ibm-powerpowervm-administration-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>PowerAdm - IBM Power/PowerVM Administration tool</h1>
 
 <p>PowerAdm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and deploy AIX Operating System using NIM Server.</p>
 
@@ -37,9 +37,9 @@
 
 <p>Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).</p>
 
-<p><a href="https://camo.githubusercontent.com/2167d73a6fd301ec6c95786f5c18187e81db4846/687474703a2f2f6b6169726f2e667265657368656c6c2e6f72672f706f77657261646d2f506f77657241646d2d302e392d626574612e706e67" target="_blank"><img src="https://camo.githubusercontent.com/2167d73a6fd301ec6c95786f5c18187e81db4846/687474703a2f2f6b6169726f2e667265657368656c6c2e6f72672f706f77657261646d2f506f77657241646d2d302e392d626574612e706e67" alt="Text Mode" title="Text Mode" data-canonical-src="http://kairo.freeshell.org/poweradm/PowerAdm-0.9-beta.png" style="max-width:100%;"></a></p>
+<p><img src="http://kairo.freeshell.org/poweradm/PowerAdm-0.9-beta.png" alt="Text Mode" title="Text Mode"></p>
 
-<p><a href="https://camo.githubusercontent.com/ad52aaf00b4f04760acab098f76c40fad1ffba34/687474703a2f2f6b6169726f2e667265657368656c6c2e6f72672f706f77657261646d2f76434f2f76434f2d636f6e6669672d617070726f76616c2e706e67" target="_blank"><img src="https://camo.githubusercontent.com/ad52aaf00b4f04760acab098f76c40fad1ffba34/687474703a2f2f6b6169726f2e667265657368656c6c2e6f72672f706f77657261646d2f76434f2f76434f2d636f6e6669672d617070726f76616c2e706e67" alt="vCO Workflow" title="vCO Workflow" data-canonical-src="http://kairo.freeshell.org/poweradm/vCO/vCO-config-approval.png" style="max-width:100%;"></a></p>
+<p><img src="http://kairo.freeshell.org/poweradm/vCO/vCO-config-approval.png" alt="vCO Workflow" title="vCO Workflow"></p>
 
 <h2>
 <a id="links" class="anchor" href="#links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Links</h2>
@@ -47,8 +47,10 @@
 <ul>
 <li>Website: <a href="http://poweradm.org">http://poweradm.org</a>
 </li>
-<li>Deploy Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/screenshots">https://github.com/kairoaraujo/PowerAdm/wiki/screenshots</a> </li>
-<li>Troubleshooting Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting">https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting</a></li>
+<li>Deploy Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/screenshots">https://github.com/kairoaraujo/PowerAdm/wiki/screenshots</a><br>
+</li>
+<li>Troubleshooting Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting">https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting</a>
+</li>
 <li>Requirements: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/requirements">https://github.com/kairoaraujo/PowerAdm/wiki/requirements</a>
 </li>
 <li>VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm">https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm</a>
@@ -83,6 +85,13 @@
 </ul>
 </li>
 <li>Add disk on vSCSI (only if you have Shared Storage Pool)</li>
+<li>Troubleshooting help
+
+<ul>
+<li>Environment (SEA and NPIV)</li>
+<li>Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)</li>
+</ul>
+</li>
 <li>Centralized config (poweradm/config.py)</li>
 <li>Deploy SO from the NIM Server</li>
 <li>
@@ -108,18 +117,6 @@
 <a id="latest-release" class="anchor" href="#latest-release" aria-hidden="true"><span class="octicon octicon-link"></span></a>Latest release</h2>
 
 <p><a href="https://github.com/kairoaraujo/PowerAdm/releases">https://github.com/kairoaraujo/PowerAdm/releases</a></p>
-
-<ul>
-<li>
-<p>v0.8-beta</p>
-
-<ul>
-<li>VMware vCenter Orchestrator workflow/support</li>
-<li>Minor bug fix</li>
-<li>Minor improves </li>
-</ul>
-</li>
-</ul>
 
 <h3>
 <a id="ids-structure--organize-your-ids" class="anchor" href="#ids-structure--organize-your-ids" aria-hidden="true"><span class="octicon octicon-link"></span></a>IDs Structure / Organize your IDs</h3>
@@ -291,8 +288,7 @@ IBM, PowerVM (a.k.a. VIOS), smitty are registered trademarks of IBM Corporation 
 the United States, other countries, or both.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="http://kairo.eti.br">Kairo Araujo</a></p>
-        <p>Contributors: Bruno Costa, Fernando Costa and Raphael Paiva.</a></p>
+        <p>This project is maintained by <a href="https://github.com/kairoaraujo">kairoaraujo</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
