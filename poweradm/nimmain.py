@@ -1,30 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-# Power Adm
-# nimmain.py
-#
-# Copyright (c) 2014 Kairo Araujo
-#
-# It was created for personal use. There are no guarantees of the author.
-# Use at your own risk.
-#
-# Permission to use, copy, modify, and distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
-#
-# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
-# Important:
-# IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in
-# the United States, other countries, or both.
-#
+'''
+PowerAdm
+nimmain.py
+
+Copyright (c) 2014, 2015 Kairo Araujo
+
+It was created for personal use. There are no guarantees of the author.
+Use at your own risk.
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation in
+the United States, other countries, or both.
+VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
+States, other countries, or both.
+'''
 # Imports
 ###############################################################################################
 import time
@@ -37,6 +38,7 @@ from nimserver import *
 ##############################################################################################
 
 def nimmain():
+    ''' NIM main class to make deploy. '''
 
     # select a machine to deploy
     newdeploy = NIMFileFind('Select Deploy', 'poweradm/nim/', 'EXECUTE')
@@ -52,11 +54,14 @@ def nimmain():
     newnim = NimServer()
     newnim.selectNim()
 
-    # find next IP on the range
+    # collect all IPs in hosts and reserveds
     os.system("ssh -l poweradm %s cat /etc/hosts >> poweradm/tmp/hosts_%s" %
             (newnim.getNimAddress(), timestr))
     os.system("cat poweradm/data/reserved_ips >> poweradm/tmp/hosts_%s" % (timestr))
+
     def verifyIP(ipaddress):
+        ''' Verify next free IP to use '''
+
         f_nim_hosts = open("poweradm/tmp/hosts_%s" % (timestr), 'r')
         for line_hosts in f_nim_hosts.readlines():
             if line_hosts.startswith('%s' % (ipaddress)):
@@ -65,6 +70,7 @@ def nimmain():
         f_nim_hosts.close()
         return False
 
+    # use de function verifyIP(ipaddres) to get new_ip
     ip_start = int(newnim.getIPStart())
     ip_end = int(newnim.getIPEnd())
     while ip_start <= ip_end:
@@ -74,7 +80,7 @@ def nimmain():
             new_ip = ('%s%s' % (newnim.getIPNet(), ip_start))
             break
 
-    # get prefix and lpar name
+    # get LPAR informations
     f_nim_deploy = open("poweradm/nim/%s" % (newdeploy.getDeploy()), 'r')
 
     for line in f_nim_deploy.readlines():
@@ -92,7 +98,7 @@ def nimmain():
             lparvlans = lpar[1]
     f_nim_deploy.close()
 
-    # verify the config
+    # verify the config output
     print ('\n[DEPLOY SO NIM: Check deploy]\n')
     print ('*' * 80)
     print ('Server: %s-%s (IP Client: %s)\n'
@@ -109,6 +115,7 @@ def nimmain():
         f_nim_exe = open('poweradm/changes/deploy_nim_%s-%s.nim' % (lparprefix, lparname), 'w')
 
         def f_nimexe_chksh():
+            ''' Write the check in sh file '''
             f_nim_exe.write("\nif [ $? != 0 ];"
                             "then\n"
                             "\techo 'An error has occurred. Check the actions taken.'; \n"

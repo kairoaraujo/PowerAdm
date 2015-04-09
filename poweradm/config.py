@@ -1,31 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-# Power Adm
-#
-# config file
-#
-# Copyright (c) 2014 Kairo Araujo
-#
-# It was created for personal use. There are no guarantees of the author.
-# Use at your own risk.
-#
-# Permission to use, copy, modify, and distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
-#
-# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
-# Important:
-# IBM, PowerVM (a.k.a. vios) are registered trademarks of IBM Corporation in
-# the United States, other countries, or both.
-#
+'''
+PowerAdm
+Config file
+
+Copyright (c) 2015 Kairo Araujo
+
+It was created for personal use. There are no guarantees of the author.
+Use at your own risk.
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation in
+the United States, other countries, or both.
+VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
+States, other countries, or both.
+'''
+
 # Configuration file
 ###############################################################################################
 #
@@ -49,16 +50,19 @@ cpu_min = 50
 cpu_max = 100
 
 # Systems and VIOS NPIV
-# Important: Require two vios. If you have only one vio repeat the vio.
-# Syntax: 'SYSTEM NAME':['VIO1','VIO2']
+# Important: Require two vios NPIV. If you have only one vio repeat the vio name 
+#            as first example "'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],"
+#            If you have four vios, put the two first the NPIV and the two last
+#            the network VIOS as secound example "'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],"
+# Syntax: 'SYSTEM NAME':['VIO1','VIO2','VIONET1','VIONET2']
 # - SYSTEM NAME: Is exactly name of your managed system.
 # - VIO1: is exactly name of your VIO Primary partition.
 # - VIO2: is exactly name of your VIO Secundary partition.
 #
 systems = {
-           'P1-8205-E6D-SN06A07AT':['VIO1A','VIO2A'],
-           'P1-8205-E6D-SN06A07BT':['VIO1B','VIO2B'],
-           'P1-8205-E6D-SN06A07CT':['VIO1B','VIO2B']
+           'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],
+           'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],
+           'P1-8205-E6D-SN06A07CT':['VIO1C','VIO2C']
           }
 
 # Virtual Switches
