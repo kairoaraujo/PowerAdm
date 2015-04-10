@@ -33,17 +33,15 @@ import time
 import os
 from globalvar import *
 from verify import *
-from nimfilefind import *
-from getnimver import *
-from nimserver import *
+from nim import *
 ##############################################################################################
 
 def nimclear():
     ''' Text menu to remove deployed LPAR config from NIM server '''
 
     # select a machine to deploy
-    nimrm = NIMFileFind('Select Deploy', 'poweradm/nim_executed/', 'REMOVE')
-    nimrm.selectDeploy()
+    nimrm = NIMFileFind()
+    nimrm.selectDeploy('Select Deploy', 'poweradm/nim_executed/', 'REMOVE')
 
     # get variables
     f_nim_deploy = open("poweradm/nim_executed/%s" % (nimrm.getDeploy()), 'r')

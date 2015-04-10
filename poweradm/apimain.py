@@ -4,7 +4,7 @@
 PowerAdm
 apimain.py
 
-Copyright (c) 2015 Kairo Araujo
+Copyright (c) 2014, 2015 Kairo Araujo
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.
@@ -26,6 +26,7 @@ the United States, other countries, or both.
 VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
 States, other countries, or both.
 '''
+
 # Imports
 ###############################################################################################
 import time
@@ -37,8 +38,29 @@ from config import *
 from newid import *
 from systemvios import *
 from execchange import *
-from mklparconf import *
+from nim import *
 ##############################################################################################
+
+#
+# Pre load variables
+#
+##############################################################################################
+#
+
+# NIM available files/LPARs configs to deploy
+cfgdeploylist = NIMFileFind()
+deploy_list = cfgdeploylist.listDeploy()
+
+# NIM available OS versions
+osdeploylist = NIMGetVer()
+os_list = osdeploylist.listOSVersion()
+
+# NIM available Servers
+
+nimserverlist = NIMServer()
+nim_list = nimserverlist.listNIM()
+
+
 try:
 
 #
@@ -46,8 +68,8 @@ try:
 #
 ##############################################################################################
 
-    if sys.argv[1] == "-sl":
-        ''' List systems array size (number of systems) '''
+    if sys.argv[1] == "-sn":
+        ''' Number of systems '''
         lensystems = (len(systems))
         print lensystems
 
@@ -55,24 +77,18 @@ try:
         ''' Print system [position] in array'''
         systems = list(systems.keys())
 
-        if sys.argv[2] == " ":
-            print('-sp requires the position in array. Use -sl to show number of systems')
+        if len(sys.argv) < 3:
+            print('-sp requires the position in array. Use -sn to show number of systems')
+            exit(1)
         else:
             try:
                 system_option = int(sys.argv[2])
                 print(systems[system_option])
             except(IndexError,ValueError):
                 print('The -sp [position] is a number existent on the array.\n'
-                      'Use -sl to show number of systems')
+                      'Use -sn to show number of systems.')
+                exit(1)
 
-#
-# NIM Deploy
-#
-##############################################################################################
-
-    elif sys.argv[1] == "-nimstatus":
-        ''' Show if NIM is enabled or disabled '''
-        print (enable_nim_deploy)
 
 
 #
@@ -85,7 +101,7 @@ try:
 	''' Show if Shared Storage Pool is enabled or disabled '''
 	print (active_ssp)
 
-    elif sys.argv[1] == "-pooll":
+    elif sys.argv[1] == "-pooln":
         ''' List shared storage pools array size (number of shared storage pools)'''
         ssp_len = (len(storage_pools))
 	print (ssp_len)
@@ -101,14 +117,14 @@ try:
                 print(storage_pools[ssp_option])
             except(IndexError,ValueError):
                 print('The -poolp [position] is a number existent on the array.\n'
-		      'Use -pooll to show number of shared storage pools')
+		      'Use -pooln to show number of shared storage pools')
 
 #
 # Virtual Switches
 #
 ##############################################################################################
 
-    elif sys.argv[1] == "-vswl":
+    elif sys.argv[1] == "-vswn":
         ''' List Virtual Switches array size (number of virtual switches) '''
         lenvsw = (len(virtual_switches))
         print lenvsw
@@ -123,7 +139,7 @@ try:
                 print(virtual_switches[vsw_option])
             except(IndexError,ValueError):
                 print('The -vswp [position] is a number existent on the array.\n'
-                      'Use -vswl to show number of virtual switches on array')
+                      'Use -vswn to show number of virtual switches on array')
 
 #
 # Get VIOS
@@ -384,7 +400,7 @@ try:
             """ Make a file change """
             newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                                  lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
-                                 npiv_vio1, npiv_vio2, veth, veth_final, system_option, vio1, vio2)
+                                 npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
             newchange.headerchange()
             newchange.writechange()
             newchange.closechange()
@@ -398,6 +414,162 @@ try:
             mkchange.runChange()
 
 #
+# NIM Deploy
+#
+##############################################################################################
+
+    elif sys.argv[1] == "-nimstatus":
+        ''' Show if NIM is enabled or disabled '''
+        print (enable_nim_deploy)
+
+#
+# Deploy OS
+#
+##############################################################################################
+
+# Avaiable LPAR configs to deploy
+    elif sys.argv[1] == "-osn":
+         ''' Get array size of available files/LPAR to NIM deploy '''
+
+         print (len(deploy_list))
+
+    elif sys.argv[1] == "-osp":
+        ''' Print config deploy [position] in array'''
+
+        if len(sys.argv) < 3:
+            print('-osp requires the position in array. Use -osn to show number of config deploys')
+            exit(1)
+        else:
+            try:
+                print(deploy_list[int(sys.argv[2])])
+            except(IndexError,ValueError):
+                print('The -osp [position] is a number existent on the array.\n'
+                      'The number starts with 0.\n'
+                      'Use -osn to show number of array.')
+                exit(1)
+
+# Get NIM Server OS Versions available
+
+    elif sys.argv[1] == '-osvn':
+        ''' Get array size of available OS versions on NIM Deploy '''
+
+        print(len(os_list))
+
+    elif sys.argv[1] == '-osvp':
+        ''' Print OS NIM Deploys version in array. Use osvl to show number of OS version '''
+
+        if len(sys.argv) < 3:
+            print('-osvp requires the position in array. Use -osvn to show number available size')
+            exit(1)
+        else:
+            try:
+                print(os_list[int(sys.argv[2])])
+            except(IndexError,ValueError):
+                print('The -osvp [position] is a number existent on the array.\n'
+                      'The number starts with 0.\n'
+                      'Use -osvn to show number of array.')
+                exit(1)
+
+# Get NIM Server informations
+    elif sys.argv[1] == '-nimn':
+        ''' Get array size of available NIM Servers '''
+
+        print (len(nim_list))
+
+    elif sys.argv[1] == '-nimp':
+        ''' Print OS NIM Server in array. Use -nimn to show number of NIM Servers '''
+
+        if len(sys.argv) < 3:
+            print('-nimp requires the position in array. Use -nimn to show number available size')
+            exit(1)
+        else:
+            try:
+                print(nim_list[int(sys.argv[2])])
+            except(IndexError,ValueError):
+                print('The -nimp [position] is a number existent on the array.\n'
+                      'The number starts with 0.\n'
+                      'Use -nimn to show number of array.')
+                exit(1)
+
+# Deploy OS
+    elif sys.argv[1] == '-nimdeploy':
+        ''' Deploy OS using NIM.
+            This command require full parameters.
+            apimain.py -nimosdeploy 'NIM File' 'NIM OS Version' 'NIM Server' 'y or n'
+
+            Attributes:
+
+            NIM File            use -osn and -osp
+            NIM OS Version      use -osvn and -osvp
+            NIM Server          use -nimn and -nimp
+            NIM Deploy          y or n
+
+            Sample:
+            apimain.py -nimosdeploy 'foo-bar.nim' 'AIX 7.1 TL03 SP04' 'nimsrv01' 'y'
+        '''
+
+        if len(sys.argv) < 5:
+            print('-nimosdeploy requires \'NIM File\' \'NIM OS Version\' \'NIM Server\' \'y or n\'\n'
+                  'Use -h to help')
+            exit(1)
+
+
+        nimfile = NIMFileFind()
+        nim_file = ('%s/poweradm/nim/%s' % (pahome, sys.argv[2]))
+        nimfile.fileData(nim_file)
+        # get variables
+        lparprefix = nimfile.returnDeployPrefix()
+        lparname = nimfile.returnDeployLPARName()
+        lparframe = nimfile.returnDeployFrame()
+        lparvlans = nimfile.returnDeployVLANFinal()
+
+        # select version to install
+        #
+        nimcfg = NIMGetVer()
+        nimcfg.OSVersion(sys.argv[3])
+        nim_cfg_ver = nimcfg.getOSVersion()
+        nim_cfg_spot = nimcfg.getSpot()
+        nim_cfg_mksysbspot = nimcfg.getMksysbLpp()
+
+        # select nim and get variables
+        #
+        nimvars = NIMServer()
+        nimvars.getNIM(sys.argv[4])
+        nim_address = nimvars.getNIMAddress()
+        nim_ipstart = nimvars.getIPStart()
+        nim_ipend = nimvars.getIPEnd()
+        nim_ipnet = nimvars.getIPNet()
+        nim_server = nimvars.getNIMServer()
+        nim_ipdeploy = nimvars.getNIMIPDeploy()
+
+
+        # Deploy
+        deploy = sys.argv[5]
+
+        print('Config verification:\n\n'
+              'LPAR Prefix: %s\n'
+              'LPAR Name: %s\n'
+              'LPAR Frame: %s\n'
+              'LPAR Finale VLAN: %s\n'
+              'LPAR NIM File: %s\n'
+              'NIM config OS Version: %s\n'
+              'NIM config OS spot: %s\n'
+              'NIM config OS mksysb/spot: %s\n'
+              'NIM IP Address: %s\n'
+              'NIM start IP of range: %s\n'
+              'NIM end IP of range: %s\n'
+              'NIM IP Network: %s\n'
+              'NIM Server: %s\n'
+              'NIM IP Deploy (server): %s\n'
+              'Deploy: %s\n'
+              % (lparprefix, lparname, lparframe, lparvlans, nim_file, nim_cfg_ver, nim_cfg_spot,
+                 nim_cfg_mksysbspot, nim_address, nim_ipstart, nim_ipend, nim_ipnet,
+                 nim_server, nim_ipdeploy, deploy))
+
+
+
+
+#
 # HELP
 #
 ##############################################################################################
@@ -408,22 +580,30 @@ try:
               'This is a project of API for Web Interface and VMware vCenter Orchestrator.\n\n'
               'usage: %s [options]\n\n'
               'Arguments:\n'
-              '-sl \t\t\tList systems array size (number of systems).\n'
+              '-sn \t\t\tList systems array size (number of systems).\n'
               '-sp [position] \t\tPrint system [position] name in array..\n'
               ' \t\t\tPosition in array. Position start with 0.\n'
     	      '-nimstatus \t\tReturn NIM enable status.\n'
               '-sspstatus \t\tReturn Shared Storage Pool enable status.\n'
-              '-pooll \t\t\tList shared storage pools array size (number of shared storage pools).\n'
+              '-pooln \t\t\tList shared storage pools array size (number of shared storage pools).\n'
               '-poolp [positon] \tPrint shared storage pool [position] name in array.\n'
               ' \t\t\tPosition in array. Position start with 0.\n'
-              '-vswl \t\t\tList Virtual Switches array size (number of virtual switches).\n'
+              '-vswn \t\t\tList Virtual Switches array size (number of virtual switches).\n'
               '-vswp [postion] \tPrint virtual switch [polition] name in array.\n'
               ' \t\t\tPosition in array. Position start with 0.\n'
               '-npiv1 [system] \tPrint informations about NPIV (lsmap and notes) on Primary VIO.\n'
 	          ' \t\t\tRequeries the name of system.\n'
               '-npiv2 [system] \tPrint informations about NPIV (lsmap and notes) on Secondary VIO.\n'
     	      ' \t\t\tRequeries the name of system.\n'
-    	      '-mklparcfg [arguments] \tCheck the arguments on doc. http://poweradm.org\n'
+    	      '-mklparcfg [arguments] \tCheck the arguments on pydoc. http://poweradm.org/apimain.html\n'
+              '-osn \t\t\tGet array size of available files/LPAR to NIM deploy.\n'
+              '-osp [position] \tPrint config deploy [position] in array.\n'
+              '-osvn \t\t\tGet array size of available OS versions on NIM Deploy\n'
+              '-osvp [position] \tPrint OS NIM Deploys version in array. Use osvl to show number of OS version\n'
+              '-nimn \t\t\tGet array size of available NIM Servers\n'
+              '-nimp [position] \tPrint OS NIM Server in array. Use -nimn to show number of NIM Servers.\n'
+              '-nimdeploy [args]\tDeploy OS using NIM. Requires arguments.\n'
+              ' \t\t\tCheck arguments on pydoc or http://poweradm.org/apimain.html\n'
               % (sys.argv[0], version, sys.argv[0]))
     else:
         print ('Option not found. Use -h to help.')
