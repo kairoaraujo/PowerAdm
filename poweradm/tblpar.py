@@ -253,7 +253,7 @@ def vnet():
 	        print ('Please check maanual, I cant found the specific SEA for VLAN')
             else:
                 os.system ("ksh %s/poweradm/tools/lsseas -c %s %s %s %s" %
-                        (config.pahome, config.hmcserver, system, net_vio.returnNetVio1(system), seas[1]))
+                        (config.pahome, config.hmcserver, system, net_vio.returnNetVio2(system), seas[1]))
 
             print ("\n")
 
@@ -354,7 +354,7 @@ def info():
     print "+ CPU Sharing Mode: %s\n" % sharing_mode
     print "+ Virtual CPU: %s" % desired_procs
     print "`.... Min Virtual CPU (DLPAR): %s" % min_procs
-    print "`.... Max Virtual CPU (DLPAR): %s\n" % min_procs
+    print "`.... Max Virtual CPU (DLPAR): %s\n" % max_procs
     print "+ Entitled CPU: %s " % lpar_ent_cpu
     print "`.... Min Entitled CPU (DLPAR): %s" % min_proc_units
     print "`.... Max Entitled CPU (DLPAR): %s\n" % max_proc_units
