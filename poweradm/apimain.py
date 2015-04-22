@@ -33,11 +33,11 @@ import time
 import os
 import commands
 import sys
-from globalvar import *
-from config import *
+import globalvar
+import config
 from newid import *
 from systemvios import *
-from execchange import *
+import execchange
 from nim import *
 ##############################################################################################
 
@@ -163,8 +163,8 @@ try:
                                   system, vio1))
 
 	    # if exists file npiv notes get
-            if os.path.isfile('%s/npiv/%s-%s' % ( pahome, system, vio1)):
-                npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( pahome, system, vio1))
+            if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, system, vio1)):
+                npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( config.pahome, system, vio1))
 	    else:
 		npiv_notes = ""
 
@@ -188,8 +188,8 @@ try:
                                   system, vio2))
 
 	    # if exists file npiv notes get
-            if os.path.isfile('%s/npiv/%s-%s' % ( pahome, system, vio2)):
-                npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( pahome, system, vio2))
+            if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, system, vio2)):
+                npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( config.pahome, system, vio2))
 	    else:
 		npiv_notes = ""
 
@@ -410,7 +410,7 @@ try:
             print (change_file)
 
             """ Run change **** LPAR creation **** """
-            mkchange = ExecChange(change_file)
+            mkchange = execchange.Exe(change_file)
             mkchange.runChange()
 
 #
@@ -515,7 +515,7 @@ try:
 
 
         nimfile = NIMFileFind()
-        nim_file = ('%s/poweradm/nim/%s' % (pahome, sys.argv[2]))
+        nim_file = ('%s/poweradm/nim/%s' % (config.pahome, sys.argv[2]))
         nimfile.fileData(nim_file)
         # get variables
         lparprefix = nimfile.returnDeployPrefix()

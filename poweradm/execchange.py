@@ -38,7 +38,7 @@ from globalvar import *
 # Class ExecChange
 ##############################################################################################
 
-class ExecChange:
+class Exe:
     ''' Execute LPAR change/ticket creation.
 
         Args:

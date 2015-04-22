@@ -4,7 +4,7 @@
 PowerAdm
 Config file
 
-Copyright (c) 2015 Kairo Araujo
+Copyright (c) 2014, 2015 Kairo Araujo
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.

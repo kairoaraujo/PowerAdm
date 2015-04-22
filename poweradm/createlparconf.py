@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 PowerAdm
-apimain.py
+createlparconf.py
 
 Copyright (c) 2014, 2015 Kairo Araujo
 
@@ -28,17 +28,16 @@ States, other countries, or both.
 '''
 # Imports
 ###############################################################################################
-import time
 import os.path
 import commands
 import globalvar
-from config import *
-from newid import *
-from systemvios import *
-from verify import *
-from execchange import *
-from fields import *
-from mklparconf import *
+import config
+import newid
+import systemvios
+import verify
+import execchange
+import fields
+import mklparconf
 
 ###############################################################################################
 #### FRONTEND                                                                              ####
@@ -49,7 +48,7 @@ def changeconfig():
 
     print ("\n[CHANGE/TICKET INFORMATION]\n")
     global change
-    change = Fields('Change/Ticket', 'Change or Ticket number: ')
+    change = fields.Fields('Change/Ticket', 'Change or Ticket number: ')
     change.chkFieldStr()
     change = change.strVarOut()
 
@@ -62,11 +61,11 @@ def lparconfig():
 
     print ("\n[LPAR CONFIGURATION ]\n")
 
-    prefix = Fields('Prefix', 'Prefix (XXXX-lparname): ')
+    prefix = fields.Fields('Prefix', 'Prefix (XXXX-lparname): ')
     prefix.chkFieldStr()
     prefix = prefix.strVarOut()
 
-    lparname = Fields('LPAR Hostname', 'LPAR Hostname: ')
+    lparname = fields.Fields('LPAR Hostname', 'LPAR Hostname: ')
     lparname.chkFieldStr()
     lparname = lparname.strVarOut()
 
@@ -79,11 +78,11 @@ def lparconfig():
             except (TypeError, ValueError):
                 print ('\tERROR: LPAR Entitled needs a flot: Example: 0.1, 1.2, 2.4 etc')
 
-        lparentcpumin = lparentcpu-(lparentcpu*cpu_min/100)
+        lparentcpumin = lparentcpu-(lparentcpu*config.cpu_min/100)
         lparentcpumin = round(lparentcpumin, 1)
         if lparentcpumin < 0.10:
             lparentcpumin = 0.1
-        lparentcpumax = (lparentcpu*cpu_max/100)+lparentcpu
+        lparentcpumax = (lparentcpu*config.cpu_max/100)+lparentcpu
 
         while True:
             try:
@@ -92,10 +91,10 @@ def lparconfig():
             except (TypeError, ValueError):
                 print('\tERROR: LPAR Virtual needs full cpu: Example: 1, 3, 4 etc')
 
-        lparvcpumin = lparvcpu-(lparvcpu*cpu_min/100)
+        lparvcpumin = lparvcpu-(lparvcpu*config.cpu_min/100)
         if lparvcpumin < 1:
             lparvcpumin = 1
-        lparvcpumax = (lparvcpu*cpu_max/100)+lparvcpu
+        lparvcpumax = (lparvcpu*config.cpu_max/100)+lparvcpu
 
         # check if entitled is 10% >= virtual
         cpu_config = lparentcpu*100/lparvcpu
@@ -111,13 +110,13 @@ def lparconfig():
         except (TypeError, ValueError):
             print ('\tERROR: LPAR Memory needs GB value: Example: 8, 10, 20 etc')
 
-    lparmenmin = lparmem-(lparmem*mem_min/100)
-    lparmenmax = (lparmem*mem_max/100)+lparmem
+    lparmenmin = lparmem-(lparmem*config.mem_min/100)
+    lparmenmax = (lparmem*config.mem_max/100)+lparmem
 
     # prepare to os deploy
     global nim_deploy
-    if enable_nim_deploy.lower() == 'yes':
-        nim_deploy = CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
+    if config.enable_nim_deploy.lower() == 'yes':
+        nim_deploy = verify.CheckOK("Do you want prepare LPAR to deploy OS using NIM?(y/n): ", 'n')
         nim_deploy.mkCheck()
 	nim_deploy = nim_deploy.answerCheck()
 
@@ -128,32 +127,32 @@ def lparconfig():
         print ("\033[1;31mImportant: This configuration is temporaly. Used only to deploy!\033[1;00m")
         print ("\033[1;31m           LPAR network configuration is made in [LPAR NETWORK CONFIGURATION]\033[1;00m")
         print ("\nSelect the Virtual Switch to deploy:")
-        vsw_length = (len(virtual_switches))-1
+        vsw_length = (len(config.virtual_switches))-1
         count = 0
         while count <= vsw_length:
-            print ("%s : %s" % (count, virtual_switches[count]))
+            print ("%s : %s" % (count, config.virtual_switches[count]))
             count +=1
 
         while True:
             try:
                 vsw_option = int(input("Virtual Switch to Deploy: "))
-                vsw_deploy = virtual_switches[vsw_option]
+                vsw_deploy = config.virtual_switches[vsw_option]
                 break
             except(IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
 
-        vlan_deploy = input("VLAN deploy (%s): " % virtual_switches[vsw_option])
+        vlan_deploy = input("VLAN deploy (%s): " % config.virtual_switches[vsw_option])
 
 
     # get free id from newID.py
     global lparid
-    freeid = NewID()
+    freeid = newid.NewID()
     freeid.mkID()
     lparid = freeid.getID()
 
     # select a system and vios from systemVios.py
     global system, vio1, vio2
-    system_vio = SystemVios()
+    system_vio = systemvios.SystemVios()
     system_vio.selectSystemVios()
     system = system_vio.getSystem()
     vio1 = system_vio.getVio1()
@@ -164,15 +163,15 @@ def lparconfig():
     global vscsi
     global add_disk
     global vscsi_vio1, vscsi_vio2
-    vscsi = CheckOK('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
+    vscsi = verify.CheckOK('Do you want add Virtual SCSI to LPAR? (y/n): ', 'n')
     vscsi.mkCheck()
     vscsi = vscsi.answerCheck()
 
     if vscsi == 'y':
         global stgpool
 
-        if active_ssp.lower() == 'yes':
-            add_disk = CheckOK('\nDo you want add an disk from Storage Pool to LPAR?\n'
+        if config.active_ssp.lower() == 'yes':
+            add_disk = verify.CheckOK('\nDo you want add an disk from Storage Pool to LPAR?\n'
                     '**** FUNCTION ALPHA NOT TESTED YET **** (y/n): ', 'n')
             add_disk.mkCheck()
             add_disk = add_disk.answerCheck()
@@ -187,7 +186,7 @@ def lparconfig():
                         print ('\tERROR: Disk Size needs GB value: Example: 10, 15, 50 etc')
 
                 print ("\nSelect the Storage Pool to add:\n")
-                storage_pools_length = (len(storage_pools))-1
+                storage_pools_length = (len(config.storage_pools))-1
 
                 if storage_pools_length == 0:
                     global storage_pools_option
@@ -195,13 +194,13 @@ def lparconfig():
                 else:
                     count = 0
                     while count <= storage_pools_length:
-                        print ("%s : %s" % (count, storage_pools[count]))
+                        print ("%s : %s" % (count, config.storage_pools[count]))
                         count +=1
 
                     while True:
                         try:
                             storage_pools_option = int(input("Storage Pool: "))
-                            stgpool = storage_pools[storage_pools_option]
+                            stgpool = config.storage_pools[storage_pools_option]
                             break
                         except (IndexError):
                             print('\tERROR: Select an existing option between 0 and %s.' % (storage_pools_length))
@@ -222,31 +221,31 @@ def lparconfig():
     # get network configuration
     net_vlan = []
     net_vsw = []
-    netconfiglpar = CheckOK('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
+    netconfiglpar = verify.CheckOK('Do you want another network interface (max 3 ethernets)? (y/n): ', 'y')
     while netconfiglpar.answerCheck() == 'y':
         print ("\n[LPAR NETWORK CONFIGURATION]\n")
         if (len(net_vsw) == 0) and (nim_deploy == 'y'):
                 print ("\033[1;31mImportant: This is default network config to LPAR!\033[1;00m")
         print ("\nSelect the Virtual Switch to ethernet:")
-        vsw_length = (len(virtual_switches))-1
+        vsw_length = (len(config.virtual_switches))-1
         count = 0
         while count <= vsw_length:
-            print ("%s : %s" % (count, virtual_switches[count]))
+            print ("%s : %s" % (count, config.virtual_switches[count]))
             count +=1
 
         while True:
             try:
                 vsw_option = int(input("Virtual Switch: "))
-                net_vsw.append(virtual_switches[vsw_option])
+                net_vsw.append(config.virtual_switches[vsw_option])
                 break
             except(IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (vsw_length))
 
-        net_vlan.append(input("Ethernet VLAN (%s): " % virtual_switches[vsw_option]))
+        net_vlan.append(input("Ethernet VLAN (%s): " % config.virtual_switches[vsw_option]))
 
         # Check if VLAN exists on VIOs
         vlan_list = commands.getoutput('ssh -l poweradm %s lshwres  -r virtualio --rsubtype vswitch -m %s -F | grep %s' %
-                (hmcserver, system, virtual_switches[vsw_option]))
+                (config.hmcserver, system, config.virtual_switches[vsw_option]))
 
         if '%s' % (net_vlan[-1]) not in vlan_list:
             print ("\033[1;31mImportant: VLAN %s need to be registered on VIOS!\033[1;00m" % (net_vlan[-1]))
@@ -261,7 +260,7 @@ def lparconfig():
 
     print ("\n\n[NPIV HBA Configuration]\n")
     global vfc
-    vfc = CheckOK('Do you want add Virtual Fiber Adapter (HBA/NPIV)? (y/n): ', 'n')
+    vfc = verify.CheckOK('Do you want add Virtual Fiber Adapter (HBA/NPIV)? (y/n): ', 'n')
     vfc.mkCheck()
     vfc = vfc.answerCheck()
 
@@ -273,11 +272,11 @@ def lparconfig():
         # // simulation
         #os.system('cat poweradm/simulation/VIO1A_NPIV')
         #os.system('cat simulation/FCSINFO')
-        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (config.hmcserver,
         #          system, vio1))
         # // simulation
 
-        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (config.hmcserver,
                   system, vio1))
 
         """ get the file with comments if exists """
@@ -292,11 +291,11 @@ def lparconfig():
         # // simulation
         #os.system('cat poweradm/simulation/VIO2A_NPIV')
         #os.system('cat simulation/FCSINFO')
-        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (hmcserver,
+        #os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'cat FCSINFO\'\"' % (config.hmcserver,
         #          system, vio2))
         # // simulation
 
-        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
+        os.system('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (config.hmcserver,
                   system, vio2))
 
 
@@ -327,7 +326,7 @@ def lparconfig():
     if vscsi == 'y':
         print("SCSI         : %s: 1%s \t %s: 2%s" % (vio1, lparid, vio2, lparid))
 
-        if active_ssp.lower() == 'yes':
+        if config.active_ssp.lower() == 'yes':
             if add_disk == 'y':
                 print("DISK         : %sG" % (disk_size))
 
@@ -389,8 +388,8 @@ def exec_createlparconf():
     #
 
     # questions
-    configlpar = CheckOK('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
-    newconfiglpar = CheckOK('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
+    configlpar = verify.CheckOK('\nThe configuration of last LPAR is OK?(y/n): ', 'n')
+    newconfiglpar = verify.CheckOK('\nDo you want add another LPAR on this Change or Ticket?(y/n): ' , 'y')
 
     # Count of LPAR
     lpar_count = 0
@@ -403,7 +402,7 @@ def exec_createlparconf():
 
             # check is config ok
             lparconfig()
-            newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
+            newchange = mklparconf.MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                     lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
                     npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
 
@@ -427,18 +426,18 @@ def exec_createlparconf():
 
                 # if not end.
                 if newconfiglpar.answerCheck() == 'n':
-                    print ('Closing the file changes/%s-%s' % (change, globavar.timestr))
+                    print ('Closing the file changes/%s-%s' % (change, globalvar.timestr))
 
     newchange.closechange()
 
     # check if you want executes the change/ticket after creation
-    check_exec_createlpar = CheckOK('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
-            (change, globavar.timestr), 'n')
+    check_exec_createlpar = verify.CheckOK('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
+            (change, globalvar.timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing changes/ticket %s-%s' % (change, globavar.timestr))
-        exec_change_after_creation = ExecChange('%s/poweradm/changes/%s_%s.sh' % (pahome, change, globavar.timestr))
+        print ('Runing changes/ticket %s-%s' % (change, globalvar.timestr))
+        exec_change_after_creation = execchange.Exe('%s/poweradm/changes/%s_%s.sh' % (config.pahome, change, globalvar.timestr))
         exec_change_after_creation.runChange()
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
-                (change, globavar.timestr))
+                (change, globalvar.timestr))
