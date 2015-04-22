@@ -35,7 +35,7 @@ import tblpar
 import fields
 ##############################################################################################
 
-def tbmain():
+def main():
     ''' Menu for Troubleshooting option '''
 
     # main menu

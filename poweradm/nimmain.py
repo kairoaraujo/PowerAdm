@@ -36,7 +36,7 @@ import nim
 from mkosdeploy import *
 ##############################################################################################
 
-def nimmain():
+def main():
     """ NIM main file to PowerAdm text mode (menu) """
 
     # select a machine to deploy

@@ -31,7 +31,7 @@ States, other countries, or both.
 import time
 import os.path
 import commands
-from globalvar import *
+import globalvar
 from config import *
 from newid import *
 from systemvios import *
@@ -427,18 +427,18 @@ def exec_createlparconf():
 
                 # if not end.
                 if newconfiglpar.answerCheck() == 'n':
-                    print ('Closing the file changes/%s-%s' % (change, timestr))
+                    print ('Closing the file changes/%s-%s' % (change, globavar.timestr))
 
     newchange.closechange()
 
     # check if you want executes the change/ticket after creation
     check_exec_createlpar = CheckOK('\nDo you want execute this change/ticket now %s-%s? (y/n): ' %
-            (change, timestr), 'n')
+            (change, globavar.timestr), 'n')
     check_exec_createlpar.mkCheck()
     if check_exec_createlpar.answerCheck() == 'y':
-        print ('Runing changes/ticket %s-%s' % (change, timestr))
-        exec_change_after_creation = ExecChange('%s/poweradm/changes/%s_%s.sh' % (pahome, change, timestr))
+        print ('Runing changes/ticket %s-%s' % (change, globavar.timestr))
+        exec_change_after_creation = ExecChange('%s/poweradm/changes/%s_%s.sh' % (pahome, change, globavar.timestr))
         exec_change_after_creation.runChange()
     else:
         print ('Change/Ticket not executed. Storing %s-%s...\nExiting!' %
-                (change, timestr))
+                (change, globavar.timestr))

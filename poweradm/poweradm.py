@@ -29,12 +29,13 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-from config import *
-from createlparconf import *
-from findchange import *
-from execchange import *
-from nimmain import *
-from nimclear import *
+import config
+import globalvar
+import createlparconf
+import findchange
+import execchange
+import nimmain
+import nimclear
 import tbmain
 import os
 
@@ -42,7 +43,7 @@ def main_poweradm():
     ''' Main text menu of PowerAdm. '''
 
     os.system('clear')
-    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014, 2015 Kairo Araujo - BSD License ]\n" % version)
+    print ("\n\n[ Power Adm ]\n[ Version: %s - © 2014, 2015 Kairo Araujo - BSD License ]\n" % globalvar.version)
 
     poweradm = raw_input("\nPower Adm options\n"
                   "1. LPAR configuration.\n"
@@ -56,19 +57,19 @@ def main_poweradm():
     if poweradm == '1':
         ''' LPAR configuration. '''
 
-        exec_createlparconf()
+        createlparconf.exec_createlparconf()
 
     elif poweradm == '2':
         ''' Execute the LPAR creation.'''
 
         # Find the File Change/Ticket using class FindChange()
-        exec_findlpar = FindChange()
+        exec_findlpar = findchange.FindChange()
         exec_findlpar.selectChange()
         check_exec_findlpar = CheckOK('\nDo you want execute change/ticket %s? (y/n): ' %
                 (exec_findlpar.getChange()), 'n')
         check_exec_findlpar.mkCheck()
         if check_exec_findlpar.answerCheck() == 'y':
-            exec_change = ExecChange('%s/poweradm/changes/%s' % (pahome, exec_findlpar.getChange()))
+            exec_change = execchange.ExecChange('%s/poweradm/changes/%s' % (config.pahome, exec_findlpar.getChange()))
             exec_change.runChange()
         else:
             print ('Aborting change/ticket %s...\nExiting!' % (exec_findlpar.getChange()))
@@ -77,16 +78,16 @@ def main_poweradm():
     elif poweradm == '3':
         ''' Deploy OS on an existing LPAR. '''
 
-        nimmain()
+        nimmain.main()
 
     elif poweradm == '4':
         ''' Clear NIM OS deploy configs. '''
 
-        nimclear()
+        nimclear.clear()
 
     elif poweradm == '5':
 
-        tbmain.tbmain()
+        tbmain.main()
 
     elif poweradm == '6':
         print ("6. Quit")

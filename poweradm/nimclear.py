@@ -36,7 +36,7 @@ from verify import *
 from nim import *
 ##############################################################################################
 
-def nimclear():
+def clear():
     ''' Text menu to remove deployed LPAR config from NIM server '''
 
     # select a machine to deploy
