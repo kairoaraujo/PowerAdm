@@ -32,7 +32,8 @@ States, other countries, or both.
 ###############################################################################################
 import time
 import os
-from globalvar import *
+import globalvar
+import config
 ##############################################################################################
 #
 # Class ExecChange
@@ -55,17 +56,17 @@ class Exe:
         print ("\nRuning change/ticket %s" % (self.changefile))
         os.system("sh %s" % (self.changefile))
         f_change_executed = open(self.changefile, 'r')
-        os.system('mv %s %s/poweradm/changes_executed/' % (self.changefile, pahome))
+        os.system('mv %s %s/poweradm/changes_executed/' % (self.changefile, config.pahome))
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'
                 % (self.changefile))
         for line in f_change_executed.readlines():
             if line.startswith('#LPARID'):
                 lparidcreated = line.split()
                 print ('Removing ID %s from reserved ids' % (lparidcreated[1]))
-                file_reservedids = open('%s/poweradm/data/reserved_ids' % (pahome))
+                file_reservedids = open('%s/poweradm/data/reserved_ids' % (config.pahome))
                 line_reservedids = file_reservedids.readlines()
                 file_reservedids.close()
-                file_reservedids = open('%s/poweradm/data/reserved_ids' % (pahome), 'w')
+                file_reservedids = open('%s/poweradm/data/reserved_ids' % (config.pahome), 'w')
                 for lineids in line_reservedids:
                     file_reservedids.write(lineids.replace((lparidcreated[1]), "0"))
                 file_reservedids.close()

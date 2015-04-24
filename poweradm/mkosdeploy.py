@@ -29,11 +29,8 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os
 import nim
-from globalvar import *
-from verify import *
 ##############################################################################################
 
 class MakeNIMDeploy():

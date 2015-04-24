@@ -50,7 +50,7 @@ cpu_min = 50
 cpu_max = 100
 
 # Systems and VIOS NPIV
-# Important: Require two vios NPIV. If you have only one vio repeat the vio name 
+# Important: Require two vios NPIV. If you have only one vio repeat the vio name
 #            as first example "'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],"
 #            If you have four vios, put the two first the NPIV and the two last
 #            the network VIOS as secound example "'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],"

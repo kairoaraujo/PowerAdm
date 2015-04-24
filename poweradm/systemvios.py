@@ -29,10 +29,8 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os.path
-from globalvar import *
-from config import *
+import config
 ##############################################################################################
 #
 # Class systemVios
@@ -46,8 +44,8 @@ class SystemVios:
 
         print ("\n[LPAR host Configuration]\n"
                "\nSelect the system host for LPAR")
-        systems_keys = list(systems.keys())
-        systems_length = (len(systems.keys()))-1
+        systems_keys = list(config.systems.keys())
+        systems_length = (len(config.systems.keys()))-1
         count = 0
         while count <= systems_length:
             print ("%s : %s" % (count, systems_keys[count]))
@@ -61,14 +59,14 @@ class SystemVios:
             except (IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (systems_length))
 
-        number_vios = len(systems[('%s' % systems_keys[system_option])])
+        number_vios = len(config.systems[('%s' % systems_keys[system_option])])
 
-        self.vio1 = systems[('%s' % systems_keys[system_option])][0]
-        self.vio2 = systems[('%s' % systems_keys[system_option])][1]
+        self.vio1 = config.systems[('%s' % systems_keys[system_option])][0]
+        self.vio2 = config.systems[('%s' % systems_keys[system_option])][1]
 
         if number_vios == 4:
-            self.vionet1 = systems[('%s' % systems_keys[system_option])][2]
-            self.vionet2 = systems[('%s' % systems_keys[system_option])][3]
+            self.vionet1 = config.systems[('%s' % systems_keys[system_option])][2]
+            self.vionet2 = config.systems[('%s' % systems_keys[system_option])][3]
 
         elif number_vios == 2:
             self.vionet1 = self.vio1
@@ -96,8 +94,8 @@ class SystemVios:
 
     def printSystemList(self):
         ''' printthe list of Systems '''
-        systems_keys = list(systems.keys())
-        systems_length = (len(systems.keys()))-1
+        systems_keys = list(config.systems.keys())
+        systems_length = (len(config.systems.keys()))-1
         count = 0
         while count <= systems_length:
             print ("%s" % (systems_keys[count]))
@@ -105,27 +103,27 @@ class SystemVios:
 
     def getSystemList(self):
         ''' Get the list of Systems. '''
-	return systems.keys()
+        return config.systems.keys()
 
     def returnVio1 (self, system_option):
         ''' Indicating the system, returns the NPIV/SCSI VIO1. '''
-        return (systems[system_option][0])
+        return (config.systems[system_option][0])
 
     def returnVio2 (self, system_option):
         ''' Indicating the system, returns the NPIV/SCSI VIO2. '''
-        return (systems[system_option][1])
+        return (config.systems[system_option][1])
 
     def returnNetVio1 (self, system_option):
         ''' Indicating the system, returns the NETWORK VIO1. '''
- 
-        number_vios = len(systems.get(system_option))
 
-        self.vio1 = systems.get(system_option)[0]
-        self.vio2 = systems.get(system_option)[1]
+        number_vios = len(config.systems.get(system_option))
+
+        self.vio1 = config.systems.get(system_option)[0]
+        self.vio2 = config.systems.get(system_option)[1]
 
         if number_vios == 4:
-            self.vionet1 = systems.get(system_option)[2]
-            self.vionet2 = systems.get(system_option)[3]
+            self.vionet1 = config.systems.get(system_option)[2]
+            self.vionet2 = config.systems.get(system_option)[3]
 
         elif number_vios == 2:
             self.vionet1 = self.vio1
@@ -137,14 +135,14 @@ class SystemVios:
     def returnNetVio2 (self, system_option):
         ''' Indicating the system, returns the NETWORK VIO2 '''
 
-        number_vios = len(systems.get(system_option))
+        number_vios = len(config.systems.get(system_option))
 
-        self.vio1 = systems.get(system_option)[0]
-        self.vio2 = systems.get(system_option)[1]
+        self.vio1 = config.systems.get(system_option)[0]
+        self.vio2 = config.systems.get(system_option)[1]
 
         if number_vios == 4:
-            self.vionet1 = systems.get(system_option)[2]
-            self.vionet2 = systems.get(system_option)[3]
+            self.vionet1 = config.systems.get(system_option)[2]
+            self.vionet2 = config.systems.get(system_option)[3]
 
         elif number_vios == 2:
             self.vionet1 = self.vio1

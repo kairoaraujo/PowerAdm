@@ -38,6 +38,7 @@ import nimmain
 import nimclear
 import tbmain
 import os
+import verify
 
 def main_poweradm():
     ''' Main text menu of PowerAdm. '''
@@ -65,7 +66,7 @@ def main_poweradm():
         # Find the File Change/Ticket using class FindChange()
         exec_findlpar = findchange.FindChange()
         exec_findlpar.selectChange()
-        check_exec_findlpar = CheckOK('\nDo you want execute change/ticket %s? (y/n): ' %
+        check_exec_findlpar = verify.CheckOK('\nDo you want execute change/ticket %s? (y/n): ' %
                 (exec_findlpar.getChange()), 'n')
         check_exec_findlpar.mkCheck()
         if check_exec_findlpar.answerCheck() == 'y':

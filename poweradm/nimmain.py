@@ -28,12 +28,10 @@
 
 # Imports
 ###############################################################################################
-import time
 import os
-from globalvar import *
-from verify import *
+import verify
 import nim
-from mkosdeploy import *
+import mkosdeploy
 ##############################################################################################
 
 def main():
@@ -78,17 +76,18 @@ def main():
            'OS Version: %s' % (lparprefix, lparname, nim_server, nim_ipdeploy, nim_cfg_ver))
     print ('*' * 80)
 
-    deploy = CheckOK('\nProceed to Deploy?(y/n): ', 'n')
+    deploy = verify.CheckOK('\nProceed to Deploy?(y/n): ', 'n')
     deploy.mkCheck()
     deploy = deploy.answerCheck()
 
     if deploy == 'y':
-        mkdeploy = MakeNIMDeploy(lparprefix, lparname, lparframe, lparvlans, nim_file, nim_cfg_ver, nim_cfg_spot,
-                                     nim_cfg_mksysbspot, nim_address, nim_ipstart, nim_ipend, nim_ipnet,
-                                     nim_server, nim_ipdeploy, deploy)
+        mkdeploy = mkosdeploy.MakeNIMDeploy(lparprefix, lparname, lparframe,
+                lparvlans, nim_file, nim_cfg_ver, nim_cfg_spot,
+                nim_cfg_mksysbspot, nim_address, nim_ipstart, nim_ipend, nim_ipnet,
+                nim_server, nim_ipdeploy, deploy)
         mkdeploy.createNIMDeploy()
 
-        access_hmc = CheckOK('\nDo you want access HMC on this session?(y/n): ', 'n')
+        access_hmc = verify.CheckOK('\nDo you want access HMC on this session?(y/n): ', 'n')
         access_hmc.mkCheck()
 
         if access_hmc.answerCheck() == 'y':

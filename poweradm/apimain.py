@@ -29,16 +29,15 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os
 import commands
 import sys
 import globalvar
 import config
-from newid import *
-from systemvios import *
+import newid
+import systemvios
 import execchange
-from nim import *
+import nim
 ##############################################################################################
 
 #
@@ -48,16 +47,16 @@ from nim import *
 #
 
 # NIM available files/LPARs configs to deploy
-cfgdeploylist = NIMFileFind()
+cfgdeploylist = nim.NIMFileFind()
 deploy_list = cfgdeploylist.listDeploy()
 
 # NIM available OS versions
-osdeploylist = NIMGetVer()
+osdeploylist = nim.NIMGetVer()
 os_list = osdeploylist.listOSVersion()
 
 # NIM available Servers
 
-nimserverlist = NIMServer()
+nimserverlist = nim.NIMServer()
 nim_list = nimserverlist.listNIM()
 
 
@@ -70,12 +69,12 @@ try:
 
     if sys.argv[1] == "-sn":
         ''' Number of systems '''
-        lensystems = (len(systems))
+        lensystems = (len(config.systems))
         print lensystems
 
     elif sys.argv[1] == "-sp":
         ''' Print system [position] in array'''
-        systems = list(systems.keys())
+        systems = list(config.systems.keys())
 
         if len(sys.argv) < 3:
             print('-sp requires the position in array. Use -sn to show number of systems')
@@ -99,12 +98,12 @@ try:
 
     elif sys.argv[1] == "-sspstatus":
 	''' Show if Shared Storage Pool is enabled or disabled '''
-	print (active_ssp)
+        print (config.active_ssp)
 
     elif sys.argv[1] == "-pooln":
         ''' List shared storage pools array size (number of shared storage pools)'''
-        ssp_len = (len(storage_pools))
-	print (ssp_len)
+        ssp_len = (len(nim.storage_pools))
+        print (ssp_len)
 
     elif sys.argv[1] == "-poolp":
         ''' Print shared storage pool [position] name in array'''
@@ -114,10 +113,10 @@ try:
         else:
             try:
                 ssp_option = int(sys.argv[2])
-                print(storage_pools[ssp_option])
+                print(config.storage_pools[ssp_option])
             except(IndexError,ValueError):
                 print('The -poolp [position] is a number existent on the array.\n'
-		      'Use -pooln to show number of shared storage pools')
+		              'Use -pooln to show number of shared storage pools')
 
 #
 # Virtual Switches
@@ -126,7 +125,7 @@ try:
 
     elif sys.argv[1] == "-vswn":
         ''' List Virtual Switches array size (number of virtual switches) '''
-        lenvsw = (len(virtual_switches))
+        lenvsw = (len(config.virtual_switches))
         print lenvsw
 
     elif sys.argv[1] == "-vswp":
@@ -136,7 +135,7 @@ try:
         else:
             try:
                 vsw_option = int(sys.argv[2])
-                print(virtual_switches[vsw_option])
+                print(config.virtual_switches[vsw_option])
             except(IndexError,ValueError):
                 print('The -vswp [position] is a number existent on the array.\n'
                       'Use -vswn to show number of virtual switches on array')
@@ -155,12 +154,12 @@ try:
             # get values system and vios
             system = sys.argv[2]
 
-            find_vios = SystemVios()
+            find_vios = systemvios.SystemVios()
             vio1 = find_vios.returnVio1('%s' % (sys.argv[2]))
 
             # get information on hmc
-	    lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-                                  system, vio1))
+	    lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' %
+                (config.hmcserver, system, vio1))
 
 	    # if exists file npiv notes get
             if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, system, vio1)):
@@ -180,12 +179,12 @@ try:
             # get values system and vios
             system = sys.argv[2]
 
-            find_vios = SystemVios()
+            find_vios = systemvios.SystemVios()
             vio2 = find_vios.returnVio2('%s' % (sys.argv[2]))
 
             # get information on hmc
-	    lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' % (hmcserver,
-                                  system, vio2))
+	    lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' %
+                (config.hmcserver, system, vio2))
 
 	    # if exists file npiv notes get
             if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, system, vio2)):
@@ -316,12 +315,12 @@ try:
             stgpool = "none"
 
         # get free id from newID.py
-        nextid = NewID()
+        nextid = newid.NewID()
         nextid.mkID()
         lparid = nextid.getID()
 
         # get system VIOs
-        listvios = SystemVios()
+        listvios = systemvios.SystemVios()
         vio1 = listvios.returnVio1(system_option)
         vio2 = listvios.returnVio2(system_option)
 
@@ -420,7 +419,7 @@ try:
 
     elif sys.argv[1] == "-nimstatus":
         ''' Show if NIM is enabled or disabled '''
-        print (enable_nim_deploy)
+        print (config.enable_nim_deploy)
 
 #
 # Deploy OS
@@ -566,15 +565,10 @@ try:
                  nim_cfg_mksysbspot, nim_address, nim_ipstart, nim_ipend, nim_ipnet,
                  nim_server, nim_ipdeploy, deploy))
 
-
-
-
 #
 # HELP
 #
 ##############################################################################################
-
-
     elif sys.argv[1] == "-h":
         print('%s is part of PowerAdm %s - http://www.poweradm.org\n'
               'This is a project of API for Web Interface and VMware vCenter Orchestrator.\n\n'
@@ -604,7 +598,7 @@ try:
               '-nimp [position] \tPrint OS NIM Server in array. Use -nimn to show number of NIM Servers.\n'
               '-nimdeploy [args]\tDeploy OS using NIM. Requires arguments.\n'
               ' \t\t\tCheck arguments on pydoc or http://poweradm.org/apimain.html\n'
-              % (sys.argv[0], version, sys.argv[0]))
+              % (sys.argv[0], globalvar.version, sys.argv[0]))
     else:
         print ('Option not found. Use -h to help.')
 

@@ -29,17 +29,10 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os.path
 import commands
-from globalvar import *
-from config import *
-from newid import *
-from systemvios import *
-from verify import *
-from execchange import *
-from fields import *
-
+import globalvar
+import config
 
 class MakeLPARConf():
     ''' Create on config.pahome/poweradm/changes/ the shell script file to create LPAR.
@@ -104,21 +97,21 @@ class MakeLPARConf():
         global lparmenmin, lparmenmax, lparentcpumin, lparentcpumax, lparvcpumin, lparvcpumax
 
         # calcule the lpar memory min and max
-        lparmenmin = self.lparmem-(self.lparmem*mem_min/100)
-        lparmenmax = (self.lparmem*mem_max/100)+self.lparmem
+        lparmenmin = self.lparmem-(self.lparmem*config.mem_min/100)
+        lparmenmax = (self.lparmem*config.mem_max/100)+self.lparmem
 
         # verify entitle cpu and set min and maximum
-        lparentcpumin = self.lparentcpu-(self.lparentcpu*cpu_min/100)
+        lparentcpumin = self.lparentcpu-(self.lparentcpu*config.cpu_min/100)
         lparentcpumin = round(lparentcpumin, 1)
         if lparentcpumin < 0.10:
             lparentcpumin = 0.1
-        lparentcpumax = (self.lparentcpu*cpu_max/100)+self.lparentcpu
+        lparentcpumax = (self.lparentcpu*config.cpu_max/100)+self.lparentcpu
 
         # verify virtual cpu (if min cpu is < 1) and set min and max
-        lparvcpumin = self.lparvcpu-(self.lparvcpu*cpu_min/100)
+        lparvcpumin = self.lparvcpu-(self.lparvcpu*config.cpu_min/100)
         if lparvcpumin < 1:
             lparvcpumin = 1
-        lparvcpumax = (self.lparvcpu*cpu_max/100)+self.lparvcpu
+        lparvcpumax = (self.lparvcpu*config.cpu_max/100)+self.lparvcpu
 
 
         #
@@ -133,7 +126,7 @@ class MakeLPARConf():
 
         global file_change
 
-        file_change = open("%s/poweradm/tmp/%s_%s.sh" % (pahome, self.change, timestr) , 'w')
+        file_change = open("%s/poweradm/tmp/%s_%s.sh" % (config.pahome, self.change, globalvar.timestr) , 'w')
         file_change.write("#!/bin/sh\n")
 
 
@@ -167,7 +160,7 @@ class MakeLPARConf():
             file_change.write("\n\necho 'Making DLPAR on %s to create VSCSI'" % (self.vio1))
             file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                              "-s 1%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=21\'"
-                             % (hmcserver, self.system, self.vio1, self.lparid,
+                             % (config.hmcserver, self.system, self.vio1, self.lparid,
                              self.prefix, self.lparname, self.lparid))
 
             wchg_checksh()
@@ -177,7 +170,7 @@ class MakeLPARConf():
 
             file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype scsi "
                              "-s 2%s -a \'adapter_type=server,remote_lpar_name=%s-%s,remote_lpar_id=%s,remote_slot_num=22\'"
-                             % (hmcserver, self.system, self.vio2, self.lparid,
+                             % (config.hmcserver, self.system, self.vio2, self.lparid,
                              self.prefix, self.lparname, self.lparid))
 
             wchg_checksh()
@@ -190,7 +183,7 @@ class MakeLPARConf():
 
             file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                               "-s 3%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=33\'"
-                              % (hmcserver, self.system, self.vio1, self.lparid,
+                              % (config.hmcserver, self.system, self.vio1, self.lparid,
                               self.prefix, self.lparname ))
             wchg_checksh()
 
@@ -199,7 +192,7 @@ class MakeLPARConf():
 
             file_change.write("\n\nssh %s -l poweradm chhwres -r virtualio -m %s -o a -p %s --rsubtype fc "
                               "-s 4%s -a \'adapter_type=server,remote_lpar_name=%s-%s, remote_slot_num=34\'"
-                              % (hmcserver, self.system, self.vio2, self.lparid,
+                              % (config.hmcserver, self.system, self.vio2, self.lparid,
                               self.prefix, self.lparname ))
             wchg_checksh()
 
@@ -210,7 +203,7 @@ class MakeLPARConf():
                              (self.vio1))
 
             file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
-                             (hmcserver, self.system, self.vio1))
+                             (config.hmcserver, self.system, self.vio1))
 
             wchg_checksh()
 
@@ -218,7 +211,7 @@ class MakeLPARConf():
                              (self.vio2))
 
             file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'cfgdev -dev vio0\'\"" %
-                             (hmcserver, self.system, self.vio2))
+                             (config.hmcserver, self.system, self.vio2))
 
             wchg_checksh()
 
@@ -230,7 +223,7 @@ class MakeLPARConf():
                              (self.vio1))
 
             file_change.write("\n\nvfchost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                              "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (hmcserver, self.system,
+                              "| grep \"\\-C3%s \" | awk \'{ print $1 }\')" % (config.hmcserver, self.system,
                               self.vio1, self.lparid))
             wchg_checksh()
 
@@ -239,7 +232,7 @@ class MakeLPARConf():
                              (self.vio2))
 
             file_change.write("\n\nvfchost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all -npiv\'\""
-                              "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (hmcserver, self.system,
+                              "| grep \"\\-C4%s \" | awk \'{ print $1 }\')" % (config.hmcserver, self.system,
                               self.vio2, self.lparid))
             wchg_checksh()
 
@@ -248,7 +241,7 @@ class MakeLPARConf():
                              ( self.vio1))
 
             file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
-                              "$vfchost_vio1 -fcp %s\'\"" % (hmcserver, self.system,
+                              "$vfchost_vio1 -fcp %s\'\"" % (config.hmcserver, self.system,
                               self.vio1, self.npiv_vio1))
             wchg_checksh()
 
@@ -256,7 +249,7 @@ class MakeLPARConf():
                              (self.vio2))
 
             file_change.write("\n\nssh %s -l poweradm viosvrcmd -m %s -p %s -c \"\'vfcmap -vadapter "
-                              "$vfchost_vio2 -fcp %s\'\"" % (hmcserver, self.system,
+                              "$vfchost_vio2 -fcp %s\'\"" % (config.hmcserver, self.system,
                               self.vio2, self.npiv_vio2))
             wchg_checksh()
 
@@ -268,18 +261,18 @@ class MakeLPARConf():
                              (self.disk_size, self.prefix, self.lparname, self.vio1))
 
             file_change.write("\n\nvhost_vio1=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
-                              "| grep \"\\-C1%s \" | awk \'{ print $1 }\')" % (hmcserver, self.system,
+                              "| grep \"\\-C1%s \" | awk \'{ print $1 }\')" % (config.hmcserver, self.system,
                               self.vio1, self.lparid))
             wchg_checksh()
 
             file_change.write("\n\nvhost_vio2=$(ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsmap -all\'\""
-                              "| grep \"\\-C2%s \" | awk \'{ print $1 }\')" % (hmcserver, self.system,
+                              "| grep \"\\-C2%s \" | awk \'{ print $1 }\')" % (config.hmcserver, self.system,
                               self.vio2, self.lparid))
             wchg_checksh()
 
             file_change.write("\n\nssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'mkbdsp -clustername "
                               "%s -sp %s %sG -bd %s_lu1 -thick -vadapter $vhost_vio1 -tn %s_rootvg\'\"" %
-                              (hmcserver, self.system, self.vio1, cluster_name,
+                              (config.hmcserver, self.system, self.vio1, config.cluster_name,
                                self.stgpool, self.disk_size, self.lparname,
                                self.lparname))
             wchg_checksh()
@@ -294,10 +287,10 @@ class MakeLPARConf():
                     "max_proc_units=%s, sharing_mode=%s, uncap_weight=%s, conn_monitoring=%s, "
                     "boot_mode=%s, max_virtual_slots=40, "
                     "\\\"virtual_eth_adapters=%s\\\"'\n"
-                    % ( hmcserver, self.system, self.prefix, self.lparname, self.lparid,
-                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
-                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, sharing_mode,
-                        uncap_weight, conn_monitoring, boot_mode, self.veth))
+                    % ( config.hmcserver, self.system, self.prefix, self.lparname, self.lparid,
+                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, config.proc_mode, lparvcpumin,
+                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, config.sharing_mode,
+                        config.uncap_weight, config.conn_monitoring, config.boot_mode, self.veth))
             wchg_checksh()
 
 
@@ -312,10 +305,10 @@ class MakeLPARConf():
                     "boot_mode=%s, max_virtual_slots=40, "
                     "\\\"virtual_eth_adapters=%s\\\","
                     "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\"'\n"
-                    % ( hmcserver, self.system, self.prefix, self.lparname, self.lparid,
-                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
-                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, sharing_mode,
-                        uncap_weight, conn_monitoring, boot_mode, self.veth,
+                    % ( config.hmcserver, self.system, self.prefix, self.lparname, self.lparid,
+                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, config.proc_mode, lparvcpumin,
+                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, config.sharing_mode,
+                        config.uncap_weight, config.conn_monitoring, config.boot_mode, self.veth,
                         self.vio1, self.lparid, self.vio2, self.lparid))
             wchg_checksh()
 
@@ -331,10 +324,10 @@ class MakeLPARConf():
                     "boot_mode=%s, max_virtual_slots=40, "
                     "\\\"virtual_eth_adapters=%s\\\","
                     "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
-                    % ( hmcserver, self.system, self.prefix, self.lparname, self.lparid,
-                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
-                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, sharing_mode,
-                        uncap_weight, conn_monitoring, boot_mode, self.veth, vscsi_vio1, vscsi_vio2))
+                    % ( config.hmcserver, self.system, self.prefix, self.lparname, self.lparid,
+                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, config.proc_mode, lparvcpumin,
+                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, config.sharing_mode,
+                        config.uncap_weight, config.conn_monitoring, config.boot_mode, self.veth, vscsi_vio1, vscsi_vio2))
 
             wchg_checksh()
 
@@ -350,10 +343,10 @@ class MakeLPARConf():
                     "\\\"virtual_eth_adapters=%s\\\","
                     "\\\"virtual_fc_adapters=33/client//%s/3%s//0,34/client//%s/4%s//0\\\","
                     "\\\"virtual_scsi_adapters=%s,%s\\\"'\n"
-                    % ( hmcserver, self.system, self.prefix, self.lparname, self.lparid,
-                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, proc_mode, lparvcpumin,
-                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, sharing_mode,
-                        uncap_weight, conn_monitoring, boot_mode, self.veth,
+                    % ( config.hmcserver, self.system, self.prefix, self.lparname, self.lparid,
+                        self.lparname, lparmenmin*1024, self.lparmem*1024, lparmenmax*1024, config.proc_mode, lparvcpumin,
+                        self.lparvcpu, lparvcpumax, lparentcpumin, self.lparentcpu, lparentcpumax, config.sharing_mode,
+                        config.uncap_weight, config.conn_monitoring, config.boot_mode, self.veth,
                         self.vio1, self.lparid, self.vio2, self.lparid, vscsi_vio1,
                         vscsi_vio2))
             wchg_checksh()
@@ -366,7 +359,7 @@ class MakeLPARConf():
 
             file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                               "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
-                             (hmcserver, self.system, self.vio1, hmcserver, self.system,
+                             (config.hmcserver, self.system, self.vio1, config.hmcserver, self.system,
                               self.vio1))
             wchg_checksh()
 
@@ -375,7 +368,7 @@ class MakeLPARConf():
 
             file_change.write("\n\nssh %s -l poweradm mksyscfg -r prof -m %s -o save -p %s -n $(ssh %s -l poweradm "
                               "lssyscfg -r lpar -m %s --filter \"lpar_names=%s\" -F curr_profile) --force" %
-                             (hmcserver, self.system, self.vio2, hmcserver, self.system,
+                             (config.hmcserver, self.system, self.vio2, config.hmcserver, self.system,
                               self.vio2))
             wchg_checksh()
 
@@ -384,19 +377,19 @@ class MakeLPARConf():
 
             file_change.write("\n\necho 'Enabling Deploy to %s-%s'" % (self.prefix, self.lparname))
 
-            file_change.write("\n\necho '#PREFIX %s' > %s/poweradm/nim/%s-%s.nim" % (self.prefix, pahome, self.prefix,
+            file_change.write("\n\necho '#PREFIX %s' > %s/poweradm/nim/%s-%s.nim" % (self.prefix, config.pahome, self.prefix,
                                 self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#LPARNAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.lparname, pahome,
+            file_change.write("\n\necho '#LPARNAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.lparname, config.pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#FRAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.system, pahome,
+            file_change.write("\n\necho '#FRAME %s' >> %s/poweradm/nim/%s-%s.nim" % (self.system, config.pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
-            file_change.write("\n\necho '#VLAN_FINAL %s' >> %s/poweradm/nim/%s-%s.nim" % ( self.veth_final, pahome,
+            file_change.write("\n\necho '#VLAN_FINAL %s' >> %s/poweradm/nim/%s-%s.nim" % ( self.veth_final, config.pahome,
                                 self.prefix, self.lparname))
             wchg_checksh()
 
@@ -415,15 +408,15 @@ class MakeLPARConf():
 
             file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
                              "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-            		    	 (hmcserver, self.system, self.vio1, self.npiv_vio1))
+            		    	 (config.hmcserver, self.system, self.vio1, self.npiv_vio1))
 
             file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
                              "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-                             (hmcserver, self.system, self.vio2, self.npiv_vio2))
+                             (config.hmcserver, self.system, self.vio2, self.npiv_vio2))
 
             file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
                               "lpar_names=\'%s-%s\' | awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
-                              "(active,inactive):\\t\"$12 }\'" % (hmcserver, self.system,
+                              "(active,inactive):\\t\"$12 }\'" % (config.hmcserver, self.system,
                                 self.prefix, self.lparname))
 
             file_change.write("\n\necho '*************************************************************' ")
@@ -439,7 +432,7 @@ class MakeLPARConf():
         # Function writechange() starts here
         #
 
-        print ('Writing file %s-%s.sh ... ' % (self.change, timestr))
+        print ('Writing file %s-%s.sh ... ' % (self.change, globalvar.timestr))
 
         file_change.write("\n\n#LPARID %s" % (self.lparid))
 
@@ -451,8 +444,7 @@ class MakeLPARConf():
             wchg_vio_mknpiv()
             wchg_vio_cfgdev()
             wchg_vio_vfcmap()
-            if active_ssp.lower() == 'yes':
-                print (self.add_disk)
+            if config.active_ssp.lower() == 'yes':
                 if (self.add_disk == 'y'):
                     wchg_vio_mkbdsp()
             wchg_hmc_savecurrentconf()
@@ -466,8 +458,7 @@ class MakeLPARConf():
             wchg_lpar_scsi()
             wchg_vio_mkscsi()
             wchg_vio_cfgdev()
-            if active_ssp.lower() == 'yes':
-                print (self.add_disk)
+            if config.active_ssp.lower() == 'yes':
                 if (self.add_disk == 'y'):
                     wchg_vio_mkbdsp()
             wchg_hmc_savecurrentconf()
@@ -493,7 +484,7 @@ class MakeLPARConf():
             if self.nim_deploy == 'y':
                 wchg_lpar_deploy_nim_enable()
 
-        file_reservedids_tmp = open('%s/poweradm/tmp/reserved_ids_%s' %(pahome, timestr), 'ab')
+        file_reservedids_tmp = open('%s/poweradm/tmp/reserved_ids_%s' %(config.pahome, globalvar.timestr), 'ab')
         file_reservedids_tmp.write('%s\n' % (self.lparid))
         file_reservedids_tmp.close()
 
@@ -502,12 +493,12 @@ class MakeLPARConf():
 
         file_change.write('\n\n# File closed with success by PowerAdm\n')
         file_change.close()
-        os.system('mv %s/poweradm/tmp/%s_%s.sh %s/poweradm/changes/' % (pahome, self.change, timestr, pahome))
-        os.system('cat %s/poweradm/tmp/reserved_ids_%s >> %s/poweradm/data/reserved_ids' % (pahome, timestr, pahome))
+        os.system('mv %s/poweradm/tmp/%s_%s.sh %s/poweradm/changes/' % (config.pahome, self.change, globalvar.timestr, config.pahome))
+        os.system('cat %s/poweradm/tmp/reserved_ids_%s >> %s/poweradm/data/reserved_ids' % (config.pahome, globalvar.timestr, config.pahome))
 
 
     def returnChange(self):
         ''' return the change file '''
 
-        return('%s/poweradm/changes/%s_%s.sh' % (pahome, self.change, timestr))
+        return('%s/poweradm/changes/%s_%s.sh' % (config.pahome, self.change, globalvar.timestr))
 

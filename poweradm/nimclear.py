@@ -31,16 +31,16 @@ States, other countries, or both.
 ###############################################################################################
 import time
 import os
-from globalvar import *
-from verify import *
-from nim import *
+import globalvar
+import verify
+import nim
 ##############################################################################################
 
 def clear():
     ''' Text menu to remove deployed LPAR config from NIM server '''
 
     # select a machine to deploy
-    nimrm = NIMFileFind()
+    nimrm = nim.NIMFileFind()
     nimrm.selectDeploy('Select Deploy', 'poweradm/nim_executed/', 'REMOVE')
 
     # get variables
@@ -62,12 +62,12 @@ def clear():
             lpar = line.split()
             lparnimaddress = lpar[1]
 
-    rmhostnim = CheckOK('Proceed to Remove?(y/n): ', 'n')
+    rmhostnim = verify.CheckOK('Proceed to Remove?(y/n): ', 'n')
     rmhostnim.mkCheck()
 
     if rmhostnim.answerCheck() == 'y':
 
-        f_nim_rm = open('poweradm/changes/nim_rm_%s-%s_%s.nim' % (lparprefix, lparname, timestr), 'w')
+        f_nim_rm = open('poweradm/changes/nim_rm_%s-%s_%s.nim' % (lparprefix, lparname, globalvar.timestr), 'w')
 
         def f_nimrm_chksh():
             ''' Check if command is ok -- write in sh file '''
@@ -106,9 +106,9 @@ def clear():
         f_nim_rm.close()
 
         print ('\n\nRemoving server %s-%s from NIM...' % (lparprefix, lparname))
-        os.system('sh poweradm/changes/nim_rm_%s-%s_%s.nim' % (lparprefix, lparname, timestr))
+        os.system('sh poweradm/changes/nim_rm_%s-%s_%s.nim' % (lparprefix, lparname, globalvar.timestr))
         os.system('mv poweradm/changes/nim_rm_%s-%s_%s.nim poweradm/changes_executed/' % (lparprefix,
-            lparname, timestr))
+            lparname, globalvar.timestr))
 
         print ('Removing ID %s from reserved IPs' % (lparip))
         file_reservedips = open('poweradm/data/reserved_ips', 'r')

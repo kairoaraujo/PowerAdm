@@ -29,11 +29,10 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os.path
 import fnmatch
-from globalvar import *
-from config import *
+import globalvar
+import config
 
 ##############################################################################################
 #
@@ -76,7 +75,7 @@ class NIMServer:
     def listNIM(self):
         ''' List all NIM Servers name (config) '''
 
-        return list(nimservers.keys())
+        return list(config.nimservers.keys())
 
 
     def getNIM(self, nimserver):
@@ -171,7 +170,7 @@ class NIMGetVer:
     def listOSVersion(self):
         ''' List all OS version names '''
 
-        return list(nim_os_deploy.keys())
+        return list(config.nim_os_deploy.keys())
 
     def OSVersion(self, osversion):
         ''' Select OS version using OSVersion(osversion).
@@ -219,8 +218,8 @@ class NIMFileFind:
         Attributes:
         title       An title to menu.
         filedir     Directory to search a nim files (*.nim). By default:
-                      - pahome'/poweradm/nim/ : files to make deploy
-                      - 'pahome'/poweradm/nim_executed/ : files to remove deploy conf
+                      - config.pahome'/poweradm/nim/ : files to make deploy
+                      - 'config.pahome'/poweradm/nim_executed/ : files to remove deploy conf
         action      The action subtitle like a REMOVE, DEPLOY, FOOBAR.
         '''
 
@@ -250,7 +249,7 @@ class NIMFileFind:
     def listDeploy(self):
         ''' List available deploys files/LPAR to deploy'''
 
-        filedir = ('%s/poweradm/nim/' % (pahome))
+        filedir = ('%s/poweradm/nim/' % (config.pahome))
         listDeploy = fnmatch.filter(os.listdir("%s" % (filedir)), "*.nim")
         return listDeploy
 
@@ -265,8 +264,8 @@ class NIMFileFind:
 
         Attribute:
         deploy_file     The full path and file. By default:
-                          - 'pahome'/poweradm/nim/ : files to make deploy
-                          - 'pahome'/poweradm/nim_executed/ : files to remove deploy conf
+                          - 'config.pahome'/poweradm/nim/ : files to make deploy
+                          - 'config.pahome'/poweradm/nim_executed/ : files to remove deploy conf
 
         To list file use listDeploy()
         To select file using text mode (menu) use selectDeploy()
@@ -365,14 +364,14 @@ class NIMNewIP():
 
         # find next IP on the range
         os.system("ssh -l poweradm %s cat /etc/hosts >> %s/poweradm/tmp/hosts_%s" %
-                 (nim_address, pahome, timestr))
+                 (nim_address, config.pahome, config.timestr))
         os.system("cat %s/poweradm/data/reserved_ips >> %s/poweradm/tmp/hosts_%s" %
-                 (pahome, pahome, timestr))
+                 (config.pahome, config.pahome, config.timestr))
 
         # verify ip (get IP and find in unique host file create before)
         def verifyIP(ipaddress):
             ''' Verify IPs '''
-            f_nim_hosts = open("%s/poweradm/tmp/hosts_%s" % (pahome, timestr), 'r')
+            f_nim_hosts = open("%s/poweradm/tmp/hosts_%s" % (config.pahome, config.timestr), 'r')
             for line_hosts in f_nim_hosts.readlines():
                 if line_hosts.startswith('%s' % (ipaddress)):
                     f_nim_hosts.close()
