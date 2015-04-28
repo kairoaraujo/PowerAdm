@@ -29,6 +29,7 @@
 # Imports
 ###############################################################################################
 import os
+import config
 import verify
 import nim
 import mkosdeploy
@@ -41,7 +42,7 @@ def main():
     #
     nimfile = nim.NIMFileFind()
     nimfile.selectDeploy('Select Deploy', 'poweradm/nim/', 'EXECUTE')
-    nim_file = ('%s/poweradm/nim/%s' % (pahome, nimfile.getDeploy()))
+    nim_file = ('%s/poweradm/nim/%s' % (config.pahome, nimfile.getDeploy()))
     nimfile.fileData(nim_file)
     # get variables
     lparprefix = nimfile.returnDeployPrefix()

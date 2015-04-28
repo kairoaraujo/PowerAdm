@@ -47,8 +47,8 @@ class NIMServer:
 
         print ("\n[Deploy NIM: NIM Server Select]\n"
                "\nSelect the NIM Server")
-        nimservers_keys = list(nimservers.keys())
-        nimservers_length = (len(nimservers.keys()))-1
+        nimservers_keys = list(config.nimservers.keys())
+        nimservers_length = (len(config.nimservers.keys()))-1
         count = 0
         while count <= nimservers_length:
             print ("%s : %s" % (count, nimservers_keys[count]))
@@ -62,10 +62,10 @@ class NIMServer:
             except(ValueError,IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (nimservers_length))
 
-        self.address = nimservers[('%s' % nimservers_keys[nimserver_option])][0]
-        self.ipdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][1]
-        self.gwdeploy = nimservers[('%s' % nimservers_keys[nimserver_option])][2]
-        self.iprange = nimservers[('%s' % nimservers_keys[nimserver_option])][3]
+        self.address = config.nimservers[('%s' % nimservers_keys[nimserver_option])][0]
+        self.ipdeploy = config.nimservers[('%s' % nimservers_keys[nimserver_option])][1]
+        self.gwdeploy = config.nimservers[('%s' % nimservers_keys[nimserver_option])][2]
+        self.iprange = config.nimservers[('%s' % nimservers_keys[nimserver_option])][3]
         self.ipstartend = self.iprange.split('-')
         self.ipnet = self.ipstartend[0].split('.')
         self.ipstart = self.ipnet[3]
@@ -150,8 +150,8 @@ class NIMGetVer:
 
         print ("\n[DEPLOY OS Nim Server Configuration]\n"
                "\nSelect the version OS for LPAR")
-        nim_os_deploy_keys = list(nim_os_deploy.keys())
-        nim_os_deploy_length = (len(nim_os_deploy.keys()))-1
+        nim_os_deploy_keys = list(config.nim_os_deploy.keys())
+        nim_os_deploy_length = (len(config.nim_os_deploy.keys()))-1
         count = 0
         while count <= nim_os_deploy_length:
             print ("%s : %s" % (count, nim_os_deploy_keys[count]))
@@ -164,8 +164,8 @@ class NIMGetVer:
                 break
             except(ValueError,IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (nim_os_deploy_length))
-        self.mksysblpp = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][0]
-        self.spot = nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][1]
+        self.mksysblpp = config.nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][0]
+        self.spot = config.nim_os_deploy[('%s' % nim_os_deploy_keys[nim_os_deploy_option])][1]
 
     def listOSVersion(self):
         ''' List all OS version names '''
@@ -364,14 +364,14 @@ class NIMNewIP():
 
         # find next IP on the range
         os.system("ssh -l poweradm %s cat /etc/hosts >> %s/poweradm/tmp/hosts_%s" %
-                 (nim_address, config.pahome, config.timestr))
+                 (nim_address, config.pahome, globalvar.timestr))
         os.system("cat %s/poweradm/data/reserved_ips >> %s/poweradm/tmp/hosts_%s" %
-                 (config.pahome, config.pahome, config.timestr))
+                 (config.pahome, config.pahome, globalvar.timestr))
 
         # verify ip (get IP and find in unique host file create before)
         def verifyIP(ipaddress):
             ''' Verify IPs '''
-            f_nim_hosts = open("%s/poweradm/tmp/hosts_%s" % (config.pahome, config.timestr), 'r')
+            f_nim_hosts = open("%s/poweradm/tmp/hosts_%s" % (config.pahome, globalvar.timestr), 'r')
             for line_hosts in f_nim_hosts.readlines():
                 if line_hosts.startswith('%s' % (ipaddress)):
                     f_nim_hosts.close()

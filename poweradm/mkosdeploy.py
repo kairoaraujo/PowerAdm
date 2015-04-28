@@ -31,6 +31,8 @@ States, other countries, or both.
 ###############################################################################################
 import os
 import nim
+import commands
+import config
 ##############################################################################################
 
 class MakeNIMDeploy():
@@ -85,7 +87,7 @@ class MakeNIMDeploy():
             new_ip = nim.NIMNewIP()
             new_ip = new_ip.getNewIP(self.nim_address, self.nim_ipstart, self.nim_ipend, self.nim_ipnet)
             self.new_ip = new_ip
-            f_nim_reserved_ips = open ('%s/poweradm/data/reserved_ips' % (pahome), 'a')
+            f_nim_reserved_ips = open ('%s/poweradm/data/reserved_ips' % (config.pahome), 'a')
             f_nim_reserved_ips.write('%s\n' % (self.new_ip))
             f_nim_reserved_ips.close()
 
@@ -122,7 +124,7 @@ class MakeNIMDeploy():
             f_nim_exe.write('\n\necho "Resource alocations and perform operations to %s-%s on NIM Server"\n' %
                     (self.lparprefix, self.lparname))
 
-            if nim_deploy_mode.lower() == 'mksysb':
+            if config.nim_deploy_mode.lower() == 'mksysb':
 
                 f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o bos_inst -a source=mksysb -a spot=%s '
                     '-a mksysb=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' % (self.nim_address,
@@ -141,20 +143,20 @@ class MakeNIMDeploy():
             f_nim_exe.write('echo "This might take a few minutes..."\n')
 
             f_nim_exe.write('\n\nmac_address=$(ssh -l poweradm %s lpar_netboot -M -A -n -T off -t '
-                            'ent %s-%s %s %s | grep C10-T1 | awk \'{ print $3 }\')\n' % (hmcserver,
+                            'ent %s-%s %s %s | grep C10-T1 | awk \'{ print $3 }\')\n' % (config.hmcserver,
                                 self.lparprefix, self.lparname, self.lparname, self.lparframe))
             f_nimexe_chksh()
 
             f_nim_exe.write('\n\necho "Booting LPAR %s-%s on NIM Server"\n' % (self.lparprefix, self.lparname))
             f_nim_exe.write('echo "This might take a few minutes..."\n')
             f_nim_exe.write('\n\nssh -l poweradm %s lpar_netboot -m $mac_address -T off -t ent -s '
-                    'auto -d auto -S %s -C %s %s-%s %s %s\n' % (hmcserver, self.nim_ipdeploy, self.new_ip,
+                    'auto -d auto -S %s -C %s %s-%s %s %s\n' % (config.hmcserver, self.nim_ipdeploy, self.new_ip,
                         self.lparprefix, self.lparname, self.lparname, self.lparframe))
             f_nimexe_chksh()
 
             print ('\n\nChange VLAN on profile to final config')
             f_nim_exe.write('\n\nssh -l poweradm %s chsyscfg -r prof -m %s -i \'lpar_name=%s-%s, name=%s, '
-                            '\\\"virtual_eth_adapters=%s\\\"\'' % (hmcserver, self.lparframe, self.lparprefix,
+                            '\\\"virtual_eth_adapters=%s\\\"\'' % (config.hmcserver, self.lparframe, self.lparprefix,
                                 self.lparname, self.lparname, self.lparvlans))
 
             f_nim_exe.close()
@@ -167,11 +169,21 @@ class MakeNIMDeploy():
             f_nim_deploy.write('#NIMADDRESS %s\n' % (self.nim_address))
             f_nim_deploy.close()
 
-            os.system('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' % (pahome, self.lparprefix, self.lparname))
-            os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (pahome, self.lparprefix,
-                self.lparname, pahome))
-            os.system('mv %s/poweradm/changes/deploy_nim_%s-%s.nim %s/poweradm/changes_executed/' % (pahome,
-                self.lparprefix, self.lparname, pahome))
+            # try nim connections
+            print ('\n\nTesting the NIM Server connections')
+            chk_nim_connections = commands.getstatusoutput('ssh -l poweradm %s lsnim' % self.nim_server)
+
+            if chk_nim_connections[0] != '0':
+                print ('\nConnect to NIM Server failed')
+                exit(chk_nim_connections[0])
+            else:
+                print ('\nNIM Server connection passed!\n')
+
+            os.system('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' % (config.pahome, self.lparprefix, self.lparname))
+            os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (config.pahome, self.lparprefix,
+                self.lparname, config.pahome))
+            os.system('mv %s/poweradm/changes/deploy_nim_%s-%s.nim %s/poweradm/changes_executed/' % (config.pahome,
+                self.lparprefix, self.lparname, config.pahome))
 
             print ('\nPlease, access HMC %s and run command below to finish OS install. '
-                   '\n\t\'mkvterm -m %s -p %s-%s\' ' % (hmcserver, self.lparframe, self.lparprefix, self.lparname))
+                   '\n\t\'mkvterm -m %s -p %s-%s\' ' % (config.hmcserver, self.lparframe, self.lparprefix, self.lparname))
