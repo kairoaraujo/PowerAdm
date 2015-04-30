@@ -33,6 +33,7 @@ import config
 import verify
 import nim
 import mkosdeploy
+import commands
 ##############################################################################################
 
 def main():
@@ -76,6 +77,15 @@ def main():
            'NIM Server: %s (IP Server: %s)\n'
            'OS Version: %s' % (lparprefix, lparname, nim_server, nim_ipdeploy, nim_cfg_ver))
     print ('*' * 80)
+
+    # try nim connections
+    print ('\n\nTesting the NIM Server connections!')
+    chk_nim_connections = commands.getstatusoutput('ssh -l poweradm %s lsnim' % nim_server)
+    if chk_nim_connections[0] != '0':
+        print ('\nConnect to NIM Server failed!')
+        exit("\tError: "+chk_nim_connections[1])
+    else:
+        print ('\nNIM Server connection passed!\n')
 
     deploy = verify.CheckOK('\nProceed to Deploy?(y/n): ', 'n')
     deploy.mkCheck()

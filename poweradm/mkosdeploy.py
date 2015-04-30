@@ -31,7 +31,6 @@ States, other countries, or both.
 ###############################################################################################
 import os
 import nim
-import commands
 import config
 ##############################################################################################
 
@@ -168,16 +167,6 @@ class MakeNIMDeploy():
             f_nim_deploy.write('#NIMSERVER %s\n' % (self.nim_server))
             f_nim_deploy.write('#NIMADDRESS %s\n' % (self.nim_address))
             f_nim_deploy.close()
-
-            # try nim connections
-            print ('\n\nTesting the NIM Server connections')
-            chk_nim_connections = commands.getstatusoutput('ssh -l poweradm %s lsnim' % self.nim_server)
-
-            if chk_nim_connections[0] != '0':
-                print ('\nConnect to NIM Server failed')
-                exit(chk_nim_connections[0])
-            else:
-                print ('\nNIM Server connection passed!\n')
 
             os.system('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' % (config.pahome, self.lparprefix, self.lparname))
             os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (config.pahome, self.lparprefix,

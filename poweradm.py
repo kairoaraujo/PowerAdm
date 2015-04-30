@@ -39,7 +39,7 @@ print "\nChecking HMC connection..."
 chk_hmc_connection = commands.getstatusoutput('ssh -l poweradm %s lshmc -V' %
         poweradm.config.hmcserver)
 
-if chk_hmc_connection[0] != 0:
+if chk_hmc_connection[0] -= 0:
     print "\nConnection to HMC passed!"
     try:
         main_poweradm()
