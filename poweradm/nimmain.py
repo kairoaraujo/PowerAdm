@@ -80,8 +80,8 @@ def main():
 
     # try nim connections
     print ('\n\nTesting the NIM Server connections!')
-    chk_nim_connections = commands.getstatusoutput('ssh -l poweradm %s lsnim' % nim_server)
-    if chk_nim_connections[0] != '0':
+    chk_nim_connections = commands.getstatusoutput('ssh -l poweradm %s sudo lsnim' % nim_server)
+    if chk_nim_connections[0] != 0:
         print ('\nConnect to NIM Server failed!')
         exit("\tError: "+chk_nim_connections[1])
     else:

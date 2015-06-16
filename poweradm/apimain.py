@@ -97,19 +97,24 @@ try:
 
 
     elif sys.argv[1] == "-sspstatus":
-	''' Show if Shared Storage Pool is enabled or disabled '''
+        ''' Show if Shared Storage Pool is enabled or disabled '''
         print (config.active_ssp)
 
     elif sys.argv[1] == "-pooln":
         ''' List shared storage pools array size (number of shared storage pools)'''
-        ssp_len = (len(nim.storage_pools))
-        print (ssp_len)
+
+        ssp_len = (len(config.storage_pools))
+        if config.active_ssp == 'no':
+            print ('Shared Storage Pool is disabled.\n%s' % ssp_len)
+        else:
+            print (ssp_len)
 
     elif sys.argv[1] == "-poolp":
         ''' Print shared storage pool [position] name in array'''
 
-        if sys.argv[2] == " ":
-            print('-poolp requires the position in array. Use -poolp to show number of pools')
+        if len(sys.argv) < 3:
+            print('-poolp requires the position in array. Use -pooln to show number of systems')
+            exit(1)
         else:
             try:
                 ssp_option = int(sys.argv[2])
@@ -130,8 +135,10 @@ try:
 
     elif sys.argv[1] == "-vswp":
         ''' Print virtual switch [position] '''
-        if sys.argv[2] == " ":
-            print('-vwp requires the position in array. Use -vwl to show number of systems')
+
+        if len(sys.argv) < 3:
+            print('-vswp requires the position in array. Use -vswn to show number of systems')
+            exit(1)
         else:
             try:
                 vsw_option = int(sys.argv[2])
@@ -144,12 +151,11 @@ try:
 # Get VIOS
 #
 ##############################################################################################
-    elif sys.argv[1] == "-npiv1":
 
+    elif sys.argv[1] == "-npiv1":
 
         if sys.argv[2] == "":
             print('-npiv1 [system]. Requeries the name of system.')
-
         else:
             # get values system and vios
             system = sys.argv[2]
