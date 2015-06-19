@@ -90,7 +90,7 @@ class MakeNIMDeploy():
             f_nim_reserved_ips.write('%s\n' % (self.new_ip))
             f_nim_reserved_ips.close()
 
-            f_nim_exe = open('poweradm/changes/deploy_nim_%s-%s.nim' % (self.lparprefix,
+            f_nim_exe = open('%s/poweradm/changes/deploy_nim_%s-%s.nim' % (config.pahome, self.lparprefix,
                          self.lparname), 'w')
 
             def f_nimexe_chksh():
