@@ -86,10 +86,10 @@ class NIMServer:
         '''
 
         self.nimserver = nimserver
-        self.address = nimservers[nimserver][0]
-        self.ipdeploy = nimservers[nimserver][1]
-        self.gwdeploy = nimservers[nimserver][2]
-        self.iprange = nimservers[nimserver][3]
+        self.address = config.nimservers[self.nimserver][0]
+        self.ipdeploy = config.nimservers[self.nimserver][1]
+        self.gwdeploy = config.nimservers[self.nimserver][2]
+        self.iprange = config.nimservers[self.nimserver][3]
         self.ipstartend = self.iprange.split('-')
         self.ipnet = self.ipstartend[0].split('.')
         self.ipstart = self.ipnet[3]
@@ -182,8 +182,8 @@ class NIMGetVer:
         '''
 
         self.osversion = osversion
-        self.mksysblpp = nim_os_deploy[self.osversion][0]
-        self.spot = nim_os_deploy[self.osversion][1]
+        self.mksysblpp = config.nim_os_deploy[self.osversion][0]
+        self.spot = config.nim_os_deploy[self.osversion][1]
 
 
     def getOSVersion(self):
