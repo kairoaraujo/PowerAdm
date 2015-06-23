@@ -147,3 +147,13 @@ conn_monitoring = '1'
 
 # Debug api parser
 api_debug = 'no'
+
+# NPIV Chache
+#
+# running the 'lsnports' in some VIOS can take a few long seconds.
+# the cache can be used.
+#
+# disable or enable option
+npiv_cache = 'enable'
+# time to update the cache files in seconds
+npiv_cache_time = '86400'
