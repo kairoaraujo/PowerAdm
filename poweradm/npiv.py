@@ -32,6 +32,7 @@ import os
 import config
 import systemvios
 import commands
+import cachefile
 ##############################################################################################
 #
 # Class NPIV
@@ -40,104 +41,143 @@ import commands
 class NPIV:
     ''' Get informations about NPIV on the VIOS. '''
 
+    def lsnportsVIO(self, systemp, vio_server):
+        ''' Get the 'lsnports' and NPIV notes (if have).
 
-    def lsnportsVIO1(self, systemp):
-        ''' Select the change/ticket file. '''
+            Attributes:
+            systemp     the system p name.
+            vio_server  the vio do you want use:
+                        options:
+                            vio1 for #1 VIOS NPIV
+                            vio2 for #2 VIOS NPIV
+                            * this informations is used from the config file.
+        '''
 
+        # get informations about the VIOS from config file
         find_vios = systemvios.SystemVios()
-        vio1 = find_vios.returnVio1('%s' % (systemp))
-
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' %
-                (config.hmcserver, systemp, vio1))
-
-        # if exists file npiv notes get
-        if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, systemp, vio1)):
-            npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( config.pahome, systemp, vio1))
+        if vio_server == 'vio1':
+            vios = find_vios.returnVio1('%s' % (systemp))
+        elif vio_server == 'vio2':
+            vios = find_vios.returnVio2('%s' % (systemp))
         else:
-            npiv_notes = ""
+            print 'Option for VIO invalid. Use vio1 or vio2.'
 
-        print ("%s \n %s" % (lsnports, npiv_notes))
+        def lsnports_cmd():
+            ''' Command to get the lsnports and NPIV notes '''
 
-    def lsnportsVIO2(self, systemp):
-        ''' Select the change/ticket file. '''
+            # get information on hmc
+            lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' %
+                    (config.hmcserver, systemp, vios))
 
-        find_vios = systemvios.SystemVios()
-        vio2 = find_vios.returnVio2('%s' % (systemp))
+            # if exists file npiv notes get
+            if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, systemp, vios)):
+                npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( config.pahome, systemp, vios))
+            else:
+                npiv_notes = ""
 
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"' %
-                (config.hmcserver, systemp, vio2))
 
-        # if exists file npiv notes get
-        if os.path.isfile('%s/npiv/%s-%s' % ( config.pahome, systemp, vio2)):
-            npiv_notes = commands.getoutput('cat %s/npiv/%s-%s' % ( config.pahome, systemp, vio2))
+            return  ("%s \n %s" % (lsnports, npiv_notes))
+
+        # if cache file (CacheFile()) is enabled use that
+        if config.npiv_cache == 'enable':
+
+            lsnports = cachefile.CacheFile('%s/poweradm/npiv_cache/lsnports_%s_%s.cache' % (config.pahome,
+                systemp, vios), config.npiv_cache_time, lsnports_cmd, 't_print')
+            lsnports.cache()
+
         else:
-            npiv_notes = ""
 
-        print ("%s \n %s" % (lsnports, npiv_notes))
+            print lsnports_cmd()
 
 
-    def numberFCVIO1(self, systemp):
-        ''' Select the change/ticket file. '''
+    def numberFCVIO(self, systemp, vio_server):
+         ''' Get the number of FCs available to the vios.
 
+            Attributes:
+            systemp     the system p name.
+            vio_server  the vio do you want use:
+                        options:
+                            vio1 for #1 VIOS NPIV
+                            vio2 for #2 VIOS NPIV
+                            * this informations is used from the config file.
+        '''
+
+        # get informations about the VIOS from config file
         find_vios = systemvios.SystemVios()
-        vio1 = find_vios.returnVio1('%s' % (systemp))
+        if vio_server == 'vio1':
+            vios = find_vios.returnVio1('%s' % (systemp))
+        elif vio_server == 'vio2':
+            vios = find_vios.returnVio2('%s' % (systemp))
+        else:
+            print 'Option for VIO invalid. Use vio1 or vio2.'
 
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
-                '| grep ^fcs | awk \'{ print $1 }\' | wc -l' %
-                (config.hmcserver, systemp, vio1))
+        def numfc_cmd():
+            ''' The command to get the number of FCs available '''
 
-        return int(lsnports)
+            # get information on hmc from VIO
+            lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
+                    '| grep ^fcs | awk \'{ print $1 }\' | wc -l' %
+                    (config.hmcserver, systemp, vios))
 
-    def numberFCVIO2(self, systemp):
-        ''' Select the change/ticket file. '''
+            return int(lsnports)
 
+        # if cache file (CacheFile()) is enabled use that
+        if config.npiv_cache == 'enable':
+
+            lsnports = cachefile.CacheFile('%s/poweradm/npiv_cache/num_fc_%s_%s.cache' % (config.pahome,
+                systemp, vios), config.npiv_cache_time, numfc_cmd, 't_print')
+            lsnports.cache()
+
+        else:
+
+            print numfc_cmd()
+
+
+    def printFCVIO(self, systemp, vio_server):
+        ''' Get the array with FCs available from the VIO.
+
+            Attributes:
+            systemp     the system p name.
+            vio_server  the vio do you want use:
+                        options:
+                            vio1 for #1 VIOS NPIV
+                            vio2 for #2 VIOS NPIV
+                            * this informations is used from the config file.
+        '''
+
+        # get informations about the VIOS from config file
         find_vios = systemvios.SystemVios()
-        vio2 = find_vios.returnVio2('%s' % (systemp))
+        if vio_server == 'vio1':
+            vios = find_vios.returnVio1('%s' % (systemp))
+        elif vio_server == 'vio2':
+            vios = find_vios.returnVio2('%s' % (systemp))
+        else:
+            print 'Option for VIO invalid. Use vio1 or vio2.'
 
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
-                '| grep ^fcs | awk \'{ print $1 }\' | wc -l' %
-                (config.hmcserver, systemp, vio2))
+        def printfc_cmd():
+            ''' The command to get the list of FCs available '''
 
-        return int(lsnports)
+            # get information on hmc
+            lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
+                    '| grep ^fcs | awk \'{ print $1 }\'' %
+                    (config.hmcserver, systemp, vios))
+            lsnports_fc_list = lsnports
+            return lsnports_fc_list
 
-    def printFCVIO1(self, systemp):
-        ''' Select the change/ticket file. '''
+        # if cache file (CacheFile()) is enabled use that
+        if config.npiv_cache == 'enable':
 
-        find_vios = systemvios.SystemVios()
-        vio1 = find_vios.returnVio1('%s' % (systemp))
+            lsnports = cachefile.CacheFile('%s/poweradm/npiv_cache/list_fcs_%s_%s.cache' % (config.pahome,
+                systemp, vios), config.npiv_cache_time, printfc_cmd, 't_return')
+            lsnports_fc_list = lsnports.cache()
 
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
-                '| grep ^fcs | awk \'{ print $1 }\'' %
-                (config.hmcserver, systemp, vio1))
+        else:
 
+            lsnports_fc_list = printfc_cmd()
+
+        # make the array and returns
         list_fcs = []
-        for line in lsnports.split('\n'):
+        for line in lsnports_fc_list.split('\n'):
             list_fcs.append(line)
-
         return list_fcs
-
-
-    def printFCVIO2(self, systemp):
-        ''' Select the change/ticket file. '''
-
-        find_vios = systemvios.SystemVios()
-        vio2 = find_vios.returnVio2('%s' % (systemp))
-
-        # get information on hmc
-        lsnports = commands.getoutput('ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsnports\'\"'
-                '| grep ^fcs | awk \'{ print $1 }\'' %
-                (config.hmcserver, systemp, vio2))
-
-        list_fcs = []
-        for line in lsnports.split('\n'):
-            list_fcs.append(line)
-
-        return list_fcs
-
-
 
