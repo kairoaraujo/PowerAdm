@@ -91,7 +91,7 @@ class NPIV:
 
 
     def numberFCVIO(self, systemp, vio_server):
-         ''' Get the number of FCs available to the vios.
+        ''' Get the number of FCs available to the vios.
 
             Attributes:
             systemp     the system p name.
