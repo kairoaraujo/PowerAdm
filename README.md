@@ -23,9 +23,12 @@ Optionally there is an interface for creating LPAR (Logical Partition) that work
 
 - Text Interface
 - Works with VMware vCenter Orchestrator (vCO)
+    - LPAR Creation workflow
+    - Deploy OS workflow
+    [You can modify these workflows for your environment]
 - Create Logical Partition (LPAR) profile
 - Supports multiple frames
-- Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
+- Add virtual Ethernet (maximum 3 ethernets), vscsi, vfc(HBA NPIV) and add disk.
     - Select the Virtual Switch
     - VLAN
 - Add vSCSI on two VIOs
