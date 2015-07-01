@@ -1,3 +1,5 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
 PowerAdm API
 
 
@@ -308,9 +310,4 @@ NIM IP Deploy (server): 10.0.0.1
 Deploy: n
 ```
 
-
-Last Update: %%date(%c)
-
-
-
-
+%!include: inc/footer.t2t
