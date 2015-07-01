@@ -1,0 +1,198 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+TIP: Redeploy OS in LPAR
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+== Situations ==
+
+- Lost the OS;
+- Wrong version;
+- Some error on first deploy
+
+
+(any other sh1t)
+
+== 1. Rollback (with a copy, don't move) the file nim from poweradm/nim_executed/ to poweradm/nim/ == 
+```
+[poweradm@lnxsrv01 PowerAdm]$ ls -la poweradm/nim_executed
+total 40
+drwxrwxr-x. 2 poweradm poweradm 4096 Jan 29 15:34 .
+drwxrwxr-x. 8 poweradm poweradm 4096 Jan 28 21:39 ..
+-rw-rw-r--. 1 poweradm poweradm  205 Jan 29 15:29 PRD-aix71app7.nim
+-rw-rw-r--. 1 poweradm poweradm  205 Jan 29 14:33 QAS-aix61app3.nim
+-rw-rw-r--. 1 poweradm poweradm   71 Jan 18 20:07 INFO
+[poweradm@lnxsrv01 PowerAdm]$
+[poweradm@lnxsrv01 PowerAdm]$ cp poweradm/nim_executed/PRD-aix71app7.nim poweradm/nim/
+[poweradm@lnxsrv01 PowerAdm]$
+[poweradm@lnxsrv01 PowerAdm]$
+```
+
+
+== 2. Edit the file ==
+
+```
+[poweradm@lnxsrv01 PowerAdm]$ vi poweradm/nim/PRD-aix71app7.nim
+#PREFIX PRD
+#LPARNAME aix71app7
+#FRAME P7FRAME02-9119-FHB-SN071081K
+#VLAN_FINAL 10/0/2679//0/0/VSW-DATA-01,11/0/2839//0/0/VSW-BACKUP-01
+#IP 10.0.2.14
+#NIMSERVER NIM1
+#NIMADDRESS 10.0.0.2.1
+```
+
+Remove the last three lines
+
+```
+#PREFIX PRD
+#LPARNAME aix71app7
+#FRAME P7FRAME02-9119-FHB-SN071081K
+#VLAN_FINAL 10/0/2679//0/0/VSW-DATA-01,11/0/2839//0/0/VSW-BACKUP-01
+```
+
+== 3. Set the initial VLANs to deploy. ==
+
+=== a. Get the initial VLAN: ===
+
+```
+grep virtual_eth poweradm/changes_executed/[TICKET/CHANGE]_MMDDYY_HHMMSS.sh
+```
+
+Example: On my environment the VLAN of deploy is 700 of Virtual Switch VSW-DATA-01
+
+```
+[poweradm@lnxsrv01 PowerAdm]$ grep virtual_eth poweradm/changes_executed/TICKET232_01282015-162734.sh
+
+ssh hmctvttsm01 -l poweradm mksyscfg -r lpar -m P7FRAME02-9119-FHB-SN071081K -i 'name=PRD-aix71app7, lpar_id=221,
+profile_name=aix71app7, lpar_env=aixlinux, min_mem=16384, desired_mem=32768, max_mem=49152, proc_mode=shared, 
+min_procs=2,desired_procs=4, max_procs=8, min_proc_units=0.2, desired_proc_units=0.4, max_proc_units=0.8, 
+sharing_mode=uncap, uncap_weight=128, conn_monitoring=1, boot_mode=norm, max_virtual_slots=40, 
+\"virtual_eth_adapters=10/0/700//0/0/VSW-DATA-01,11/0/1110//0/0/VSW-BACKUP-01\",\"virtual_fc_adapters=33/client
+//VIO1P02/3221//0,34/client//VIO2P02/4221//0\"'
+```
+
+The ethernet with initial config is:
+
+```
+virtual_eth_adapters=10/0/700//0/0/VSW-DATA-01,11/0/1110//0/0/VSW-BACKUP-01
+```
+
+=== b. Change the VLAN using command line. To get command use: ===
+
+```
+[poweradm@tvsptvttsm01 PowerAdm]$ grep virtual_eth poweradm/changes_executed/deploy_nim_PRD-aix71app7.nim
+
+ssh -l poweradm hmc1 chsyscfg -r prof -m P7FRAME02-9119-FHB-SN071081K -i 'lpar_name=PRD-aix71app7, name=aix71app7, 
+\"virtual_eth_adapters=10/0/3689//0/0/VSW-DATA-01,11/0/1110//0/0/VSW-BACKUP-01\"'
+```
+
+Modify the virtual_eth_adapter to value got on step 'b' and exec
+
+Example:
+
+```
+ssh -l poweradm hmc1 chsyscfg -r prof -m P7FRAME02-9119-FHB-SN071081K -i 'lpar_name=PRD-aix71app7, name=aix71app7, 
+\"virtual_eth_adapters=10/0/700//0/0/VSW-DATA-01,11/0/1110//0/0/VSW-BACKUP-01\"'
+```
+
+== 4. Clear the Deploy config ==
+
+```
+[ Power Adm ]
+[ Version: 0.8-beta - © 2014 Kairo Araujo - BSD License ]
+
+
+Power Adm options
+1. LPAR configuration.
+2. Execute the LPAR creation.
+3. Deploy OS on an existing LPAR.
+4. Clear NIM OS deploy configs.
+5. Quit
+
+Please choose an option: 4
+
+[DEPLOY OS NIM: Select Deploy]
+
+Select the Deploy:
+
+0 : QAS-aix61app3.nim.nim
+1 : PRD-aix71app7.nim
+
+What's OS Deploy NIM you want REMOVE?: 1
+Proceed to Remove?(y/n): y
+
+
+Removing server PRD-aix71app7 from NIM...
+Reseting machine aix71app7 in NIM Server
+Command OK. Continuing
+Deallocate resources from machine aix71app7 in NIM Server
+Command OK. Continuing
+Removing machine aix71app7 from NIM Server
+warning: 0042-140 m_rmmac: unable to remove the /etc/niminfo file on
+    "aix71app7"
+
+Command OK. Continuing
+Removing host aix71app7 from NIM Server /etc/hosts
+Command OK. Continuing
+Command OK. Continuing
+Removing ID 10.0.2.14 from reserved IPs
+
+Exiting.
+```
+
+== 5. Now, exec (re)deloy :) ==
+
+```
+[ Power Adm ]
+[ Version: 0.8-beta - © 2014 Kairo Araujo - BSD License ]
+
+
+Power Adm options
+1. LPAR configuration.
+2. Execute the LPAR creation.
+3. Deploy OS on an existing LPAR.
+4. Clear NIM OS deploy configs.
+5. Quit
+
+Please choose an option: 3
+
+[DEPLOY OS NIM: Select Deploy]
+
+Select the Deploy:
+
+0 : DEV-aix71ora3.nim
+1 : PRD-aix71app7.nim
+
+What's OS Deploy NIM you want EXECUTE?: 1
+
+[DEPLOY OS Nim Server Configuration]
+
+Select the version OS for LPAR
+0 : AIX 5.3 TL12 SP04
+1 : AIX 7.1 TL03 SP04
+2 : AIX 6.1 TL09 SP04
+Version: 1
+
+[Deploy NIM: NIM Server Select]
+
+Select the NIM Server
+0 : NIM03
+1 : NIM02
+2 : NIM01
+NIM Server: 1
+
+[DEPLOY SO NIM: Check deploy]
+
+********************************************************************************
+Server: PRD-aix71app7 (IP Client: 10.0.2.11)
+NIM Server: NIM02 (IP Server: 10.0.2.1)
+OS Version: AIX 7.1 TL03 SP04
+********************************************************************************
+
+Proceed to Deploy?(y/n): y
+```
+
+%!include: inc/footer.t2t
+

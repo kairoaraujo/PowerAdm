@@ -46,23 +46,24 @@ a:visited
 /* That nice green background on some words and code samples */
 code
 	{
-	background-color: #999;
-	border		: 1px dotted #ddd;
+	background-color: #000;
+	border		: 1px dotted #fff;
 	}
 pre
 	{
-	background-color: #999;
+	background-color: #000;
 	margin-left : 3em;
 	margin-right	: 2em;
 	padding		: 8px;
-	border		: 1px outset gray;
+	border		: 2px outset gray;
+	color:white;
 	}
 
 /* Tables are used by: docs, sample */
 table
 	{
 	font-size	: 100%; /* Needed to inherit the body font size*/
-	border-color	: #999;
+	border-color	: #fff;
 	}
 th
 	{

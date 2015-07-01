@@ -19,13 +19,13 @@
 <div id="sidebar">
   <ul>
   <li id="home"><a href="./index.html">Home</a></li>
-  <li id="releases"><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download Releases</a></li>
-  <li id="tarball"><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download TAR Ball</a></li>
   <li id="requirements"><a href="./requirements.html">Requirements</a></li>
   <li id="screenshots"><a href="./screenshots.html">Deploy Screenshots</a></li>
   <li id="troubleshooting"><a href="./troubleshooting.html">Troubleshooting (Help)</a></li>
-  <li id="tips"><a href="./tips.html">TIP Redeploy OS in LPAR</a></li>
+  <li id="tip-redeploy-os"><a href="./tip-redeploy-os.html">TIP Redeploy OS in LPAR</a></li>
   <li id="vcoforpoweradm"><a href="./vcoforpoweradm.html">vCO for PowerAdm</a></li>
+  <li id="releases"><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download Releases</a></li>
+  <li id="tarball"><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download TAR Ball</a></li>
   <li id="github"><a href="https://github.com/kairoaraujo/PowerAdm">Visit GitHub</a></li>
   </ul>
 </div>
@@ -41,6 +41,243 @@
 	<BLOCKQUOTE>
 	Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
 	</BLOCKQUOTE>
+
+<TABLE>
+<TR>
+<TD><IMG ALIGN="middle" SRC="img/PowerAdm-0.9-beta.png" BORDER="0" ALT=""><IMG ALIGN="middle" SRC="img/vCO-config-approval.png" BORDER="0" ALT=""></TD>
+</TR>
+</TABLE>
+
+<H2>Principal features</H2>
+
+<UL>
+<LI>Text Interface
+<LI>Works with VMware vCenter Orchestrator (vCO)
+<LI>Create Logical Partition (LPAR) profile
+<LI>Supports multiple frames
+<LI>Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
+ <UL>
+ <LI>Select the Virtual Switch
+ <LI>VLAN
+ </UL>
+</UL>
+
+<UL>
+<LI>Add vSCSI on two VIOs
+ <UL>
+ <LI>Create Virtual SCSI server on VIO automatically
+ </UL>
+</UL>
+
+<UL>
+<LI>Add HBA/NPIV(vfchost) on two VIOs
+ <UL>
+ <LI>Make vfcmap automatically
+ </UL>
+</UL>
+
+<UL>
+<LI>Add disk on vSCSI (only if you have Shared Storage Pool)
+<LI>Troubleshooting help
+ <UL>
+ <LI>Environment (SEA and NPIV)
+ <LI>Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
+ </UL>
+</UL>
+
+<UL>
+<LI>Centralized config (poweradm/config.py)
+<LI>Deploy SO from the NIM Server
+<LI><B>Organize your IDs!!!</B> Don't you know what is it? Keep reading...
+<P></P>
+</UL>
+
+	<BLOCKQUOTE>
+	Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	The objective of this tool is to adopt a standard for IDs based on the LPAR ID and also to facilitate the LPAR creation with no need of expert knowledge, making it easier even for analysts without experienced skills in Power or operators.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Something that we really consider the differential in this tool is the IDs organization.
+	</BLOCKQUOTE>
+<P>
+In the future:
+</P>
+
+<UL>
+<LI>Web Interface
+<LI>vCO workflow/interface deploy OS Deploys using NIM
+</UL>
+
+<H2>Latest release</H2>
+
+<P>
+<A HREF="https://github.com/kairoaraujo/PowerAdm/releases">Releases</A>
+</P>
+
+<H3>IDs Structure / Organize your IDs</H3>
+
+	<BLOCKQUOTE>
+	These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs. These IDs also help managing the Live Partition Mobility. Therefore, if well organized, will always remain the same independent of the box.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	For this, the following rules were established:
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Every LPAR has a maximum number of virtual devices 40 and the following structure:
+	</BLOCKQUOTE>
+
+<UL>
+<LI>Virtual Network IDs will be between 10 and 19
+<LI>Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)
+<LI>Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)
+</UL>
+
+	<BLOCKQUOTE>
+	"VIOS" settings have the following default: Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Other sample: If the maximum number of LPAR is 100 the number is changed to 3100 (VIO Primary) and 4100 (VIO Secundary)
+	</BLOCKQUOTE>
+<P>
+Continuing...
+</P>
+	<BLOCKQUOTE>
+	Virtual SCSI IDs:
+	</BLOCKQUOTE>
+
+<UL>
+<LI>Primary VIO 1 + 'LPAR ID'
+<LI>Secondary VIO 2 + 'LPAR ID'
+</UL>
+
+	<BLOCKQUOTE>
+	Fiber Channel IDs:
+	</BLOCKQUOTE>
+
+<UL>
+<LI>Primary VIO 3 + 'LPAR ID'
+<LI>Secondary VIO 4 + 'LPAR ID'
+</UL>
+
+<P>
+<B>Example:</B>
+</P>
+
+<UL>
+<LI>VIOS1 - ID: 1 (ever)
+ <UL>
+ <LI>Maximum number of virtual IDs: 3500
+ </UL>
+</UL>
+
+<UL>
+<LI>VIOS2 - ID: 2 (ever)
+ <UL>
+ <LI>Maximum number of virtual IDs: 4500
+ </UL>
+</UL>
+
+<P>
+LPAR AIX1
+</P>
+
+<UL>
+<LI>LPAR ID: 11
+<LI>Virtual devices:
+ <UL>
+ <LI>11: Network adapter data
+ <LI>12: Network adapter backup
+ <LI>21: Virtual SCSI (Server: 111 VIOS1)
+ <LI>22: Virtual SCSI (Server: 211 VIOS2)
+ <LI>33: Fiber Channel (Server: 311 VIOS1)
+ <LI>34: Fiber Channel (Server: 411 VIOS2)
+ </UL>
+</UL>
+
+<P>
+LPAR AIX2
+</P>
+
+<UL>
+<LI>LPAR ID: 12
+<LI>Virtual devices:
+ <UL>
+ <LI>11: Network adapter data
+ <LI>12: Network adapter backup
+ <LI>21: Virtual SCSI (Server: 112 VIOS1)
+ <LI>22: Virtual SCSI (Server: 212 VIOS2)
+ <LI>33: Fiber Channel (Server: 312 VIOS1)
+ <LI>34: Fiber Channel (Server: 412 VIOS2)
+ </UL>
+</UL>
+
+<P>
+VIOS1
+</P>
+
+<UL>
+<LI>LPAR ID: 1
+<LI>Virtual devices:
+ <UL>
+ <LI>111 Virtual SCSI (Client ID: 11 / Virtual Client: 21)
+ <LI>112 Virtual SCSI (Client ID: 12 / Virtual Client: 21)
+ <LI>311 Fiber Channel (Client ID: 11 / Virtual Client: 33)
+ <LI>312 Fiber Channel (Client ID: 12 / Virtual Client: 33)
+ </UL>
+</UL>
+
+<P>
+VIOS2
+</P>
+
+<UL>
+<LI>LPAR ID: 2
+<LI>Virtual devices:
+ <UL>
+ <LI>211 Virtual SCSI (Client: 11 / Virtual Client: 22)
+ <LI>212 Virtual SCSI (Client: 12 / Virtual Client: 22)
+ <LI>411 Fiber Channel (Client: 11 / Virtual Client: 34)
+ <LI>412 Fiber Channel (Client: 12 / Virtual Client: 34)
+ <P></P>
+In this example we can easily identify which VIO serves the virtual devices, by only looking the partition ID.
+ <P></P>
+Sample: Identifying AIX1 on VIOs
+ <P></P>
+
+<PRE>
+padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+VTD                   NO VIRTUAL TARGET DEVICE FOUND
+
+
+padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
+
+padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
+Ports logged in:2
+Flags:a&lt;LOGGED_IN,STRIP_MERGE&gt;
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
+</PRE>
+
+ </UL>
+</UL>
 
 <H2>How is it developed?</H2>
 
@@ -69,7 +306,7 @@
 	</BLOCKQUOTE>
 	<BLOCKQUOTE>
 		<BLOCKQUOTE>
-		Contributors: Bruno Costa, Fernando Costa and Raphael Paiva.
+		Contributors: Bruno Costa, Fernando Costa,  Raphael Paiva and Filipi Silva
 		</BLOCKQUOTE>
 	</BLOCKQUOTE>
 </div><div id="footer">
@@ -77,7 +314,7 @@
 <IMG ALIGN="middle" SRC="./img/t2tpowered-white.png" BORDER="0" ALT="">
 </P>
 <P>
-Last modified on 30 June 2015 at 20:24
+Last modified on 01 July 2015 at 10:36
 (<A HREF="index.t2t">See sources</A>)
 </P>
 </div><div id="fake">
@@ -98,5 +335,5 @@ Last modified on 30 June 2015 at 20:24
 </DIV>
 
 <!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
-<!-- cmdline: txt2tags -t html index.t2t requirements.t2t screenshots.t2t tips.t2t troubleshooting.t2t vcoforpoweradm.t2t -->
+<!-- cmdline: txt2tags -t html index.t2t requirements.t2t screenshots.t2t tip-redeploy-os.t2t troubleshooting.t2t vcoforpoweradm.t2t -->
 </BODY></HTML>
