@@ -10,9 +10,12 @@ TIP: Redeploy OS in LPAR
 - Lost the OS;
 - Wrong version;
 - Some error on first deploy
-
-
 (any other sh1t)
+
+Contents:
+
+%%TOC
+
 
 == 1. Rollback (with a copy, don't move) the file nim from poweradm/nim_executed/ to poweradm/nim/ == 
 ```

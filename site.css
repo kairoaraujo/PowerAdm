@@ -46,7 +46,7 @@ a:visited
 /* That nice green background on some words and code samples */
 code
 	{
-	background-color: #000;
+	background-color: white;
 	border		: 1px dotted #fff;
 	}
 pre

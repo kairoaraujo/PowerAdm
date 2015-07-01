@@ -11,13 +11,9 @@ Deploy ScreenShots
 - VMware vCenter Orchestrator interface/workflow 
 	https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
 
-Select one of the options:
+Contents:
 
-+ Creates a new LPAR configuration, this function generates a change/ticket to create or modify a LPAR configuration. The ticket will be processed later (option 2).
-+ Execute the LPAR creation (change/ticket) from option 1
-+ Deploy images on LPARs created in option 2
-+ Clear configs used to Deploy OS with NIM Server
-+ Quits from Power Adm
+%%TOC
 
 --------------------------------------------------------------
 == LPAR Configuration (option 1) ==

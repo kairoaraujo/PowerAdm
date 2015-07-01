@@ -1,0 +1,316 @@
+PowerAdm API
+
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+
+This document discribe abou the PowerAdm API and how to use that.
+
+The API is located in ``[ PowerAdm Home ]/poweradm/apimain.py`` .
+
+
+This Doc:
+
+%%TOC
+
+-------------------------------------------------------------
+
+
+== How the API works ==
+
+The principle of this API is based on **direct informations**, **array informations** 
+and **actions**.
+
+First you can see the help using ``[ PowerAdm Home ]/poweradm/apimain.py -h``
+
+**IMPORTANT**: The PowerAdm needs be installed and working!
+
+== Direct informations ==
+
+The direct information works with a simple output.
+
+Example:
+
+``-nimstatus`` Return NIM enable status yes or no
+
+```
+[ PowerAdm Home ]/poweradm/apimain.py -nimstatus
+yes
+```
+
+All direct informations contents in this API:
+
+```
+-nimstatus          Return NIM enable status [yes|no].
+-sspstatus          Return Shared Storage Pool enable status [yes|no].
+```
+
+== Array informations ==
+
+To array informations we have two types of output.
+
+First the size array and second you can use to get a specific information on array.
+
+Example:
+
+Getting the number size of the array with all pSystems available on the environment:
+
+``-sn``                 List systems array size (number of systems).
+
+```
+[ PowerAdm Home ]/poweradm/apimain.py -sn
+3
+```
+
+Getting the first position of this list with 3 systems.
+
+Important: The array starts with 0!
+
+``-sp [position]``          Print system position name in array.
+
+```
+[ PowerAdm Home ]/poweradm/apimain.py -sp 0
+P1-8205-E6D-SN06A07BT
+```
+
+
+**How you can use that**
+
+You can use tat with any language programming which have a simple loop like 'while'.
+With array information you can construct drop downs, menus etc using all languages (PHP, 
+JavaScript, Java etc)
+
+Fist example with Shell Scripting:
+
+```
+#!/bin/sh
+
+psystems=$([PowerAdm Home]/poweradm/apimain.py -sn)
+count=0
+while [ $count -lt $psystems ]
+do
+    echo $([PowerAdm Home]/poweradm/apimain.py -sp $count);
+    let "count++";
+done
+
+```
+
+The output
+
+```
+$ sh shell_sample.sh
+P1-8205-E6D-SN06A07BT
+P1-8205-E6D-SN06A07AT
+P1-8205-E6D-SN06A07CT
+```
+
+Some options require the system name, this name is the pSystem name like on in the last example.
+
+For example, to list informations about NPIV from the first NPIV VIOS you need use
+``-npiv1 P1-8205-E6D-SN06A07AT`` or to get the number of available FCs you need use
+``-npiv1n P1-8205-E6D-SN06A07AT``.
+
+All Array informations contents in this API:
+
+```
+Arguments:
+-sn                         List systems array size (number of systems).
+-sp [position]              Print system position name in array.
+                            Position in array. Position start with 0. Use -sn to check array size.
+-pooln                      List shared storage pools array size (number of shared storage pools).
+-poolp [positon]            Print shared storage pool position name in array.
+                            Position in array. Position start with 0. Use -pooln to check array size.
+-vswn                       List Virtual Switches array size (number of virtual switches).
+-vswp [postion]             Print virtual switch position name in array.
+                            Position in array. Position start with 0. Use -vswn to check array size.
+-npiv1 [system]             Print informations about NPIV (lsmap and notes) on Primary NPIV VIOS.
+                            Requeries the name of system.
+-npiv2 [system]             Print informations about NPIV (lsmap and notes) on Secondary NPIV VIOS.
+                            Requeries the name of system.
+-npiv1n [system]            List FCs array size (number of FCs available) on Primary NPIV VIOS.
+                            Requeries the name of system
+-npiv1p [system] [position] Print FC name in specific position
+                            Requeries the name of system
+                            Position start with 0. Use -npiv1n to check array size.
+-npiv2n [system]            List FCs array size (number of FCs available) on Secondary NPIV VIOS.
+                            Requeries the name of system.
+-npiv2p [system] [position] List FCs array size (number of FCs available) on Secondary NPIV VIOS.
+                            Requeries the name of system.
+                            Position start with 0. Use -npiv2n to check array size.
+-osn                        Get array size of available files/LPAR to NIM deploy.
+-osp [position]             Print config deploy [position] in array.
+                            Position in array. Position start with 0. Use -osn to check array size.
+-osvn                       Get array size of available OS versions on NIM Deploy
+-osvp [position]            Print OS NIM Deploys version in array. Use osvl to show number of OS version
+-nimn                       Get array size of available NIM Servers
+-nimp [position]            Print OS NIM Server in array.
+                            Position in array. Position start with 0. Use -nimn to check array size.
+```
+
+== Actions ==
+
+With the actions you (at the version 0.10) you can create an LPAR (and preview) and deploy 
+operation system on a prepared LPAR.
+
+=== -mklparcfg Create LPAR (and preview) ===
+
+Create LPAR (or only preview) on host server (pSystem)
+
+```
+[PowerAdm Home]/poweradm/apimain.py -mklparcfg change prefix lparname nim_deploy lparmem lparentcpu lparvcpu vscsi add_disk stgpool disk_size 
+vfc npiv_vio1 npiv_vio2 vlan_deploy vsw_deploy net_vlan1 net_vlan2_1 net_vlan2_2 net_vlan3_1 net_vlan3_2 net_vlan3_3 
+net_vsw1 net_vsw2_1 net_vsw2_2 net_vsw3_1 net_vsw3_2 net_vsw3_3 net_length system_option action
+```
+
+This action you can use to create LPAR. It need a lot of arguments but you can get using API. 
+
+In the order they are:
+
+| change      | Change/Ticket (or some title) can't use space 
+| prefix      | Prefix name for LPAR (like DEV, QAS, PRD) PREFIX-lparname
+| lparname    | The LPAR name.
+| nim_deploy  | [y/n] Prepare the LPAR to NIM OS Deploy?
+| lparmem     | The memory size for LPAR. Only the numbers. Example to 10GB: 10 
+| lparentcpu  | The LPAR entitled CPU. Float number only: Ex: 0.8 or 1.5
+| lparvcpu    | The LPAR virtual CPU. Ex: 6 or 3
+| vscsi       | [y/n] Create a Virtual SCSI?
+| add_disk    | [y/n] Add Disk using Shared Storage Pool?
+| stgpool     | The Storage Pool name ( the add_disk and vscsi need by 'y'. 'false' if you can't use.
+| disk_size   | Disk Size only the numbers in GB. Example to 50GB: 50 . 0 if 'add_disk' is 'n'
+| vfc         | Create virtual Fiber Channel (NPIV) on LPAR?
+| npiv_vio1   | The physical FC from VIOS NPIV #1
+| npiv_vio2   | The physical FC from VIOS NPIV #2
+| vlan_deploy | If nim_deploy is 'y' put here the number of VLAN to deploy using NIM. Example: 700. If nim_deploy is 'y' put here 'null'
+| vsw_deploy  | If nim_deploy is 'y' put here the Virtual Switch used to deploy. If nim_deploy is 'n' put 'null'
+| net_vlan1   | The VLAN of the first Ethernet if you are using only one Ethernet. If you want create 2 or 3 Ethernets put '0' here. Use numbers only!
+| net_vlan2_1 | The VLAN of the first Ethernet if you are using two Ethernets. If you want create 1 or 3 Ethernets put '0' here. Use numbers only!
+| net_vlan2_2 | The VLAN of the Second Ethernet if you are using two Ethernets. If you want create 1 or 3 Ethernets put '0' here. Use numbers only!
+| net_vlan3_1 | The VLAN of the first Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put '0' here. Use numbers only!
+| net_vlan3_2 | The VLAN of the second Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put '0' here. Use numbers only!
+| net_vlan3_3 | The VLAN of the third Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put '0' here. Use numbers only!
+| net_vsw1    | The Virtual Switch of the first Ethernet if you are using only one Ethernet. If you want create 2 or 3 Ethernets put 'null' here.
+| net_vsw2_1  | The Virtual Switch of the first Ethernet if you are using two Ethernets. If you want create 1 or 3 Ethernets put 'null' here.
+| net_vsw2_2  | The Virtual Switch of the Second Ethernet if you are using two Ethernets. If you want create 1 or 3 Ethernets put 'null' here.
+| net_vsw3_1  | The Virtual Switch of the first Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put 'null' here.
+| net_vsw3_2  | The Virtual Switch of the second Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put 'null' here.
+| net_vsw3_3  | The Virtual Switch of the hird Ethernet if you are using three Ethernets. If you want create 2 or 3 Ethernets put 'null' here.
+| net_length  | [1/2/3] The number of ethernet 
+| system_option | The pSystem host server. The name of pSystem like P1-8205-E6D-SN06A07AT
+| action      | [preview/create] The final action. 'preview' print only a config list and 'create' make the LPAR
+
+Example:
+
+```
+[ PowerAdm Home ]/poweradm/apimain.py -mklparcfg TICKET0020 DEV TESTSRV y 10 0.2 2 false false null true 0 fcs4 fcs5 700 VSW-DATA 2323 2323 null 2323 null null VSW-DATA null null null null null 1 P1-8205-E6D-SN06A07AT preview
+The parameters send is:
+Change: TICKET0020
+Prefix: DEV
+LPAR Name: TESTSRV
+NIM Deploy: y
+LPAR Memory: 10
+LPAR Entitled CPU: 0.2
+LPAR Virtual CPU: 2
+Virtual SCSI: false
+Add Disk: false
+Storage Pool: null
+Disk Size: true
+Virtual HBA: 0
+NPIV VIO1: fcs4
+NPIV VIO2: fcs5
+VLAN Deploy: 700
+Virtual Switch Deploy: VSW-DATA
+Ethernet if number of ethernets is 1
+
+Virtual VLAN Ethernet  1 of 1: 2323
+Virtual Virtual Switch 1 of 1: VSW-DATA
+
+Ethernets if number of ethernets is 2
+Virtual VLAN Ethernet  1 of 2: 2323
+Virtual Virtual Switch 1 of 2: null
+Virtual VLAN Ethernet  2 of 2: null
+Virtual Virtual Switch 2 of 2: null
+
+Ethernets if number of ethernets is 3
+Virtual VLAN Ethernet  1 of 3: 2323
+Virtual Virtual Switch 1 of 3: null
+Virtual VLAN Ethernet  2 of 3: null
+Virtual Virtual Switch 2 of 3: null
+Virtual VLAN Ethernet  3 of 3: null
+Virtual Virtual Switch 2 of 3: null
+
+Number of Ethernets: 1
+System host: P1-8205-E6D-SN06A07AT
+Action: preview
+
+********************************************************************************
+Config validation:
+
+Change/Ticket: TICKET0020
+LPAR: DEV-TESTSRV
+LPAR ID: 48
+Deploy via NIM: y
+LPAR Memory: 10
+LPAR Entitled CPU: 0.2
+LPAR Virtual CPU: 2
+Virtual SCSI: n
+Add Disk: n
+Storage Pool: none
+Disk Size: true
+Virtual HBA/NPIV: n
+NPIV 1: fcs4
+NPIV 2: fcs5
+Ethernet temporaly: 10/0/700//0/0/VSW-DATA
+Ethernet final: 10/0/2323//0/0/VSW-DATA
+Host System: P1-8205-E6D-SN06A07AT
+Primary:     VIOS1
+Secondary:   VIOS2
+
+********************************************************************************
+```
+
+=== -nimosdeploy Deploy Operation System using NIM Server ===
+
+Deploy operation system using NIM Server
+
+```
+apimain.py -nimosdeploy nim_file os_version nim_server y|n
+```
+
+This action you can use to create LPAR. It need a lot of arguments but you can get using API. 
+
+| nim_file          | The file of machin .nim used by PowerAdm | use -osn and -osnp or ls -la [ PowerAdm Home ]/poweradm/nim/
+| os_version        | The NIM OS Version                       | use -osvn and -osvp or in config
+| nim_server        | The nimserver to use                     | use -nimn and -nimp or in config
+| y|n               | 'y' to deploy and 'n' to preview         |
+
+Example:
+
+```
+[PowerAdm Home]/poweradm/apimain.py -nimdeploy DEV-TESTSRV.nim 'AIX 7.1 TL03 SP04' NIMSERVER n
+Config verification:
+
+LPAR Prefix: DEV
+LPAR Name: TESTSRV
+LPAR Frame: P1-8205-E6D-SN06A07AT
+LPAR Finale VLAN: 10/0/2323//0/0/VSW-DATA
+LPAR NIM File: [PowerAdm Home]poweradm/nim/DEV-TESTSRV.nim
+NIM config OS Version: AIX 7.1 TL03 SP04
+NIM config OS spot: SPOT_AIX71_TL03_SP04
+NIM config OS mksysb/spot: MKSYSB_AIX71_TL03_SP04
+NIM IP Address: 10.0.0.1
+NIM start IP of range: 11
+NIM end IP of range: 253
+NIM IP Network: 10.0.0.
+NIM Server: NIMSERVER1
+NIM IP Deploy (server): 10.0.0.1
+Deploy: n
+```
+
+
+Last Update: %%date(%c)
+
+
+
+
