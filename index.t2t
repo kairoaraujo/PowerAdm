@@ -1,0 +1,32 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+Home
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+== About ==
+	PowerAdm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and deploy AIX Operating System using NIM Server.
+
+	PowerAdm uses a single configuration file and a simple menu/interface in text mode (Like a smitty).
+
+	Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
+
+== How is it developed? ==
+
+	It's developed using Python and uses some Shell Scripting. I'm a sysadmin not a developer so sorry if it is not looking great. Your help is important and kindly accept to improve the tool.
+
+	If you don't have an HMC and a Power to run tests, don't worry. I've an some code with simulation on createlparconf.py, newid.py. Directory simulation is available upon request.
+ 
+=== License ===
+	This software is BSD License. Please more details in LICENSE file.
+
+	IMPORTANT: IBM, PowerVM (a.k.a. VIOS), smitty are registered trademarks of IBM Corporation in the United States, other countries, or both.
+
+	VMware, vCenter, vCenter Orchestrator are registered trademarks of VMware Inc in the United States, other countries, or both.
+
+		This project is maintained by [Kairo Araujo http://kairo.eti.br/]
+
+		Contributors: Bruno Costa, Fernando Costa and Raphael Paiva.
+
+%!include: inc/footer.t2t

@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta name="author" content="Kairo Araujo">
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="site.css">
+<TITLE>PowerAdm - IBM Power/PowerVM Administration tool</TITLE>
+<link rel="icon" type="image/png" href="/favicon.png">
+</HEAD>
+<BODY>
+
+<DIV CLASS="header" ID="header">
+<H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
+<H3>vCO for PowerAdm</H3>
+</DIV>
+
+<DIV CLASS="body" ID="body">
+<div id="sidebar">
+  <ul>
+  <li id="home"><a href="./index.html">Home</a></li>
+  <li id="releases"><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download Releases</a></li>
+  <li id="tarball"><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download TAR Ball</a></li>
+  <li id="requirements"><a href="./requirements.html">Requirements</a></li>
+  <li id="screenshots"><a href="./screenshots.html">Deploy Screenshots</a></li>
+  <li id="troubleshooting"><a href="./troubleshooting.html">Troubleshooting (Help)</a></li>
+  <li id="tips"><a href="./tips.html">TIP Redeploy OS in LPAR</a></li>
+  <li id="vcoforpoweradm"><a href="./vcoforpoweradm.html">vCO for PowerAdm</a></li>
+  <li id="github"><a href="https://github.com/kairoaraujo/PowerAdm">Visit GitHub</a></li>
+  </ul>
+</div>
+
+<H1>VMware vCenter Orchestrator Interface for PowerAdm</H1>
+
+<H2>Information</H2>
+
+<P>
+VMWare vCenter Orchestrator (vCO) is an workflow for Logical Partition (LPAR) request and creation using vCenter Orchestrator.
+</P>
+<P>
+It is easy to install, importing the Action and Workflow (view instalation/configuration steps below).
+</P>
+<P>
+The Workflow has tree steps:
+</P>
+
+<UL>
+<LI>LPAR request
+<LI>LPAR config (approval)
+<LI>Confirm Config (approval)
+</UL>
+
+<P>
+The request works fine with vCO Web Client, but the approval not (I am investigating why with the VMware Support)
+</P>
+<P>
+I am also working on NIM Deploy module to vCO. Coming soon.
+</P>
+
+<H3>Special Thanks!</H3>
+
+<UL>
+<LI>Bruno Costa - Some skype conference teaching me how to use the vCO Action and Workflow!
+<LI>Raphael Paiva - My another vCO support!
+<LI>Fernando Costa - Fixing my bad english!
+</UL>
+
+<HR NOSHADE SIZE=1>
+
+<H1>Some screenshots</H1>
+
+<H2>LPAR Request</H2>
+
+<P>
+<IMG ALIGN="middle" SRC="img/lparrequest.png" BORDER="0" ALT="">
+</P>
+
+<H2>LPAR Config (approval)</H2>
+
+<P>
+Server Configuration
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/lparconfigvco.png" BORDER="0" ALT="">
+</P>
+
+<H2>NIM Deploy</H2>
+
+<P>
+<IMG ALIGN="middle" SRC="img/nimdeployvco.png" BORDER="0" ALT="">
+</P>
+
+<H2>Network Config</H2>
+
+<P>
+<IMG ALIGN="middle" SRC="img/networkvco.png" BORDER="0" ALT="">
+</P>
+
+<H2>Confirm Config (approval)</H2>
+
+<P>
+<IMG ALIGN="middle" SRC="img/configapproval.png" BORDER="0" ALT="">
+</P>
+
+<HR NOSHADE SIZE=1>
+
+<H1>Installation/Configuration</H1>
+
+<P>
+<B>TIP:</B> The PowerAdm must be configured and running in text mode/ASCII.
+</P>
+
+<UL>
+<LI>Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client.
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcologin.png" BORDER="0" ALT="">
+<P></P>
+<LI>Change the view from 'Run' to 'Design'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoviewdesign.png" BORDER="0" ALT="">
+<P></P>
+<LI>Go to the 'Actions'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcogoactions.png" BORDER="0" ALT="">
+<P></P>
+<LI>Create new module (folder) 'org.poweradm.basic'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcocreatenewmodule.png" BORDER="0" ALT="">
+<P></P>
+<IMG ALIGN="middle" SRC="img/vconewmodule.png" BORDER="0" ALT="">
+<P></P>
+<LI>Left clic on new module (folder) 'org.poweradm.basic' and click on 'Import action...'.
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoimportaction.png" BORDER="0" ALT="">
+<P></P>
+<LI>Select all actions in the vCO folder of PowerAdm package.
+ <UL>
+ <LI>getVSW
+ <LI>getSystemList
+ <LI>getAddSSPDisk
+ <LI>getNPIV
+ </UL>
+</UL>
+
+<P>
+<IMG ALIGN="middle" SRC="img/vcoselectpackages.png" BORDER="0" ALT="">
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/vcoselectpackages2.png" BORDER="0" ALT="">
+</P>
+
+<UL>
+<LI>Go to the 'Workflows' folder
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcowrokflow.png" BORDER="0" ALT="">
+<P></P>
+<LI>Create on 'Custom' folder a new folder named 'PowerAdm'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vconewfolder1.png" BORDER="0" ALT="">
+<P></P>
+<IMG ALIGN="middle" SRC="img/vconewfolder2.png" BORDER="0" ALT="">
+<P></P>
+<LI>Left clic on 'PowerAdm' folder and click on 'Import workflows..'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoimportworkflows.png" BORDER="0" ALT="">
+<P></P>
+<LI>Select PowerAdm.workflow
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoselectimportworkflow.png" BORDER="0" ALT="">
+<P></P>
+<LI>Select workflow PowerAdm and click on 'Edit'
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoselectworkflow.png" BORDER="0" ALT="">
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcoeditworkflow.png" BORDER="0" ALT="">
+<P></P>
+<LI>In General, change the Attribute Values:
+ <UL>
+ <LI>powerAdmAddres [IP address of your server with PowerAdm]
+ <LI>powerAdmUser [Username of PowerAdm]
+ <LI>powerAdmPassword [Password PowerAdm user]
+ <LI>powerAdmPath [path installation]
+ </UL>
+</UL>
+
+<P>
+<IMG ALIGN="middle" SRC="img/vcoworkflowattributes.png" BORDER="0" ALT="">
+</P>
+
+<UL>
+<LI>Save and Close
+<P></P>
+<IMG ALIGN="middle" SRC="img/vcosaveandclose.png" BORDER="0" ALT="">
+<P></P>
+<LI>Continue Anyway (2x)
+</UL>
+
+<P>
+<IMG ALIGN="middle" SRC="img/vcovalidation.png" BORDER="0" ALT="">
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/vcofinish.png" BORDER="0" ALT="">
+</P>
+
+<H1>How it works</H1>
+
+<P>
+PowerAdm has an 'API' with the necessary commands (apimain.py).
+</P>
+<P>
+The Actions and Workflow execute commands using the SSH.
+</P>
+</div><div id="footer">
+<P>
+<IMG ALIGN="middle" SRC="./img/t2tpowered-white.png" BORDER="0" ALT="">
+</P>
+<P>
+Last modified on 30 June 2015 at 21:26
+(<A HREF="vcoforpoweradm.t2t">See sources</A>)
+</P>
+</div><div id="fake">
+<!-- Google Analytics code -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-280222-14']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</DIV>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags -t html index.t2t requirements.t2t screenshots.t2t tips.t2t troubleshooting.t2t vcoforpoweradm.t2t -->
+</BODY></HTML>

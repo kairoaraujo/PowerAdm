@@ -1,0 +1,98 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+Deploy ScreenShots
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+== Power Admin Main Menu ==
+
+- VMware vCenter Orchestrator interface/workflow 
+	https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
+
+Select one of the options:
+
++ Creates a new LPAR configuration, this function generates a change/ticket to create or modify a LPAR configuration. The ticket will be processed later (option 2).
++ Execute the LPAR creation (change/ticket) from option 1
++ Deploy images on LPARs created in option 2
++ Clear configs used to Deploy OS with NIM Server
++ Quits from Power Adm
+
+--------------------------------------------------------------
+== LPAR Configuration (option 1) ==
+
+[img/mainmenu.png]
+
+Makes LPAR configuration easier. Even people without expertise in HMC ou Power Systems is able to use it.
+
+Default calculations are configurable on [config.py downloads/config.py] and pre configuration to Deploy OS using NIM Server. 
+
+[img/lparconfig.png]
+
+If you have more than one frame on your HMC select the host. 
+
+[img/selectframe.png]
+
+If the LPAR needs a vSCSI, say yes (y) -- two adapters, one by VIO. 
+
+[img/addvscsi.png]
+
+**""[not tested yet]""** you can add a disk from a Shared Storage Pool, select the Storage Pool you want to use. 
+
+[img/adddisk.png]
+
+Add up to three Ethernets, select Virtual Switch and enter the VLAN ID. 
+
+[img/addnetwork.png]
+
+Add Virtual Fiber Channel (NPIV/HBA), select the physical path to vfcmap -- two adapters by VIO 
+
+[img/addnpiv.png]
+
+Validate your settings for the LPAR. 
+
+[img/validation.png]
+
+If it is okay, you can run the ticket now or save to run later. 
+
+[img/finalquestion.png]
+
+
+
+--------------------------------------------------------------
+== Creation LPAR (option 2) from the previous configuration ==
+
+Select your tickets/changes and execute creation 
+
+[img/selectticket.png]
+
+The creation is automatic
+
+[img/finaloutput.png]
+
+
+----------------------------------------------
+== Deploy Operation System using NIM (Option 3) ==
+
+Select the Server, Version and NIM Server to use for deploy.
+
+[img/selectversionandnim.png]
+
+Check the configuration and start deploying the Operation System.
+
+[img/checkanddeployos.png]
+
+Access the HMC and open the Virtual Menu. You can access using the same session.
+
+[img/deployos.png]
+
+-----------------------------------------------
+== Cleanup Deploy Operation System configuration ==
+
+Select the executed deploys to remove and confirm. This will Remove all settings on the NIM Server.
+
+[img/osnimdeploycleanup.png]
+
+%!include: inc/footer.t2t
+

@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Poweradm by kairoaraujo</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Poweradm</h1>
+        <p>IBM Power / PowerVM Administration tool</p>
+
+        <p class="view"><a href="https://github.com/kairoaraujo/PowerAdm">View the Project on GitHub <small>kairoaraujo/PowerAdm</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download <strong>Releases</strong></a></li>
+          <li><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kairoaraujo/PowerAdm">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="poweradm---ibm-powerpowervm-administration-tool" class="anchor" href="#poweradm---ibm-powerpowervm-administration-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>PowerAdm - IBM Power/PowerVM Administration tool</h1>
+
+<p>PowerAdm is a free (BSD License) and simple tool developed in Python to easily and quickly create an LPAR with their standards and deploy AIX Operating System using NIM Server.</p>
+
+<p>PowerAdm uses a single configuration file and  a simple menu/interface in text mode (Like a smitty).</p>
+
+<p>Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).</p>
+
+<p><img src="http://kairo.freeshell.org/poweradm/PowerAdm-0.9-beta.png" alt="Text Mode" title="Text Mode"></p>
+
+<p><img src="http://kairo.freeshell.org/poweradm/vCO/vCO-config-approval.png" alt="vCO Workflow" title="vCO Workflow"></p>
+
+<h2>
+<a id="links" class="anchor" href="#links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Links</h2>
+
+<ul>
+<li>Website: <a href="http://poweradm.org">http://poweradm.org</a>
+</li>
+<li>Deploy Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/screenshots">https://github.com/kairoaraujo/PowerAdm/wiki/screenshots</a><br>
+</li>
+<li>Troubleshooting Screenshots: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting">https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting</a>
+</li>
+<li>Requirements: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/requirements">https://github.com/kairoaraujo/PowerAdm/wiki/requirements</a>
+</li>
+<li>VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: <a href="https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm">https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm</a>
+</li>
+</ul>
+
+<h2>
+<a id="principal-features" class="anchor" href="#principal-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Principal features</h2>
+
+<ul>
+<li>Text Interface</li>
+<li>Works with VMware vCenter Orchestrator (vCO)</li>
+<li>Create Logical Partition (LPAR) profile</li>
+<li>Supports multiple frames</li>
+<li>Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
+
+<ul>
+<li>Select the Virtual Switch</li>
+<li>VLAN</li>
+</ul>
+</li>
+<li>Add vSCSI on two VIOs
+
+<ul>
+<li>Create Virtual SCSI server on VIO automatically</li>
+</ul>
+</li>
+<li>Add HBA/NPIV(vfchost) on two VIOs
+
+<ul>
+<li>Make vfcmap automatically</li>
+</ul>
+</li>
+<li>Add disk on vSCSI (only if you have Shared Storage Pool)</li>
+<li>Troubleshooting help
+
+<ul>
+<li>Environment (SEA and NPIV)</li>
+<li>Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)</li>
+</ul>
+</li>
+<li>Centralized config (poweradm/config.py)</li>
+<li>Deploy SO from the NIM Server</li>
+<li>
+<strong>Organize your IDs!!!</strong> Don't you know what is it? Keep reading...</li>
+</ul>
+
+<p>Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.</p>
+
+<p>The objective of this tool is to adopt a standard for IDs based on the LPAR ID and also to facilitate the LPAR creation with no need of expert knowledge, making it easier even for analysts without experienced skills in Power or operators.</p>
+
+<p>Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.</p>
+
+<p>Something that we really consider the differential in this tool is the IDs organization.</p>
+
+<p>In the future:</p>
+
+<ul>
+<li>Web Interface</li>
+<li>vCO workflow/interface deploy OS Deploys using NIM</li>
+</ul>
+
+<h2>
+<a id="latest-release" class="anchor" href="#latest-release" aria-hidden="true"><span class="octicon octicon-link"></span></a>Latest release</h2>
+
+<p><a href="https://github.com/kairoaraujo/PowerAdm/releases">https://github.com/kairoaraujo/PowerAdm/releases</a></p>
+
+<h3>
+<a id="ids-structure--organize-your-ids" class="anchor" href="#ids-structure--organize-your-ids" aria-hidden="true"><span class="octicon octicon-link"></span></a>IDs Structure / Organize your IDs</h3>
+
+<p>These IDs are well organized, assisting in the identification of devices, particularly in times of troubleshooting on environments with a large number of LPARs.
+These IDs also help managing the Live Partition Mobility. Therefore, if well organized, will always remain the same independent of the box.</p>
+
+<p>For this, the following rules were established:</p>
+
+<p>Every LPAR has a maximum number of virtual devices 40 and the following structure:</p>
+
+<ul>
+<li>Virtual Network IDs will be between 10 and 19</li>
+<li>Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)</li>
+<li>Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)</li>
+</ul>
+
+<p>"VIOS" settings have the following default:
+Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS.</p>
+
+<p>Other sample: If the maximum number of LPAR is 100 the number is changed to 3100 (VIO Primary) and 4100 (VIO Secundary)</p>
+
+<p>Continuing...</p>
+
+<p>Virtual SCSI IDs:  </p>
+
+<ul>
+<li>Primary VIO 1 + 'LPAR ID'</li>
+<li>Secondary VIO 2 + 'LPAR ID'</li>
+</ul>
+
+<p>Fiber Channel IDs: </p>
+
+<ul>
+<li>Primary VIO 3 + 'LPAR ID' </li>
+<li>Secondary VIO 4 + 'LPAR ID'</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+
+<ul>
+<li>
+<p>VIOS1 - ID: 1 (ever)</p>
+
+<ul>
+<li>Maximum number of virtual IDs: 3500</li>
+</ul>
+</li>
+<li>
+<p>VIOS2 - ID: 2 (ever)</p>
+
+<ul>
+<li>Maximum number of virtual IDs: 4500</li>
+</ul>
+</li>
+</ul>
+
+<p>LPAR AIX1</p>
+
+<ul>
+<li>LPAR ID: 11</li>
+<li>Virtual devices:
+
+<ul>
+<li>11: Network adapter data</li>
+<li>12: Network adapter backup</li>
+<li>21: Virtual SCSI (Server: 111 VIOS1)</li>
+<li>22: Virtual SCSI (Server: 211 VIOS2)</li>
+<li>33: Fiber Channel (Server: 311 VIOS1)</li>
+<li>34: Fiber Channel (Server: 411 VIOS2)</li>
+</ul>
+</li>
+</ul>
+
+<p>LPAR AIX2</p>
+
+<ul>
+<li>LPAR ID: 12</li>
+<li>Virtual devices:
+
+<ul>
+<li>11: Network adapter data</li>
+<li>12: Network adapter backup</li>
+<li>21: Virtual SCSI (Server: 112 VIOS1)</li>
+<li>22: Virtual SCSI (Server: 212 VIOS2)</li>
+<li>33: Fiber Channel (Server: 312 VIOS1)</li>
+<li>34: Fiber Channel (Server: 412 VIOS2)</li>
+</ul>
+</li>
+</ul>
+
+<p>VIOS1</p>
+
+<ul>
+<li>LPAR ID: 1</li>
+<li>Virtual devices:
+
+<ul>
+<li>111 Virtual SCSI (Client ID: 11 / Virtual Client: 21)</li>
+<li>112 Virtual SCSI (Client ID: 12 / Virtual Client: 21)</li>
+<li>311 Fiber Channel (Client ID: 11 / Virtual Client: 33)</li>
+<li>312 Fiber Channel (Client ID: 12 / Virtual Client: 33)</li>
+</ul>
+</li>
+</ul>
+
+<p>VIOS2</p>
+
+<ul>
+<li>LPAR ID: 2</li>
+<li>Virtual devices:
+
+<ul>
+<li>211 Virtual SCSI (Client: 11 / Virtual Client: 22)</li>
+<li>212 Virtual SCSI (Client: 12 / Virtual Client: 22)</li>
+<li>411 Fiber Channel (Client: 11 / Virtual Client: 34)</li>
+<li>412 Fiber Channel (Client: 12 / Virtual Client: 34)</li>
+</ul>
+</li>
+</ul>
+
+<p>In this example we can easily identify which VIO serves the virtual devices, by only looking the partition ID.</p>
+
+<p>Sample: Identifying AIX1 on VIOs</p>
+
+<pre><code>padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+VTD                   NO VIRTUAL TARGET DEVICE FOUND
+
+
+padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
+
+padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
+Ports logged in:2
+Flags:a&lt;LOGGED_IN,STRIP_MERGE&gt;
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
+</code></pre>
+
+<h2>
+<a id="how-is-it-developed" class="anchor" href="#how-is-it-developed" aria-hidden="true"><span class="octicon octicon-link"></span></a>How is it developed?</h2>
+
+<p>It's developed using Python and uses some Shell Scripting.
+I'm a sysadmin not a developer so sorry if it is not looking great. Your help is important and kindly accept to improve the tool.</p>
+
+<p>If you don't have an HMC and a Power to run tests, don't worry. I've an some code with simulation on createlparconf.py, newid.py. Directory simulation is available upon request.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>This software is BSD License. Please more details in LICENSE file.</p>
+
+<p>IMPORTANT: 
+IBM, PowerVM (a.k.a. VIOS), smitty are registered trademarks of IBM Corporation in the United States, other countries, or both.</p>
+
+<p>VMware, vCenter, vCenter Orchestrator are registered trademarks of VMware Inc in
+the United States, other countries, or both.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="http://kairo.eti.br">Kairo Araujo</a></p>
+        <p>Contributors: Bruno Costa, Fernando Costa and Raphael Paiva.</a></p></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-58364832-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>

@@ -1,0 +1,70 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+Troubleshooting (Help)
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+Relesead in version 0.9-beta the option for troubleshooting help.
+
+This functions helps with important output about SEA (using lsseas*) and NPIV from your VIOS and informations, vSCSI, vFC (NPIV) and networks from LPAR.
+
+- Thanks Benoit Creau from http://chmod666.org, for the great idea and the code.
+
+
+== Main menu: ==
+
+[img/mainmenu.png]
+
+
+--------------------------
+== LPAR Troubleshooting ==
+
+=== LPAR by ID ===
+
+[img/lparbyid.png]
+
+=== LPAR search ===
+
+[img/lparsearch.png]
+
+=== LPAR Info ===
+
+[img/lparinfo.png]
+
+=== LPAR SCSI ===
+
+[img/lparscsi.png]
+
+=== LPAR NPIV ===
+
+[img/lparnpiv.png]
+
+=== LPAR Networking (using lsseas) ===
+
+[img/lparusinglsseas.png]
+
+---------------------------------
+== Environment Troubleshooting ==
+
+[img/environmenttrouble.png]
+
+=== Environment main menu ===
+
+[img/environmentmainmenu.png]
+
+=== SEA (using lsseas) ===
+
+[img/seausinglsseas1.png]
+
+[img/seausinglsseas2.png]
+
+NPIV
+
+[img/npivtroubleshotting1.png]
+
+[img/npivtroubleshotting2.png]
+
+%!include: inc/footer.t2t
+

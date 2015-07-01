@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta name="author" content="Kairo Araujo">
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="site.css">
+<TITLE>PowerAdm - IBM Power/PowerVM Administration tool</TITLE>
+<link rel="icon" type="image/png" href="/favicon.png">
+</HEAD>
+<BODY>
+
+<DIV CLASS="header" ID="header">
+<H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
+<H3>Requirements</H3>
+</DIV>
+
+<DIV CLASS="body" ID="body">
+<div id="sidebar">
+  <ul>
+  <li id="home"><a href="./index.html">Home</a></li>
+  <li id="releases"><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download Releases</a></li>
+  <li id="tarball"><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download TAR Ball</a></li>
+  <li id="requirements"><a href="./requirements.html">Requirements</a></li>
+  <li id="screenshots"><a href="./screenshots.html">Deploy Screenshots</a></li>
+  <li id="troubleshooting"><a href="./troubleshooting.html">Troubleshooting (Help)</a></li>
+  <li id="tips"><a href="./tips.html">TIP Redeploy OS in LPAR</a></li>
+  <li id="vcoforpoweradm"><a href="./vcoforpoweradm.html">vCO for PowerAdm</a></li>
+  <li id="github"><a href="https://github.com/kairoaraujo/PowerAdm">Visit GitHub</a></li>
+  </ul>
+</div>
+
+<H2>First</H2>
+
+	<BLOCKQUOTE>
+	There is no guarantee from the author. Use at your own risk. Check the <A HREF="downloads/license.txt">License file</A>.
+	</BLOCKQUOTE>
+
+<H2>Infrastructure</H2>
+
+	<BLOCKQUOTE>
+	You need a *nix (Linux or Unix) with Python &gt;= 2.6 &lt;= 3
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	To install check the <A HREF="downloads/install">INSTALL</A> file.
+	</BLOCKQUOTE>
+
+<H2>HMC</H2>
+
+	<BLOCKQUOTE>
+	Works with HMC 7 and HMC 8
+	</BLOCKQUOTE>
+
+<H2>Environment to create LPAR</H2>
+
+<HR NOSHADE SIZE=1>
+
+<H3>Maximum number of LPARs</H3>
+
+	<BLOCKQUOTE>
+	You need to determine the maximum number of LPAR in your environment. Try to determine a an amount of memory and CPUs and the number of frames.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	For example in my environment I have about 500 LPARs which I think are relatively many.
+	</BLOCKQUOTE>
+
+<H3>Maximum number of Virtual Adapter on VIOs Servers</H3>
+
+	<BLOCKQUOTE>
+	On HMC select VIO LPAR: Configuration &gt; Manage Profiles &gt; Virtual Adapters check 'Maximum number of Virtual Adapters'
+	</BLOCKQUOTE>
+<P>
+<B>The rule:</B>
+</P>
+	<BLOCKQUOTE>
+	On the primary VIO the Virtual Adapter Maximum Number is: 3+ <I>"maximum number of LPARs"</I> On the secundary VIO the Virtual Adapter Maximum Number is: 4+ <I>"maximum number of LPARs"</I>.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Remember the <I>Maximum number of LPARs</I> In the example is 500.
+	</BLOCKQUOTE>
+<P>
+<B>Example:</B>
+</P>
+
+<UL>
+<LI>On my First VIO the Maximum number of Virtual Adapter is 3500
+<LI>On my Second VIO the Maximum number of Virtual Adapter is 4500
+</UL>
+
+<H2>Validate VIOs Adapter ID</H2>
+
+	<BLOCKQUOTE>
+	In the VIOs Profile (Configuration &gt; Manager Profiles &gt; Virtual Adapters) check de largest Adapter ID.
+	</BLOCKQUOTE>
+
+<H3>How the Virtual Adapters in VIO are created by the Power Adm:</H3>
+
+<P>
+<B>The rules are:</B>
+</P>
+
+<OL>
+<LI>'LPAR ID' to first virtual SCSI on Primary VIO
+<LI>'LPAR ID' to second virtual SCSI on Second VIO
+<LI>'LPAR ID' to first virtual Fiber Channel (HBA) on Primary VIO
+<LI>'LPAR ID' to second virtual Fiber Channel (HBA) on Second VIO
+</OL>
+
+<P>
+<B>Example:</B>
+</P>
+	<BLOCKQUOTE>
+	LPAR ID = 30
+	</BLOCKQUOTE>
+
+<UL>
+<LI>130 to first virtual SCSI on Primary VIO
+<LI>230 to second virtual SCSI on Second VIO
+<LI>330 to first virtual Fiber Channel (HBA) on Primary VIO
+<LI>430 to second virtual Fiber Channel (HBA) on Second VIO
+<P></P>
+<B>In LPAR configuration is always this:</B>
+<P></P>
+<LI>10 to First virtual Ethernet Adapter
+<LI>11 to Second virtual Ethernet Adapter (if added)
+<LI>12 to Third virtual Ethernet Adapter (if added)
+<LI>21 to First virtual SCSI (if added)
+<LI>22 to Second virtual SCSI (if added)
+<LI>33 to first virtual Fiber Channel/HBA/NPIV (if added)
+<LI>34 to second virtual Fiber CHannel/HBA/NPIV (if added)
+<P></P>
+</UL>
+
+	<BLOCKQUOTE>
+	<B>!! It is important to understand this in order to know how to adjust your environment to support the PowerAdm !!</B>
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	<B>You will need to manually create a LPAR with ID greater than its largest existing 'Adapter ID'.</B>
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	<B>If exists in my environment a LPAR with this ID or largest must get the next one.</B>
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	It is easier to understand with an example:
+	</BLOCKQUOTE>
+
+<OL>
+<LI>On my Primary VIO the largest 'Adapter ID' is 127
+<LI>On my Secound VIO the largest 'Adapter ID' is 110
+<LI>I need to manually create an LPAR with ID 28 with this configuration.
+<LI>If exists in my environment LPARs with IDs 28, 29, 30 will need to use the ID 31
+<LI>Create Manually LPAR with ID 31
+<P></P>
+After creating the LPAR manually (LPAR ID 31), if I use the 'PowerAdm' to create a new she will get the ID 32.
+<P></P>
+Its configuration will look like in the VIO:
+<P></P>
+</OL>
+
+<UL>
+<LI>132 to first virtual SCSI on Primary VIO
+<LI>232 to second virtual SCSI on Second VIO
+<LI>332 to first virtual Fiber Channel (HBA) on Primary VIO
+<LI>432 to second virtual Fiber Channel (HBA) on Second VIO
+</UL>
+
+<H1>Environment to Deploy OS Using a NIM Server</H1>
+
+<HR NOSHADE SIZE=1>
+
+<H2>NIM Server</H2>
+
+	<BLOCKQUOTE>
+	You need a configured and working NIM Server with SUDO installed.
+	</BLOCKQUOTE>
+	<BLOCKQUOTE>
+	Check the install procedure on <A HREF="downloads/install">INSTALL</A> file.
+	</BLOCKQUOTE>
+
+<H1>Using the VMWare vCenter Orchestrator to create LPAR</H1>
+
+<HR NOSHADE SIZE=1>
+
+	<BLOCKQUOTE>
+	TIP: The PowerAdm must be configured and running in text mode/ASCII.
+	</BLOCKQUOTE>
+
+<OL>
+<LI>Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
+<LI>Change the view from 'Run' to 'Design'
+<LI>Go to the 'Action'
+<LI>Create folder 'org.poweradm.basic'
+<LI>Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
+<LI>Select all actions in the vCO folder of PowerAdm package.
+ <UL>
+ <LI>getVSW
+ <LI>getSystemList
+ <LI>getAddSSPDisk
+ <LI>getNPIV
+ </UL>
+<LI>Go to the 'Workflows' folder
+<LI>Create on 'Custom' folder a new folder named 'PowerAdm'
+<LI>Left clic on 'PowerAdm' folder and click on 'Import workflows..'
+<LI>Left click on workflow PowerAdm and click on 'Edit'
+<LI>In General, change the Attribute Values:
+ <UL>
+ <LI>powerAdmAddres [IP address of your server with PowerAdm]
+ <LI>powerAdmUser [Username of PowerAdm]
+ <LI>powerAdmPassword [Password PowerAdm user]
+ <LI>powerAdmPath [path installationz]
+ <P></P>
+ </UL>
+</OL>
+
+	<BLOCKQUOTE>
+	For more information visit <A HREF="./vcoforpoweradm.html">vCo-forPowerAdm</A>
+	</BLOCKQUOTE>
+
+<H2>Tips</H2>
+
+<UL>
+<LI>I need two more virtual Fiber Channel, how to procced?
+</UL>
+
+<OL>
+<LI>on the Primary VIO create manually 432
+<LI>on the Secound VIO create manually 332
+<P></P>
+</OL>
+
+	<BLOCKQUOTE>
+	on the LPAR use free IDs:
+	</BLOCKQUOTE>
+
+<UL>
+<LI>13,15,16,17,18 and 19 free to manually use for virtual network
+<LI>23..29 free to manually use for virtual scsi adapters
+<LI>33..39 free to manually use for virtual Fiber CHannel/HBA/NPIV
+<P></P>
+!!! It's great !!!
+</UL>
+
+<H3>Need help ?</H3>
+
+<P>
+send me email: <A HREF="mailto:kairo@kairo.eti.br">kairo@eti.br</A>
+</P>
+</div><div id="footer">
+<P>
+<IMG ALIGN="middle" SRC="./img/t2tpowered-white.png" BORDER="0" ALT="">
+</P>
+<P>
+Last modified on 30 June 2015 at 20:39
+(<A HREF="requirements.t2t">See sources</A>)
+</P>
+</div><div id="fake">
+<!-- Google Analytics code -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-280222-14']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</DIV>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags -t html index.t2t requirements.t2t screenshots.t2t tips.t2t troubleshooting.t2t vcoforpoweradm.t2t -->
+</BODY></HTML>
