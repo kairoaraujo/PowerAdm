@@ -1,0 +1,162 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+Requirements
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+== First == 
+
+	There is no guarantee from the author. Use at your own risk. Check the [License file downloads/license.txt].
+
+== Infrastructure == 
+
+	You need a *nix (Linux or Unix) with Python >= 2.6 <= 3
+
+	To install check the [INSTALL downloads/install] file.
+
+== HMC == 
+
+	Works with HMC 7 and HMC 8
+
+== Environment to create LPAR == 
+-------------------------------------------
+
+=== Maximum number of LPARs ===
+
+	You need to determine the maximum number of LPAR in your environment. Try to determine a an amount of memory and CPUs and the number of frames.
+	
+	For example in my environment I have about 500 LPARs which I think are relatively many.
+
+=== Maximum number of Virtual Adapter on VIOs Servers ===
+
+	On HMC select VIO LPAR: Configuration > Manage Profiles > Virtual Adapters check 'Maximum number of Virtual Adapters'
+
+**The rule:**
+
+	On the primary VIO the Virtual Adapter Maximum Number is: 3+ //"maximum number of LPARs"// On the secundary VIO the Virtual Adapter Maximum Number is: 4+ //"maximum number of LPARs"//.
+
+	Remember the //Maximum number of LPARs// In the example is 500.
+
+**Example:**
+
+- On my First VIO the Maximum number of Virtual Adapter is 3500
+- On my Second VIO the Maximum number of Virtual Adapter is 4500
+
+
+== Validate VIOs Adapter ID ==
+
+	In the VIOs Profile (Configuration > Manager Profiles > Virtual Adapters) check de largest Adapter ID.
+
+=== How the Virtual Adapters in VIO are created by the Power Adm: ===
+
+**The rules are:**
+
++ 'LPAR ID' to first virtual SCSI on Primary VIO
++ 'LPAR ID' to second virtual SCSI on Second VIO
++ 'LPAR ID' to first virtual Fiber Channel (HBA) on Primary VIO
++ 'LPAR ID' to second virtual Fiber Channel (HBA) on Second VIO
+
+
+**Example:**
+
+	LPAR ID = 30
+
+
+- 130 to first virtual SCSI on Primary VIO
+- 230 to second virtual SCSI on Second VIO
+- 330 to first virtual Fiber Channel (HBA) on Primary VIO
+- 430 to second virtual Fiber Channel (HBA) on Second VIO
+
+**In LPAR configuration is always this:**
+
+- 10 to First virtual Ethernet Adapter
+- 11 to Second virtual Ethernet Adapter (if added)
+- 12 to Third virtual Ethernet Adapter (if added)
+- 21 to First virtual SCSI (if added)
+- 22 to Second virtual SCSI (if added)
+- 33 to first virtual Fiber Channel/HBA/NPIV (if added)
+- 34 to second virtual Fiber CHannel/HBA/NPIV (if added)
+
+	**!! It is important to understand this in order to know how to adjust your environment to support the PowerAdm !!**
+
+	**You will need to manually create a LPAR with ID greater than its largest existing 'Adapter ID'.**
+
+	**If exists in my environment a LPAR with this ID or largest must get the next one.**
+
+	It is easier to understand with an example:
+
++ On my Primary VIO the largest 'Adapter ID' is 127
++ On my Secound VIO the largest 'Adapter ID' is 110
++ I need to manually create an LPAR with ID 28 with this configuration.
++ If exists in my environment LPARs with IDs 28, 29, 30 will need to use the ID 31
++ Create Manually LPAR with ID 31
+
+After creating the LPAR manually (LPAR ID 31), if I use the 'PowerAdm' to create a new she will get the ID 32.
+
+Its configuration will look like in the VIO:
+
+- 132 to first virtual SCSI on Primary VIO
+- 232 to second virtual SCSI on Second VIO
+- 332 to first virtual Fiber Channel (HBA) on Primary VIO
+- 432 to second virtual Fiber Channel (HBA) on Second VIO
+
+
+= Environment to Deploy OS Using a NIM Server = 
+------------------------------------------------
+
+== NIM Server ==
+
+	You need a configured and working NIM Server with SUDO installed.
+
+	Check the install procedure on [INSTALL downloads/install] file.
+
+= Using the VMWare vCenter Orchestrator to create LPAR = 
+------------------------------------------------
+
+	TIP: The PowerAdm must be configured and running in text mode/ASCII.
+
++ Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
++ Change the view from 'Run' to 'Design'
++ Go to the 'Action'
++ Create folder 'org.poweradm.basic'
++ Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
++ Select all actions in the vCO folder of PowerAdm package.
+ - getVSW
+ - getSystemList
+ - getAddSSPDisk
+ - getNPIV
++ Go to the 'Workflows' folder
++ Create on 'Custom' folder a new folder named 'PowerAdm'
++ Left clic on 'PowerAdm' folder and click on 'Import workflows..'
++ Left click on workflow PowerAdm and click on 'Edit'
++ In General, change the Attribute Values:
+ - powerAdmAddres ""[IP address of your server with PowerAdm]""
+ - powerAdmUser ""[Username of PowerAdm]""
+ - powerAdmPassword ""[Password PowerAdm user]""
+ - powerAdmPath ""[path installationz]""
+
+	For more information visit [vCo-forPowerAdm SITEROOT/vcoforpoweradm.html]
+
+== Tips ==
+
+- I need two more virtual Fiber Channel, how to procced?
++ on the Primary VIO create manually 432
++ on the Secound VIO create manually 332
+
+	on the LPAR use free IDs:
+
+- 13,15,16,17,18 and 19 free to manually use for virtual network
+- 23..29 free to manually use for virtual scsi adapters
+- 33..39 free to manually use for virtual Fiber CHannel/HBA/NPIV
+
+!!! It's great !!!
+
+
+=== Need help ? ===
+
+send me email: [kairo@eti.br mailto:kairo@kairo.eti.br]
+
+%!include: inc/footer.t2t
+

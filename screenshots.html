@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta name="author" content="Kairo Araujo">
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="site.css">
+<TITLE>PowerAdm - IBM Power/PowerVM Administration tool</TITLE>
+<link rel="icon" type="image/png" href="/favicon.png">
+</HEAD>
+<BODY>
+
+<DIV CLASS="header" ID="header">
+<H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
+<H3>Deploy ScreenShots</H3>
+</DIV>
+
+<DIV CLASS="body" ID="body">
+<div id="sidebar">
+  <ul>
+  <li id="home"><a href="./index.html">Home</a></li>
+  <li id="requirements"><a href="./requirements.html">Requirements</a></li>
+  <li id="screenshots"><a href="./screenshots.html">Deploy Screenshots</a></li>
+  <li id="troubleshooting"><a href="./troubleshooting.html">Troubleshooting (Help)</a></li>
+  <li id="tip-redeploy-os"><a href="./tip-redeploy-os.html">TIP Redeploy OS in LPAR</a></li>
+  <li id="vcoforpoweradm"><a href="./vcoforpoweradm.html">vCO for PowerAdm</a></li>
+  <li id="releases"><a href="https://github.com/kairoaraujo/PowerAdm/releases">Download Releases</a></li>
+  <li id="tarball"><a href="https://github.com/kairoaraujo/PowerAdm/tarball/master">Download TAR Ball</a></li>
+  <li id="github"><a href="https://github.com/kairoaraujo/PowerAdm">Visit GitHub</a></li>
+  </ul>
+</div>
+
+<H2>Power Admin Main Menu</H2>
+
+<UL>
+<LI>VMware vCenter Orchestrator interface/workflow 
+</UL>
+
+	<BLOCKQUOTE>
+	<A HREF="https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm">https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm</A>
+	</BLOCKQUOTE>
+<P>
+Select one of the options:
+</P>
+
+<OL>
+<LI>Creates a new LPAR configuration, this function generates a change/ticket to create or modify a LPAR configuration. The ticket will be processed later (option 2).
+<LI>Execute the LPAR creation (change/ticket) from option 1
+<LI>Deploy images on LPARs created in option 2
+<LI>Clear configs used to Deploy OS with NIM Server
+<LI>Quits from Power Adm
+<P></P>
+</OL>
+
+<HR NOSHADE SIZE=1>
+
+<H2>LPAR Configuration (option 1)</H2>
+
+<P>
+<IMG ALIGN="middle" SRC="img/mainmenu.png" BORDER="0" ALT="">
+</P>
+<P>
+Makes LPAR configuration easier. Even people without expertise in HMC ou Power Systems is able to use it.
+</P>
+<P>
+Default calculations are configurable on <A HREF="downloads/config.py">config.py</A> and pre configuration to Deploy OS using NIM Server. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/lparconfig.png" BORDER="0" ALT="">
+</P>
+<P>
+If you have more than one frame on your HMC select the host. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/selectframe.png" BORDER="0" ALT="">
+</P>
+<P>
+If the LPAR needs a vSCSI, say yes (y) -- two adapters, one by VIO. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/addvscsi.png" BORDER="0" ALT="">
+</P>
+<P>
+<B>[not tested yet]</B> you can add a disk from a Shared Storage Pool, select the Storage Pool you want to use. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/adddisk.png" BORDER="0" ALT="">
+</P>
+<P>
+Add up to three Ethernets, select Virtual Switch and enter the VLAN ID. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/addnetwork.png" BORDER="0" ALT="">
+</P>
+<P>
+Add Virtual Fiber Channel (NPIV/HBA), select the physical path to vfcmap -- two adapters by VIO 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/addnpiv.png" BORDER="0" ALT="">
+</P>
+<P>
+Validate your settings for the LPAR. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/validation.png" BORDER="0" ALT="">
+</P>
+<P>
+If it is okay, you can run the ticket now or save to run later. 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/finalquestion.png" BORDER="0" ALT="">
+</P>
+
+<HR NOSHADE SIZE=1>
+
+<H2>Creation LPAR (option 2) from the previous configuration</H2>
+
+<P>
+Select your tickets/changes and execute creation 
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/selectticket.png" BORDER="0" ALT="">
+</P>
+<P>
+The creation is automatic
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/finaloutput.png" BORDER="0" ALT="">
+</P>
+
+<HR NOSHADE SIZE=1>
+
+<H2>Deploy Operation System using NIM (Option 3)</H2>
+
+<P>
+Select the Server, Version and NIM Server to use for deploy.
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/selectversionandnim.png" BORDER="0" ALT="">
+</P>
+<P>
+Check the configuration and start deploying the Operation System.
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/checkanddeployos.png" BORDER="0" ALT="">
+</P>
+<P>
+Access the HMC and open the Virtual Menu. You can access using the same session.
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/deployos.png" BORDER="0" ALT="">
+</P>
+
+<HR NOSHADE SIZE=1>
+
+<H2>Cleanup Deploy Operation System configuration</H2>
+
+<P>
+Select the executed deploys to remove and confirm. This will Remove all settings on the NIM Server.
+</P>
+<P>
+<IMG ALIGN="middle" SRC="img/osnimdeploycleanup.png" BORDER="0" ALT="">
+</P>
+</div><div id="footer">
+<P>
+<IMG ALIGN="middle" SRC="./img/t2tpowered-white.png" BORDER="0" ALT="">
+</P>
+<P>
+Last modified on 30 June 2015 at 20:31
+(<A HREF="screenshots.t2t">See sources</A>)
+</P>
+</div><div id="fake">
+<!-- Google Analytics code -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-280222-14']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</DIV>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags -t html index.t2t requirements.t2t screenshots.t2t tip-redeploy-os.t2t troubleshooting.t2t vcoforpoweradm.t2t -->
+</BODY></HTML>

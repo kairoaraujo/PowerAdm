@@ -1,0 +1,149 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+vCO for PowerAdm
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+= VMware vCenter Orchestrator Interface for PowerAdm =
+
+== Information ==
+
+VMWare vCenter Orchestrator (vCO) is an workflow for Logical Partition (LPAR) request and creation using vCenter Orchestrator.
+
+It is easy to install, importing the Action and Workflow (view instalation/configuration steps below).
+
+The Workflow has tree steps:
+
+- LPAR request
+- LPAR config (approval)
+- Confirm Config (approval)
+
+
+The request works fine with vCO Web Client, but the approval not (I am investigating why with the VMware Support)
+
+I am also working on NIM Deploy module to vCO. Coming soon.
+
+
+=== Special Thanks! ===
+
+- Bruno Costa - Some skype conference teaching me how to use the vCO Action and Workflow!
+- Raphael Paiva - My another vCO support!
+- Fernando Costa - Fixing my bad english!
+
+
+----------------------
+= Some screenshots =
+
+== LPAR Request ==
+
+[img/lparrequest.png]
+
+== LPAR Config (approval) ==
+
+Server Configuration
+
+[img/lparconfigvco.png]
+
+== NIM Deploy ==
+
+[img/nimdeployvco.png]
+
+== Network Config ==
+
+[img/networkvco.png]
+
+== Confirm Config (approval) ==
+
+[img/configapproval.png]
+
+------------------------------
+= Installation/Configuration =
+
+**TIP:** The PowerAdm must be configured and running in text mode/ASCII.
+
+- Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client.
+
+[img/vcologin.png]
+
+- Change the view from 'Run' to 'Design'
+
+[img/vcoviewdesign.png]
+
+- Go to the 'Actions'
+
+[img/vcogoactions.png]
+
+- Create new module (folder) 'org.poweradm.basic'
+
+[img/vcocreatenewmodule.png]
+
+[img/vconewmodule.png]
+
+- Left clic on new module (folder) 'org.poweradm.basic' and click on 'Import action...'.
+
+[img/vcoimportaction.png]
+
+- Select all actions in the vCO folder of PowerAdm package.
+ - getVSW
+ - getSystemList
+ - getAddSSPDisk
+ - getNPIV
+
+
+[img/vcoselectpackages.png]
+
+[img/vcoselectpackages2.png]
+
+- Go to the 'Workflows' folder
+
+[img/vcowrokflow.png]
+
+- Create on 'Custom' folder a new folder named 'PowerAdm'
+
+[img/vconewfolder1.png]
+
+[img/vconewfolder2.png]
+
+- Left clic on 'PowerAdm' folder and click on 'Import workflows..'
+
+[img/vcoimportworkflows.png]
+
+- Select PowerAdm.workflow
+
+[img/vcoselectimportworkflow.png]
+
+- Select workflow PowerAdm and click on 'Edit'
+
+[img/vcoselectworkflow.png]
+
+[img/vcoeditworkflow.png]
+
+- In General, change the Attribute Values:
+ - powerAdmAddres ""[IP address of your server with PowerAdm]""
+ - powerAdmUser ""[Username of PowerAdm]""
+ - powerAdmPassword ""[Password PowerAdm user]""
+ - powerAdmPath ""[path installation]""
+
+
+[img/vcoworkflowattributes.png]
+
+- Save and Close
+
+[img/vcosaveandclose.png]
+
+- Continue Anyway (2x)
+
+
+[img/vcovalidation.png]
+
+[img/vcofinish.png]
+
+= How it works =
+
+PowerAdm has an 'API' with the necessary commands (apimain.py).
+
+The Actions and Workflow execute commands using the SSH.
+
+%!include: inc/footer.t2t
+
