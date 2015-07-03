@@ -399,29 +399,37 @@ class MakeLPARConf():
             file_change.write("\n\necho 'Getting Physical and LPAR %s-%s NPIV'" %
                              (self.prefix, self.lparname))
 
-            file_change.write("\n\necho '' ")
+            file_change.write("\n\necho '' >> %s/data/NPIV_%s_%s.txt" % (config.pahome, self.prefix, self.lparname))
 
-            file_change.write("\n\necho '*************************************************************' ")
+            file_change.write("\n\necho '*************************************************************' >> "
+                              " >> %s/data/NPIV_%s_%s.txt" (config.pahome, self.prefix, self.lparname))
 
-            file_change.write("\n\necho 'Physical HBA and LPAR %s-%s NPIV:'" %
-                             (self.prefix, self.lparname))
+            file_change.write("\n\necho 'Physical HBA and LPAR %s-%s NPIV (date: %s)'" %
+                             (self.prefix, self.lparname, globalvar.timestr))
 
             file_change.write("\n\necho 'Physical Adapter to LPAR fcs0: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
-                             "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-            		    	 (config.hmcserver, self.system, self.vio1, self.npiv_vio1))
+                             "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14) >> "
+                             "%s/data/NPIV_%s_%s.txt" %
+            		    	 (config.hmcserver, self.system, self.vio1, self.npiv_vio1, config.pahome, self.prefix,
+                              self.lparname))
 
             file_change.write("\n\necho 'Physical Adapter to LPAR fcs1: '$(ssh -l poweradm %s viosvrcmd -m %s -p %s "
-                             "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14)" %
-                             (config.hmcserver, self.system, self.vio2, self.npiv_vio2))
+                             "-c \"\'lsdev -dev %s -vpd\'\" | grep \'Network Address\' | cut -d. -f14) >> "
+                             "%s/data/NPIV_%s_%s.txt" %
+                             (config.hmcserver, self.system, self.vio2, self.npiv_vio2, config.pahome, self.prefix,
+                              self.lparname))
 
             file_change.write("\n\nssh -l poweradm %s lssyscfg -r prof -m %s -F virtual_fc_adapters --filter "
                               "lpar_names=\'%s-%s\' | awk -F \'/\' \'{ print \"fcs0 (active,inactive):\\t\"$6\"\\nfcs1 "
-                              "(active,inactive):\\t\"$12 }\'" % (config.hmcserver, self.system,
-                                self.prefix, self.lparname))
+                              "(active,inactive):\\t\"$12 }\' >> %s/data/NPIV_%s_%s.txt" % (config.hmcserver,
+                               self.system, self.prefix, self.lparname))
 
-            file_change.write("\n\necho '*************************************************************' ")
+            file_change.write("\n\necho '*************************************************************' >> "
+                              " >> %s/data/NPIV_%s_%s.txt" (config.pahome, self.prefix, self.lparname))
 
-            file_change.write("\n\necho '' ")
+            file_change.write("\n\necho '' >> %s/data/NPIV_%s_%s.txt" % (config.pahome, self.prefix, self.lparname))
+
+            file_change.write("\n\ncat %s/data/NPIV_%s_%s.txt" % (config.pahome, self.prefix, self.lparname))
 
 
         #
