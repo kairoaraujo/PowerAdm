@@ -17,5 +17,4 @@ poweradm/tmp/ids*
 poweradm/tmp/deploy_nim*
 poweradm/tmp/hosts*
 screenshots/
-poweradm/npiv_cache/
 poweradm/npiv_cache/*.cache
