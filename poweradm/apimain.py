@@ -576,7 +576,7 @@ try:
                       'LPAR Prefix: %s\n'
                       'LPAR Name: %s\n'
                       'LPAR Frame: %s\n'
-                      'LPAR Finale VLAN: %s\n'
+                      'LPAR Final VLAN: %s\n'
                       'LPAR NIM File: %s\n'
                       'NIM config OS Version: %s\n'
                       'NIM config OS spot: %s\n'
