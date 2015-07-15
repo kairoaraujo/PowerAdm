@@ -35,4 +35,3 @@ import time
 # Global Variables
 timestr = time.strftime("%m%d%Y-%H%M%S")
 version = '0.10-beta'
-
