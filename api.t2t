@@ -13,10 +13,6 @@ This document discribe abou the PowerAdm API and how to use that.
 The API is located in ``[ PowerAdm Home ]/poweradm/apimain.py`` .
 
 
-This Doc:
-
-%%TOC
-
 -------------------------------------------------------------
 
 
@@ -28,6 +24,8 @@ and **actions**.
 First you can see the help using ``[ PowerAdm Home ]/poweradm/apimain.py -h``
 
 **IMPORTANT**: The PowerAdm needs be installed and working!
+
+%%TOC
 
 == Direct informations ==
 

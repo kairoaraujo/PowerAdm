@@ -10,35 +10,29 @@ Home
 
 	PowerAdm uses a single configuration file and a simple menu/interface in text mode (Like a smitty).
 
-	Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
+	Optionally there is an interface using VMware vCenter Orchestrator for creating LPAR (Logical Partition) and Deploy Operation System.
 
-| [img/PowerAdm-0.9-beta.png][img/vCO-config-approval.png]
+[img/poweradm_home.jpg]
 
 == Principal features ==
 
 - Text Interface
 - Works with VMware vCenter Orchestrator (vCO)
+    - Example Workflow for LPAR creation included!
+    - Example Workflow for LPAR Operation System deploy included!
 - Create Logical Partition (LPAR) profile
 - Supports multiple frames
 - Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
- - Select the Virtual Switch
- - VLAN
-
-
+    - Select the Virtual Switch
+    - VLAN
 - Add vSCSI on two VIOs
- - Create Virtual SCSI server on VIO automatically
-
-
+    - Create Virtual SCSI server on VIO automatically
 - Add HBA/NPIV(vfchost) on two VIOs
- - Make vfcmap automatically
-
-
+    - Make vfcmap automatically
 - Add disk on vSCSI (only if you have Shared Storage Pool)
 - Troubleshooting help
- - Environment (SEA and NPIV)
- - Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
- 
-
+    - Environment (SEA and NPIV)
+    - Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
 - Centralized config (poweradm/config.py)
 - Deploy SO from the NIM Server
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...

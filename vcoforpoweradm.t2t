@@ -9,20 +9,10 @@ vCO for PowerAdm
 
 == Information ==
 
-VMWare vCenter Orchestrator (vCO) is an workflow for Logical Partition (LPAR) request and creation using vCenter Orchestrator.
+PowerAdm has two examples of workflows and needed Actions to use the vCenter Orchestrator to create and deploy LPARs.
 
 It is easy to install, importing the Action and Workflow (view instalation/configuration steps below).
 
-The Workflow has tree steps:
-
-- LPAR request
-- LPAR config (approval)
-- Confirm Config (approval)
-
-
-The request works fine with vCO Web Client, but the approval not (I am investigating why with the VMware Support)
-
-I am also working on NIM Deploy module to vCO. Coming soon.
 
 Contents:
 
@@ -36,7 +26,7 @@ Contents:
 
 
 ----------------------
-= Some screenshots =
+= LPAR Creation screenshots =
 
 == LPAR Request ==
 
@@ -59,6 +49,20 @@ Server Configuration
 == Confirm Config (approval) ==
 
 [img/configapproval.png]
+
+= LPAR OS Deploy =
+
+== Select Action == 
+
+[img/vCO-Deploy_OS_s1.png]
+
+== Select LPAR, OS and NIM Server ==
+
+[img/vCO-Deploy_OS_s2.png]
+
+== Confirm LPAR configuration == 
+
+[img/vCO-Deploy_OS_s3.png]
 
 ------------------------------
 = Installation/Configuration =
@@ -88,9 +92,7 @@ Server Configuration
 [img/vcoimportaction.png]
 
 - Select all actions in the vCO folder of PowerAdm package.
- - getVSW
- - getSystemList
- - getAddSSPDisk
+ - getAPIArray
  - getNPIV
 
 
