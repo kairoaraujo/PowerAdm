@@ -27,15 +27,6 @@ VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in
 States, other countries, or both.
 '''
 
-# Imports
-###############################################################################################
-#
-# Importing classes/modules
-import time
-import os.path
-from globalvar import *
-from config import *
-
 class CheckOK:
     ''' A simple class to do questions and check the answer is y/n (yes or no).
 

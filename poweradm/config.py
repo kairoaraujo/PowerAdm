@@ -4,7 +4,7 @@
 PowerAdm
 Config file
 
-Copyright (c) 2015 Kairo Araujo
+Copyright (c) 2014, 2015 Kairo Araujo
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.
@@ -50,7 +50,7 @@ cpu_min = 50
 cpu_max = 100
 
 # Systems and VIOS NPIV
-# Important: Require two vios NPIV. If you have only one vio repeat the vio name 
+# Important: Require two vios NPIV. If you have only one vio repeat the vio name
 #            as first example "'P1-8205-E6D-SN06A07AT':['VIO1A','VIO1A'],"
 #            If you have four vios, put the two first the NPIV and the two last
 #            the network VIOS as secound example "'P1-8205-E6D-SN06A07BT':['VIO3B','VIO4B','VIO1B','VIO2B'],"
@@ -147,3 +147,13 @@ conn_monitoring = '1'
 
 # Debug api parser
 api_debug = 'no'
+
+# NPIV Chache
+#
+# running the 'lsnports' in some VIOS can take a few long seconds.
+# the cache can be used.
+#
+# disable or enable option
+npiv_cache = 'enable'
+# time to update the cache files in seconds
+npiv_cache_time = '86400'

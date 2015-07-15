@@ -26,17 +26,6 @@ the United States, other countries, or both.
 VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
 States, other countries, or both.
 '''
-#
-# Imports
-###############################################################################################
-#
-# Importing classes/modules
-import time
-import os.path
-from globalvar import *
-from config import *
-from poweradm import *
-
 
 class Fields:
     ''' This class verify if the fields used is blank or contain spaces.

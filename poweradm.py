@@ -32,9 +32,20 @@ States, other countries, or both.
 # Imports
 ###############################################################################################
 from poweradm.poweradm import main_poweradm
+import poweradm.config
+import commands
 
-try:
-    main_poweradm()
-    ''' Import the main of PowerAdm '''
-except(KeyboardInterrupt):
-   print ("\n\nCtrl+C pressed! Exiting without save.\n")
+print "\nChecking HMC connection..."
+chk_hmc_connection = commands.getstatusoutput('ssh -l poweradm %s lshmc -V' %
+        poweradm.config.hmcserver)
+
+if chk_hmc_connection[0] == 0:
+    print "\nConnection to HMC passed!"
+    try:
+        main_poweradm()
+        ''' Import the main of PowerAdm '''
+    except(KeyboardInterrupt):
+        print ("\n\nCtrl+C pressed! Exiting without save.\n")
+else:
+    print "\nConnection to HMC failed!"
+    print "  Error:\n\t %s\n" % chk_hmc_connection[1]

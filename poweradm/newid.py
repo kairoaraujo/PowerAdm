@@ -29,10 +29,9 @@ States, other countries, or both.
 
 # Imports
 ###############################################################################################
-import time
 import os.path
-from globalvar import *
-from config import *
+import globalvar
+import config
 
 # get a next free id on systems
 class NewID:
@@ -42,18 +41,19 @@ class NewID:
         ''' Find the next LPAR ID '''
 
         ids = []
-        systems_keys = list(systems.keys())
-        systems_length = (len(systems.keys()))-1
+        systems_keys = list(config.systems.keys())
+        systems_length = (len(config.systems.keys()))-1
         count = 0
         while count <= systems_length:
             os.system('ssh -l poweradm %s lssyscfg -m %s -r lpar -F lpar_id >> %s/poweradm/tmp/ids_%s'
-                      % (hmcserver, systems_keys[count], pahome, timestr))
-            os.system('cat %s/poweradm/data/reserved_ids >> %s/poweradm/tmp/ids_%s' % (pahome, pahome, timestr))
-            if os.path.isfile('%s/poweradm/tmp/reserved_ids_%s' % (pahome, timestr)):
-                os.system('cat %s/poweradm/tmp/reserved_ids_%s >> %s/poweradm/tmp/ids_%s' % (pahome,
-                          timestr, pahome, timestr))
+                      % (config.hmcserver, systems_keys[count], config.pahome, globalvar.timestr))
+            os.system('cat %s/poweradm/data/reserved_ids >> %s/poweradm/tmp/ids_%s' %
+                    (config.pahome, config.pahome, globalvar.timestr))
+            if os.path.isfile('%s/poweradm/tmp/reserved_ids_%s' % (config.pahome, globalvar.timestr)):
+                os.system('cat %s/poweradm/tmp/reserved_ids_%s >> %s/poweradm/tmp/ids_%s' % (config.pahome,
+                          globalvar.timestr, config.pahome, globalvar.timestr))
             count += 1
-        fileids = open('%s/poweradm/tmp/ids_%s' % (pahome, timestr), 'r')
+        fileids = open('%s/poweradm/tmp/ids_%s' % (config.pahome, globalvar.timestr), 'r')
         ids = fileids.readlines()
         ids.sort(key=int)
         lastid = len(ids)-1
@@ -62,7 +62,7 @@ class NewID:
         if self.newid < 10:
             self.newid = ('0%s' % (self.newid))
         fileids.close()
-        os.system('rm %s/poweradm/tmp/ids_%s' % (pahome, timestr))
+        os.system('rm %s/poweradm/tmp/ids_%s' % (config.pahome, globalvar.timestr))
 
     def getID(self):
         ''' Return the next ID from mkID() '''

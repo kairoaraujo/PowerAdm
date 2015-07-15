@@ -28,10 +28,9 @@ States, other countries, or both.
 '''
 # Imports
 ###############################################################################################
-import time
 import os
 import fnmatch
-from globalvar import *
+import config
 ##############################################################################################
 #
 # Class FindChange
@@ -45,7 +44,7 @@ class FindChange:
 
         print ("\n[LPAR creation]\n"
                "\nSelect the Change/Ticket to execute:\n")
-        listChanges = fnmatch.filter(os.listdir("%s/poweradm/changes/" % pahome), "*.sh")
+        listChanges = fnmatch.filter(os.listdir("%s/poweradm/changes/" % config.pahome), "*.sh")
         listChanges_length = len(listChanges)-1
         if listChanges_length == -1:
             print ('No changes found. Exiting\n')
