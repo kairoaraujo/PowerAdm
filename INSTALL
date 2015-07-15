@@ -106,9 +106,7 @@ TIP: The PowerAdm must be configured and running in text mode/ASCII.
 5. Left clic on new module (folder) 'org.poweradm.basic' and click on 'Import action...'.
 
 6. Select all actions in the vCO folder of PowerAdm package.
-   - getVSW
-   - getSystemList
-   - getAddSSPDisk
+   - getAPIArray
    - getNPIV
 
 7. Go to the 'Workflows' folder

@@ -1,0 +1,17 @@
+#
+#
+# IMPORTANT
+# ONLY IF YOU COME FROM > 0.10-beta
+#
+
+If the config file have new options. Please include on your config!!
+
+# NPIV Chache
+# 
+# running the 'lsnports' in some VIOS can take a few long seconds.
+# the cache can be used.
+# 
+# disable or enable option
+ npiv_cache = 'enable'
+# time to update the cache files in seconds
+ npiv_cache_time = '86400'

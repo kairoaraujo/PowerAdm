@@ -4,31 +4,23 @@ PowerAdm is a free (BSD License) and simple tool developed in Python to easily a
 
 PowerAdm uses a single configuration file and  a simple menu/interface in text mode (Like a smitty).
 
-Optionally there is an interface for creating LPAR (Logical Partition) that works with VMware vCenter Orchestrator (VCO).
+Optionally there is an interface using VMware vCenter Orchestrator for creating LPAR (Logical Partition) and Deploy Operation System.
 
-![Text Mode](http://kairo.freeshell.org/poweradm/PowerAdm-0.9-beta.png "Text Mode")
-
-![vCO Workflow](http://kairo.freeshell.org/poweradm/vCO/vCO-config-approval.png "vCO Workflow")
+![PowerAdm](http://poweradm.org/img/PowerAdm-0.10-beta.png)
 
 ## Links
 
 - Website: http://poweradm.org
-- Deploy Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/screenshots  
-- Troubleshooting Screenshots: https://github.com/kairoaraujo/PowerAdm/wiki/troubleshooting
-- Requirements: https://github.com/kairoaraujo/PowerAdm/wiki/requirements
-- VMWare vCenter Orchestrator Workflow / Interface for PowerAdm: https://github.com/kairoaraujo/PowerAdm/wiki/vCO-for-PowerAdm
-
 
 ## Principal features
 
 - Text Interface
 - Works with VMware vCenter Orchestrator (vCO)
-    - LPAR Creation workflow
-    - Deploy OS workflow
-    [You can modify these workflows for your environment]
+    - Example Workflow for LPAR creation included!
+    - Example Workflow for LPAR Operation System deploy included!
 - Create Logical Partition (LPAR) profile
 - Supports multiple frames
-- Add virtual Ethernet (maximum 3 ethernets), vscsi, vfc(HBA NPIV) and add disk.
+- Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
     - Select the Virtual Switch
     - VLAN
 - Add vSCSI on two VIOs
@@ -54,7 +46,6 @@ Something that we really consider the differential in this tool is the IDs organ
 In the future:
 
 - Web Interface
-- vCO workflow/interface deploy OS Deploys using NIM
 
 ## Latest release
 
