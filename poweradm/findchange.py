@@ -62,6 +62,16 @@ class FindChange:
             except(IndexError):
                 print('\tERROR: Select an existing option between 0 and %s.' % (listChanges_length))
 
+    def listChanges(self):
+        ''' Return the list of changes/tickets file avaiable or none if don't exist files '''
+
+        listChanges = fnmatch.filter(os.listdir("%s/poweradm/changes/" % config.pahome), "*.sh")
+        listChanges_length = len(listChanges)-1
+        if listChanges_length == -1:
+            return 'none'
+        else:
+            return listChanges
+
 
     def getChange(self):
         ''' Returns the file change/ticket. '''
