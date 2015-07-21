@@ -15,7 +15,7 @@
 <H2>Web Interface</H2>
 <CODE>
 <P>[PowerAdm Adm ]</P>
-<P>[ Version: 0.10-beta - © 2014, 2015 Kairo Araujo - BSD License ]</P>
+<P>[ Version: {{version}} - © 2014, 2015 Kairo Araujo - BSD License ]</P>
 <fieldset> 
 <legend>Power Adm options</legend>
 </P>
