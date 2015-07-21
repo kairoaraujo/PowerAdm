@@ -14,7 +14,7 @@
 <H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
 <H2>Web Interface</H2>
 <CODE>
-<P>[PowerAdm Adm ]</P>
+<P>[ <a href="http://poweradm.org">PowerAdm</a> ]</P>
 <P>[ Version: {{version}} - © 2014, 2015 Kairo Araujo - BSD License ]</P>
 <fieldset> 
 <legend>Power Adm options</legend>
@@ -26,6 +26,8 @@
 <!--<LI>Clear NIM OS deploy configs. in the future -->
 <P> The function troubleshooting works only in the shell interface.</P>
 <P> ** IMPORTANT ** Form validation working only with browser <A HREF="http://www.google.com/chrome/">Google Chrome.</A>
+<P>
+<P> Visit <a href="http://www.poweradm.org">http://www.poweradm.org</a>.
 </fieldset>
 <P></P>
 </OL>
