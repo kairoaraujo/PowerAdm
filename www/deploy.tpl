@@ -64,7 +64,7 @@
     </div>
     <p></p>
     <div class="control-group">
-        <b><label class="control-label" for="nimsrv">Select NIM Serer to be used</label></b>
+        <b><label class="control-label" for="nimsrv">Select NIM Server to be used</label></b>
         <div class="controls">
             <select id="nimsrv" name="nimsrv" class="input-xlarge">
                 %for nimsrv in nimsrv_list:
