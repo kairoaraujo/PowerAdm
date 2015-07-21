@@ -96,8 +96,6 @@
 %end
 </fieldset>
 <P></P>
-<FORM><INPUT Type="button" VALUE="BACK" onClick="history.go(-1);return true;"></FORM>
-<P></P>
 <P><A HREF="/">Back to home</A></P>
 <P></P>
 </CODE>
