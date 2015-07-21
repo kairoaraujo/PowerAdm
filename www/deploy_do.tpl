@@ -33,7 +33,7 @@
         <div>{{log_line}}</div>
     %end
 
-    <b><p>Plase finish the OS installation.</p></b>
+    <b><p>Please finish the OS installation.</p></b>
     <div>1. Access the HMC Server</div>
     <div>2. Open the terminal console</div>
     <div>&nbsp;&nbsp;&nbsp;&nbsp;mkvterm -m {{lparframe}} -p {{lparprefix}}-{{lparname}}</div>
