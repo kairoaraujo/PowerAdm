@@ -157,3 +157,10 @@ api_debug = 'no'
 npiv_cache = 'enable'
 # time to update the cache files in seconds
 npiv_cache_time = '86400'
+
+# Web Interface
+#
+# Web port to listen
+web_port = '8080'
+# web IP to listen (0.0.0.0 listening all IPs)
+web_address = '0.0.0.0'
