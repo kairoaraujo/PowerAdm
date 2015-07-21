@@ -39,6 +39,8 @@ from www.bottle import *
 
 # global variables from the classes and functions of poweradm
 version = poweradm.globalvar.version
+web_port = poweradm.config.web_port
+web_address = poweradm.config.web_address
 enable_nim_deploy = poweradm.config.enable_nim_deploy.lower()
 virtual_switches = poweradm.config.virtual_switches
 psystems = list(poweradm.config.systems.keys())
@@ -475,4 +477,6 @@ def mistake404(code):
     return 'Sorry, this page does not exist!'
 
 debug(True)
-run(reloader=True)
+run(host=web_address,
+    port=web_port,
+    reloader=True)
