@@ -25,6 +25,7 @@
 <LI><A HREF=/deploy>Deploy OS on an existing LPAR.</A>
 <!--<LI>Clear NIM OS deploy configs. in the future -->
 <P> The function troubleshooting works only in the shell interface.</P>
+<P> ** IMPORTANT ** Form validation working only with browser <A HREF="http://www.google.com/chrome/">Google Chrome.</A>
 </fieldset>
 <P></P>
 </OL>
