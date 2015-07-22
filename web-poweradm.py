@@ -50,6 +50,11 @@ npivs = poweradm.npiv.NPIV()
 system_vio = poweradm.systemvios.SystemVios()
 freeid = poweradm.newid.NewID()
 
+@route('<filename:path>')
+def server_static(filename):
+    """ This is for static files """
+    return static_file(filename, root='www/static/')
+
 @route('/')
 def poweradm():
     ''' Index page '''

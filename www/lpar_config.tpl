@@ -8,13 +8,12 @@
 <BODY>
 
 <DIV CLASS="header" ID="header">
+<H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
+<H2>Web Interface</H2>
 </DIV>
 
 <DIV CLASS="body" ID="body">
-<H1>PowerAdm - IBM Power/PowerVM Administration tool</H1>
-<H2>Web Interface</H2>
-
-<CODE>[ PowerAdm Adm ]</P>
+<P>[ PowerAdm ]</P>
 <P>[ Version: {{ version }} - © 2014, 2015 Kairo Araujo - BSD License ]</P>
 <P></P>
 <P><A HREF="/">Back to home</A></P>
@@ -113,7 +112,6 @@ function getCPU() {
 <P></P>
 <P><A HREF="/">Back to home</A></P>
 <P></P>
-</CODE>
 
 </DIV>
 </BODY>
