@@ -4,7 +4,7 @@
 # Power Adm
 '''
 PowerAdm
-poweradm.py
+web-poweradm.py
 
 Copyright (c) 2015 Kairo Araujo
 
