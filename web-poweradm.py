@@ -35,6 +35,7 @@ import poweradm.globalvar
 import poweradm.config
 import poweradm.npiv
 import poweradm.newid
+import commands
 from www.bottle import *
 
 # global variables from the classes and functions of poweradm
@@ -99,6 +100,10 @@ def lpar_config_sys_net():
 
 @route('/lpar_config_npiv', method='GET')
 def lpar_config_npiv():
+
+    # import poweradm modules
+    import poweradm.config
+
     ''' LPAR configuration.
         - Select NPIV configurations
     '''
@@ -180,8 +185,16 @@ def lpar_config_npiv():
     npiv_vio2 = npivs.printFCVIO(psystem, 'vio2')
     vio1 = system_vio.returnVio1(psystem)
     vio2 = system_vio.returnVio2(psystem)
-    vio1_lsnports = lsnportsVIO(psystem, 'vio1')
-    vio2_lsnports = lsnportsVIO(psystem, 'vio2')
+
+    if os.path.isfile('%s/npiv/%s-%s' % ( poweradm.config.pahome, psystem, vio1)):
+        vio1_lsnports = commands.getoutput('cat %s/npiv/%s-%s' % ( poweradm.config.pahome, psystem, vio1))
+    else:
+        vio1_lsnports = ""
+
+    if os.path.isfile('%s/npiv/%s-%s' % ( poweradm.config.pahome, psystem, vio1)):
+        vio2_lsnports = commands.getoutput('cat %s/npiv/%s-%s' % ( poweradm.config.pahome, psystem, vio2))
+    else:
+        vio2_lsnports = ""
 
     # output with the variables
     output = template('www/lpar_config_npiv', version=version,
