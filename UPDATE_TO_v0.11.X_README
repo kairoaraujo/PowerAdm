@@ -1,0 +1,30 @@
+#
+# IMPORTANT
+# ONLY IF YOU COME FROM > 0.10-beta
+#
+
+If the config file have new options. Please include on your config!!
+
+# NPIV Chache
+# 
+# running the 'lsnports' in some VIOS can take a few long seconds.
+# the cache can be used.
+# 
+# disable or enable option
+npiv_cache = 'enable'
+# time to update the cache files in seconds
+npiv_cache_time = '86400'
+
+#
+# IMPORTANT
+# ONLY IF YOU COME FROM > 0.11-beta
+#
+
+If the config file have new options. Please include on your config!!
+
+# Web Interface
+#
+# Web port to listen
+web_port = '8080'
+# web IP to listen (0.0.0.0 listening all IPs)
+web_address = '0.0.0.0'
