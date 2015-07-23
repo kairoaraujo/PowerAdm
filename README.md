@@ -15,11 +15,13 @@ Optionally there is an interface using VMware vCenter Orchestrator for creating 
 ## Principal features
 
 - Text Interface
-- Works with VMware vCenter Orchestrator (vCO)
+- Web Interface 
+    - Is not necessary a web server. It's included in the PowerAdm. Just run 'python web-interface.py'
+        - Demo: http://demo.poweradm.org:8080/
+- (vCO Interface) Works with VMware vCenter Orchestrator (vCO)
     - Example Workflow for LPAR creation included!
     - Example Workflow for LPAR Operation System deploy included!
 - Create Logical Partition (LPAR) profile
-- Supports multiple frames
 - Add virtual Ethernet (maximum 3 ethernets), vscsi, vfct(HBA NPIV) and add disk.
     - Select the Virtual Switch
     - VLAN
@@ -33,6 +35,7 @@ Optionally there is an interface using VMware vCenter Orchestrator for creating 
     - Specific LPAR using ID or searching LPAR (Informations, configurations, NPIV, SEA, SCSI etc)
 - Centralized config (poweradm/config.py)
 - Deploy SO from the NIM Server
+- Supports multiple pSystems (frames)
 - **Organize your IDs!!!** Don't you know what is it? Keep reading...
 
 Whoever manages an IBM Power environment through the Hardware Management Console (HMC) knows that it is an easy management interface to create LPARs but we can not say the same when talking about managing the devices IDs, such as virtual network, virtual fiber channel, virtual scsi, etc or managing information about the maximum and minimum memory and CPUs, physical devices, capped, uncapped, and so on.
@@ -42,10 +45,6 @@ The objective of this tool is to adopt a standard for IDs based on the LPAR ID a
 Power Adm is a free and simple tool developed in Python to create LPARs easily, quickly and with their standards.
 
 Something that we really consider the differential in this tool is the IDs organization.
-
-In the future:
-
-- Web Interface
 
 ## Latest release
 
