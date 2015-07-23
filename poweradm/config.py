@@ -103,7 +103,7 @@ nim_deploy_mode = 'mksysb'
 # - SPOT: is the same resource name on your NIM Server (lsnim)
 #
 nim_os_deploy = {
-                 'AIX 7.1 TL03 SP04 (Only NIM2)':['MKSYSB_AIX71TL03SP04','SPOT_AIX71TL03SP04'],
+                 'AIX 7.1 TL03 SP04 (Only in NIMSRV2)':['MKSYSB_AIX71TL03SP04','SPOT_AIX71TL03SP04'],
                  'AIX 6.1 TL09 SP04':['MKSYSB_AIX61TL09SP04','SPOT_AIX61TL09SP04'],
                  'AIX 5.3 TL12 SP04':['MKSYSB_AIX53TL12SP04','SPOT_AIX53TL03SP04']
                 }
@@ -121,8 +121,8 @@ nim_os_deploy = {
 #   Important: supports max 24 bits network. 1-254 addresses
 #
 nimservers = {
-              'NIM1':['nimserver1', '10.0.0.1', '10.0.0.254', '10.0.0.11-254'],
-              'NIM2':['200.185.178.30', '10.0.1.1', '10.0.1.254', '10.0.1.11-254']
+              'NIMSRV01':['nimserver1', '10.0.0.1', '10.0.0.254', '10.0.0.11-254'],
+              'NIMSRV02':['200.185.178.30', '10.0.1.1', '10.0.1.254', '10.0.1.11-254']
              }
 
 #

@@ -34,6 +34,7 @@ import time
 import os
 import globalvar
 import config
+import commands
 ##############################################################################################
 #
 # Class ExecChange
@@ -54,7 +55,9 @@ class Exe:
         ''' execute the change (changefile arg). '''
 
         print ("\nRuning change/ticket %s" % (self.changefile))
-        os.system("sh %s" % (self.changefile))
+        exec_output = commands.getoutput("sh %s" % (self.changefile))
+        print exec_output
+        return exec_output
         f_change_executed = open(self.changefile, 'r')
         os.system('mv %s %s/poweradm/changes_executed/' % (self.changefile, config.pahome))
         print ('Change/ticket %s finished. Verfify configs on your environment.\nExiting!'

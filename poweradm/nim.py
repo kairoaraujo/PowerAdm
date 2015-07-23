@@ -258,6 +258,13 @@ class NIMFileFind:
 
         return self.deploy_file
 
+    def listDeployed(self):
+        ''' List available deploys files/LPAR to deploy'''
+
+        filedir = ('%s/poweradm/nim_executed/' % (config.pahome))
+        listDeploy = fnmatch.filter(os.listdir("%s" % (filedir)), "*.nim")
+        return listDeploy
+
     def fileData(self, deploy_file):
         '''
         Get all Deploy file data
