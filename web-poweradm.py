@@ -180,6 +180,8 @@ def lpar_config_npiv():
     npiv_vio2 = npivs.printFCVIO(psystem, 'vio2')
     vio1 = system_vio.returnVio1(psystem)
     vio2 = system_vio.returnVio2(psystem)
+    vio1_lsnports = lsnportsVIO(psystem, 'vio1')
+    vio2_lsnports = lsnportsVIO(psystem, 'vio2')
 
     # output with the variables
     output = template('www/lpar_config_npiv', version=version,
@@ -192,7 +194,8 @@ def lpar_config_npiv():
              net_vlan2_2=net_vlan2_2, net_vlan3_1=net_vlan3_1, net_vlan3_2=net_vlan3_2,
              net_vlan3_3=net_vlan3_3, net_vsw1=net_vsw1, net_vsw2_1=net_vsw2_1,
              net_vsw2_2=net_vsw2_2, net_vsw3_1=net_vsw3_1, net_vsw3_2=net_vsw3_2,
-             net_vsw3_3=net_vsw3_3, npiv_vio1=npiv_vio1, npiv_vio2=npiv_vio2, vio1=vio1, vio2=vio2)
+             net_vsw3_3=net_vsw3_3, npiv_vio1=npiv_vio1, npiv_vio2=npiv_vio2, vio1=vio1,
+             vio1_lsnports=vio1_lsnports, vio2_lsnports=vio2_lsnports, vio2=vio2)
 
     return output
 

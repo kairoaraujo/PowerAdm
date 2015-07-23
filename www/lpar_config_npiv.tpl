@@ -100,6 +100,10 @@ function hide_form_vfc() {
         <b><label class="control-label" for="">Select the NPIV FC of {{vio1}}</label></b>
         <div class="controls">
             <select id="npiv_vio1" name="npiv_vio1" class="input-xlarge">
+            <p>NPIV Informations from {{vio1}}:</p>
+                % for lsnports in vio1_lsnports.splitlines():
+                    <div>{{lsnports}}</div>
+                % end
                 %for fcs in npiv_vio1:
                     <option>{{fcs}}</option>
                 %end
@@ -110,6 +114,10 @@ function hide_form_vfc() {
         <b><label class="control-label" for="">Select the NPIV FC of {{vio2}} </label></b>
         <div class="controls">
             <select id="npiv_vio2" name="npiv_vio2" class="input-xlarge">
+            <p>NPIV Informations from {{vio1}}</p>
+                % for lsnports in vio2_lsnports.splitlines():
+                    <div>{{lsnports}}</div>
+                %end
                 %for fcs in npiv_vio2:
                     <option>{{fcs}}</option> 
                 %end

@@ -25,6 +25,7 @@
 %if configlpar == 'yes':
     <b><p>The file is saved.</p></b>
     <p>File path: {{change_file}}</p>
+    <p>You can execute the creation accessing <A HREF=/lpar_exec>Execute the LPAR creation</A> in main menu.<p>
 %else:
     <b><p>LPAR Creation <font color="#C80000">CANCELLED</font>.</p></b>
 
