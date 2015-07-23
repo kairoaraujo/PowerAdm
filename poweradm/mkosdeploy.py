@@ -32,6 +32,7 @@ States, other countries, or both.
 import os
 import nim
 import config
+import commands
 ##############################################################################################
 
 class MakeNIMDeploy():
@@ -168,7 +169,11 @@ class MakeNIMDeploy():
             f_nim_deploy.write('#NIMADDRESS %s\n' % (self.nim_address))
             f_nim_deploy.close()
 
-            os.system('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' % (config.pahome, self.lparprefix, self.lparname))
+            deploy_output = commands.getoutput('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' %
+                    (config.pahome, self.lparprefix, self.lparname))
+            return deploy_output
+            print deploy_output
+
             os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (config.pahome, self.lparprefix,
                 self.lparname, config.pahome))
             os.system('mv %s/poweradm/changes/deploy_nim_%s-%s.nim %s/poweradm/changes_executed/' % (config.pahome,
