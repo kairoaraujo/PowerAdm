@@ -38,6 +38,7 @@ import newid
 import systemvios
 import execchange
 import nim
+import mklparconf
 import mkosdeploy
 import npiv
 ##############################################################################################
@@ -302,10 +303,13 @@ try:
         # convert null to n
         #
         # nim_deploy
-        if nim_deploy == "null":
+        if nim_deploy == "false":
+            nim_deploy = "n"
+        elif nim_deploy == "null":
             nim_deploy = "n"
         else:
             nim_deploy = "y"
+
         # disk_size
         if disk_size == "null":
             disk_size = 0
@@ -357,6 +361,21 @@ try:
                         (vlan_deploy, vsw_deploy, net_vlan3_2, net_vsw3_2, net_vlan3_3, net_vsw3_3))
                 veth_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
                         (net_vlan3_1, net_vsw3_1, net_vlan3_2, net_vsw3_2, net_vlan3_3, net_vsw3_3))
+        else:
+            if net_length == 1:
+                veth = ("10/0/%s//0/0/%s" % (net_vlan1, net_vsw1))
+                veth_final = ("10/0/%s//0/0/%s" % (net_vlan1, net_vsw1))
+            elif net_length == 2:
+                veth = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s" % (net_vlan2_1, net_vsw2_1,
+                            net_vlan2_2,net_vsw2_2))
+                veth_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s" % (net_vlan2_1, net_vsw2_1,
+                   net_vlan2_2, net_vsw2_2))
+            elif net_length == 3:
+                veth = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
+                        (net_vlan3_1, net_vsw3_1, net_vlan3_2, net_vsw3_2, net_vlan3_3, net_vsw3_3))
+                veth_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
+                        (net_vlan3_1, net_vsw3_1, net_vlan3_2, net_vsw3_2, net_vlan3_3, net_vsw3_3))
+
 
         print ("*"*80)
         print('Config validation: \n\n'
@@ -417,9 +436,9 @@ try:
             '''
 
             """ Make a file change """
-            newchange = MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
+            newchange = mklparconf.MakeLPARConf(change, prefix, lparname, lparid, nim_deploy, lparmem,
                                  lparentcpu, lparvcpu, vscsi, add_disk, stgpool, disk_size, vfc,
-                                 npiv_vio1, npiv_vio2, veth, veth_final, system, vio1, vio2)
+                                 npiv_vio1, npiv_vio2, veth, veth_final, system_option, vio1, vio2)
             newchange.headerchange()
             newchange.writechange()
             newchange.closechange()
