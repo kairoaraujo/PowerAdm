@@ -362,6 +362,7 @@ try:
                 veth_final = ("10/0/%s//0/0/%s,11/0/%s//0/0/%s,12/0/%s//0/0/%s" %
                         (net_vlan3_1, net_vsw3_1, net_vlan3_2, net_vsw3_2, net_vlan3_3, net_vsw3_3))
         else:
+            # the final and deploy is the same if NIM Deploys options is 'no'.
             if net_length == 1:
                 veth = ("10/0/%s//0/0/%s" % (net_vlan1, net_vsw1))
                 veth_final = ("10/0/%s//0/0/%s" % (net_vlan1, net_vsw1))
