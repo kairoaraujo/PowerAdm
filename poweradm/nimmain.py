@@ -105,7 +105,7 @@ def main():
 
             print ('\n\n\trun command \'mkvterm -m %s -p %s-%s\'\n\n' % (lparframe, lparprefix, lparname))
             print ('\n\n\tTip: maybe you need press \'1 Enter\'\n\n')
-            os.system('ssh -l poweradm %s' % (hmcserver))
+            os.system('ssh -l poweradm %s' % (config.hmcserver))
 
         else:
             print ('\nExiting...\n\n')
