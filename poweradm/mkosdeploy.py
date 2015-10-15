@@ -171,7 +171,6 @@ class MakeNIMDeploy():
 
             deploy_output = commands.getoutput('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' %
                     (config.pahome, self.lparprefix, self.lparname))
-            return deploy_output
             print deploy_output
 
             os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (config.pahome, self.lparprefix,
@@ -181,3 +180,5 @@ class MakeNIMDeploy():
 
             print ('\nPlease, access HMC %s and run command below to finish OS install. '
                    '\n\t\'mkvterm -m %s -p %s-%s\' ' % (config.hmcserver, self.lparframe, self.lparprefix, self.lparname))
+
+            return deploy_output
