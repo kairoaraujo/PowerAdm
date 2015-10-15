@@ -72,12 +72,9 @@ def run(hmcserver, system, vios, fc):
                     (hmcserver, system, vios, column[0]))
             fc_link = commands.getoutput("ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'lsdev -dev %s -attr attach\'\" | grep -E \'^al|^switch\'" %
                     (hmcserver, system, vios, fscsi))
-            fc_stat = commands.getoutput("ssh -l poweradm %s viosvrcmd -m %s "
-            "-p %s -c \"\'fcstat -e %s\'\" | grep \"Attention Type:\" "
-            "| awk -F: \'{ print $2 }\'" % (hmcserver, system, vios, column[0]))
 
             # get other fc informations
-            os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c \"\'fcstat %s\'\" > /tmp/%s.%s.fcstat.%s" %
+            os.system("ssh -l poweradm %s viosvrcmd -m %s -p %s -c "'fcstat %s'" > /tmp/%s.%s.fcstat.%s" %
                     (hmcserver, system, vios, column[0], system, vios, column[0]))
 
             with open('/tmp/%s.%s.fcstat.%s' % (system, vios, column[0])) as fcstat:
@@ -140,14 +137,12 @@ def run(hmcserver, system, vios, fc):
             else:
                 print ("LPAR clients ID(vfchost): none")
 
-            print fc_link
-            print fc_stat
 
             print "\nAdapter Status"
             print "------- ------"
-            if fc_link == 'al' or '   Link Down' == fc_stat:
+            if fc_link == 'al':
                 fc_link = "\033[1;31mDOWN\033[1;00m"
-            elif fc_link == 'switch' or '   Link Up' == fc_stat:
+            elif fc_link == 'switch':
                 fc_link = "\033[1;32mUP\033[1;00m"
             print "Link Status: %s" % fc_link
 
