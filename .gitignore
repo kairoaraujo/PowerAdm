@@ -19,3 +19,4 @@ poweradm/tmp/hosts*
 screenshots/
 poweradm/npiv_cache/*.cache
 nohup.out
+.idea/
