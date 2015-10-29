@@ -261,8 +261,7 @@ def lpar_config_finish():
     createlpar = request.GET.get('createlpar','')
 
     # get the next free id
-    freeid.mkID()
-    lparid = freeid.getID()
+    lparid = freeid.mkID()
 
     # convert the ethernets for makelpar function
     if nim_deploy == 'y':
