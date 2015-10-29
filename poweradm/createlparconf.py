@@ -145,10 +145,11 @@ def lparconfig():
 
 
     # get free id from newID.py
+    print ("Getting the next free LPAR ID. Please wait...")
     global lparid
     freeid = newid.NewID()
-    freeid.mkID()
-    lparid = freeid.getID()
+    lparid = freeid.mkID()
+    print ("Done! Next LPAR ID %s reserved." % (lparid))
 
     # select a system and vios from systemVios.py
     global system, vio1, vio2

@@ -32,6 +32,7 @@ States, other countries, or both.
 import os.path
 import globalvar
 import config
+import check_devices
 
 # get a next free id on systems
 class NewID:
@@ -57,13 +58,59 @@ class NewID:
         ids = fileids.readlines()
         ids.sort(key=int)
         lastid = len(ids)-1
-        self.newid = int(ids[lastid])+1
-        # if id < 10 add 0 left, view ticket #5 github
-        if self.newid < 10:
-            self.newid = ('0%s' % (self.newid))
-        fileids.close()
-        os.system('rm %s/poweradm/tmp/ids_%s' % (config.pahome, globalvar.timestr))
 
-    def getID(self):
-        ''' Return the next ID from mkID() '''
-        return self.newid
+        # the minimun LPAR ID
+        newid = 10
+
+        # checks while new LPAR ID is minor the last LPARD + 1
+        while newid <= (int(ids[lastid])+1):
+            if str(newid)+"\n" in ids:
+                newid += 1
+            else:
+                # if id < 10 add 0 left, view ticket #5 github
+                if newid < 10:
+                    newid = ('0%s' % (newid))
+                system_keys = config.systems.keys()
+
+                # This is a variable to check if check_devics.py verifyied in
+                #all VIOS and frames (pSystems)
+                count_check = 0
+
+                # uses the check_devices.py to verify if ID is free or used by
+                #some virtual device in VIOS
+                for psystems in config.systems.keys():
+
+                    if (
+                        check_devices.check('vscsi', config.hmcserver,
+                        psystems, config.systems[psystems][0], newid) == 'used'
+                        or
+                        check_devices.check('vscsi', config.hmcserver,
+                        psystems, config.systems[psystems][0], newid) == 'used'
+                        or
+                        check_devices.check('vfc', config.hmcserver,
+                        psystems, config.systems[psystems][0], newid) == 'used'
+                        or
+                        check_devices.check('vfc', config.hmcserver,
+                        psystems, config.systems[psystems][0], newid) == 'used'
+                        ):
+
+                        # If the ID is used on a virtual device, go to next ID.
+                        # The variables count back to the 0
+                        newid += 1
+                        count_check = 0
+                        break
+
+                    else:
+
+                        # else, the ID is not used by any virtual device is
+                        #incremented +1 and if is free in all pSystems/frames
+                        #and variable count is equal the number of pSystem/
+                        #frames it found the next ID! Remove the tmp files and
+                        #go ahead.
+                        count_check +=1
+
+                        if count_check == len(system_keys):
+
+                            os.system('rm %s/poweradm/tmp/ids_%s' % (config.pahome, globalvar.timestr))
+                            self.newid = newid
+                            return self.newid

@@ -338,8 +338,7 @@ try:
 
         # get free id from newID.py
         nextid = newid.NewID()
-        nextid.mkID()
-        lparid = nextid.getID()
+        lparid = nextid.mkID()
 
         # get system VIOs
         listvios = systemvios.SystemVios()
