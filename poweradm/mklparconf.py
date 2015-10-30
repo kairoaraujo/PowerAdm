@@ -33,6 +33,7 @@ import os.path
 import commands
 import globalvar
 import config
+import check_devices
 
 class MakeLPARConf():
     ''' Create on config.pahome/poweradm/changes/ the shell script file to create LPAR.
@@ -118,8 +119,40 @@ class MakeLPARConf():
         # set default values vscsi
         #
         global vscsi_vio1, vscsi_vio2
-        vscsi_vio1 = ("21/client//%s/1%s/0" % (vio1, lparid))
-        vscsi_vio2 = ("22/client//%s/2%s/0" % (vio2, lparid))
+        vscsi_vio1 = ("21/client//%s/1%s/0" % (self.vio1, self.lparid))
+        vscsi_vio2 = ("22/client//%s/2%s/0" % (self.vio2, self.lparid))
+
+        # Check if devices is free to creation using check_devices.py
+        vscsi_devices_vio1 = check_devices.check('vscsi', config.hmcserver,
+                self.system, self.vio1, self.lparid)
+        vscsi_devices_vio2 = check_devices.check('vscsi', config.hmcserver,
+                self.system, self.vio2, self.lparid)
+
+        vfc_devices_vio1 = check_devices.check('vfc', config.hmcserver,
+                self.system, self.vio1, self.lparid)
+        vfc_devices_vio2 = check_devices.check('vfc', config.hmcserver,
+                self.system, self.vio2, self.lparid)
+
+        if (vscsi_devices_vio1 == 'used' or
+            vscsi_devices_vio2 == 'used' or
+            vfc_devices_vio1 == 'used' or
+            vfc_devices_vio2 == 'used'):
+
+            print ("ERROR: A device using the ID %s exists. Please check:\n"
+                   "s% :\n"
+                   "    - VSCSI: %s\n"
+                   "    - VFC  : %s\n"
+                   "\n"
+                   "%s :\n"
+                   "    - VSCSI: %s\n"
+                   "    - VFC  : %s\n"
+                   % (self.lparid, self.vio1, vscsi_devices_vio1,
+                       vscsi_devices_vio1, self.vio2, vscsi_devices_vio2,
+                       vfc_devices_vio2))
+
+            exit()
+
+
 
     def headerchange(self):
         ''' Write the header of file. '''
