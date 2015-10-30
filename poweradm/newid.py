@@ -85,13 +85,13 @@ class NewID:
                         psystems, config.systems[psystems][0], newid) == 'used'
                         or
                         check_devices.check('vscsi', config.hmcserver,
-                        psystems, config.systems[psystems][0], newid) == 'used'
+                        psystems, config.systems[psystems][1], newid) == 'used'
                         or
                         check_devices.check('vfc', config.hmcserver,
                         psystems, config.systems[psystems][0], newid) == 'used'
                         or
                         check_devices.check('vfc', config.hmcserver,
-                        psystems, config.systems[psystems][0], newid) == 'used'
+                        psystems, config.systems[psystems][1], newid) == 'used'
                         ):
 
                         # If the ID is used on a virtual device, go to next ID.
