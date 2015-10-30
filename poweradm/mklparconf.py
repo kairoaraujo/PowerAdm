@@ -122,24 +122,32 @@ class MakeLPARConf():
         vscsi_vio1 = ("21/client//%s/1%s/0" % (self.vio1, self.lparid))
         vscsi_vio2 = ("22/client//%s/2%s/0" % (self.vio2, self.lparid))
 
+        #
         # Check if devices is free to creation using check_devices.py
+        #
+
+        # Loggin this acction
+        print ("Checking if all virtual devices are free to use. Please wait.")
+
+
+        # uses the check_devices
         vscsi_devices_vio1 = check_devices.check('vscsi', config.hmcserver,
                 self.system, self.vio1, self.lparid)
         vscsi_devices_vio2 = check_devices.check('vscsi', config.hmcserver,
                 self.system, self.vio2, self.lparid)
-
         vfc_devices_vio1 = check_devices.check('vfc', config.hmcserver,
                 self.system, self.vio1, self.lparid)
         vfc_devices_vio2 = check_devices.check('vfc', config.hmcserver,
                 self.system, self.vio2, self.lparid)
 
+        # if some device ID is in used, just exit with error.
         if (vscsi_devices_vio1 == 'used' or
             vscsi_devices_vio2 == 'used' or
             vfc_devices_vio1 == 'used' or
             vfc_devices_vio2 == 'used'):
 
             print ("ERROR: A device using the ID %s exists. Please check:\n"
-                   "s% :\n"
+                   "%s :\n"
                    "    - VSCSI: %s\n"
                    "    - VFC  : %s\n"
                    "\n"
