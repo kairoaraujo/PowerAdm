@@ -114,3 +114,5 @@ class NewID:
                             os.system('rm %s/poweradm/tmp/ids_%s' % (config.pahome, globalvar.timestr))
                             self.newid = newid
                             return self.newid
+
+        return self.newid
