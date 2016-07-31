@@ -4,7 +4,7 @@
 PowerAdm
 Config file
 
-Copyright (c) 2014, 2015 Kairo Araujo
+Copyright (c) 2014, 2015, 2016 Kairo Araujo
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.
@@ -92,6 +92,11 @@ enable_nim_deploy = 'yes'
 #   mksysb = using mksysb and spot image
 #      lpp = using lpp source and spot
 nim_deploy_mode = 'mksysb'
+
+# Basic Operation System Install Data resource (bosinst_data)
+# Syntax:
+#    Use the resource name or '' for none
+nim_bosinst_data_res = 'bosinst_data'
 
 # List of OS to deploy
 # Syntax:

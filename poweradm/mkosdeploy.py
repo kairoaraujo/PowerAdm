@@ -4,7 +4,7 @@
 PowerAdm
 mkosdeploy.py
 
-Copyright (c) 2014, 2015 Kairo Araujo
+Copyright (c) 2014, 2015, 2016 Kairo Araujo
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.
@@ -32,7 +32,6 @@ States, other countries, or both.
 import os
 import nim
 import config
-import commands
 ##############################################################################################
 
 class MakeNIMDeploy():
@@ -76,6 +75,10 @@ class MakeNIMDeploy():
         self.nim_ipdeploy = nim_ipdeploy
         self.deploy = deploy
 
+        if config.nim_bosinst_data_res == '':
+            self.bosinst_data = ''
+        else:
+            self.bosinst_data = 'bosinst_data=%s' % (config.nim_bosinst_data_res)
 
     def createNIMDeploy(self):
         """ Do OS NIM Deploy """
@@ -127,16 +130,16 @@ class MakeNIMDeploy():
             if config.nim_deploy_mode.lower() == 'mksysb':
 
                 f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o bos_inst -a source=mksysb -a spot=%s '
-                    '-a mksysb=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' % (self.nim_address,
-                        self.nim_cfg_spot, self.nim_cfg_mksysbspot, self.lparname))
+                    '-a mksysb=%s -a no_client_boot=yes %s -a accept_licenses=yes %s\n' % (self.nim_address,
+                        self.nim_cfg_spot, self.nim_cfg_mksysbspot, self.bosinst_data, self.lparname))
 
                 f_nimexe_chksh()
 
             elif nim_deploy_mode.lower() == 'lpp':
 
                 f_nim_exe.write('\n\nssh -l poweradm %s sudo nim -o bos_inst -a source=spot -a spot=%s '
-                    '-a lpp_source=%s -a no_client_boot=yes -a accept_licenses=yes %s\n' %
-                    (self.nim_address, self.nim_cfg_spot, self.nim_cfg_mksysbspot, self.lparname))
+                    '-a lpp_source=%s -a no_client_boot=yes %s -a accept_licenses=yes %s\n' %
+                    (self.nim_address, self.nim_cfg_spot, self.nim_cfg_mksysbspot, self.bosinst_data, self.lparname))
                 f_nimexe_chksh()
 
             f_nim_exe.write('\n\necho "Getting the Mac Address from %s-%s"\n' % (self.lparprefix, self.lparname))
@@ -169,9 +172,8 @@ class MakeNIMDeploy():
             f_nim_deploy.write('#NIMADDRESS %s\n' % (self.nim_address))
             f_nim_deploy.close()
 
-            deploy_output = commands.getoutput('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' %
-                    (config.pahome, self.lparprefix, self.lparname))
-            print deploy_output
+            os.system('sh %s/poweradm/changes/deploy_nim_%s-%s.nim' %
+                     (config.pahome, self.lparprefix, self.lparname))
 
             os.system('mv %s/poweradm/nim/%s-%s.nim %s/poweradm/nim_executed/' % (config.pahome, self.lparprefix,
                 self.lparname, config.pahome))
@@ -179,6 +181,6 @@ class MakeNIMDeploy():
                 self.lparprefix, self.lparname, config.pahome))
 
             print ('\nPlease, access HMC %s and run command below to finish OS install. '
-                   '\n\t\'mkvterm -m %s -p %s-%s\' ' % (config.hmcserver, self.lparframe, self.lparprefix, self.lparname))
+                   '\n\t\'mkvterm -m %s -p %s-%s\' ' % (config.hmcserver, self.lparframe, self.lparprefix,
+                                                        self.lparname))
 
-            return deploy_output
