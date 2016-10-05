@@ -34,4 +34,4 @@ import time
 #
 # Global Variables
 timestr = time.strftime("%m%d%Y-%H%M%S")
-version = '0.11.1-beta'
+version = '0.12'
