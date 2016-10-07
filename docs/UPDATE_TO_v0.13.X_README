@@ -1,0 +1,2 @@
+It is necessary include the option vslot_std = True or vslot_std = False
+on your config file.

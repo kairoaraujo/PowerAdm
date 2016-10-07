@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
+"""
 PowerAdm
 globalvar.py
 
-Copyright (c) 2014, 2015 Kairo Araujo
+Copyright (c) 2014-2016 Kairo Araujo.
 
 It was created for personal use. There are no guarantees of the author.
 Use at your own risk.
@@ -21,17 +21,17 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation in
-the United States, other countries, or both.
-VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc in the United
-States, other countries, or both.
-'''
+IBM, Power, PowerVM (a.k.a. VIOS) are registered trademarks of IBM Corporation
+in the United States, other countries, or both.
+VMware, vCenter, vCenter Orchestrator are registered trademarks of VWware Inc
+in the United States, other countries, or both.
+"""
 
 # Imports
-###############################################################################################
+###############################################################################
 import time
-##############################################################################################
+###############################################################################
 #
 # Global Variables
 timestr = time.strftime("%m%d%Y-%H%M%S")
-version = '0.12'
+version = '0.13'
