@@ -8,7 +8,8 @@ Requirements
 
 == First == 
 
-	There is no guarantee from the author. Use at your own risk. Check the [License file downloads/license.txt].
+	There is no guarantee from the author. Use at your own risk. Check the
+	[License file downloads/license.txt].
 
 == Infrastructure == 
 
@@ -18,10 +19,168 @@ Requirements
 
 == HMC == 
 
-	Works with HMC 7 and HMC 8
+	Works with HMC 7 and HMC 8, inluding vCO
 
-== Environment to create LPAR == 
--------------------------------------------
+
+= Environment to Deploy OS Using a NIM Server =
+------------------------------------------------
+
+== NIM Server ==
+
+	You need a configured and working NIM Server with SUDO installed.
+
+	Check the install procedure on [INSTALL downloads/install] file.
+
+= Using the VMWare vCenter Orchestrator to create LPAR =
+--------------------------------------------------------
+
+	TIP: The PowerAdm must be configured and running in text mode/ASCII.
+
++ Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
++ Change the view from 'Run' to 'Design'
++ Go to the 'Action'
++ Create folder 'org.poweradm.basic'
++ Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
++ Select all actions in the vCO folder of PowerAdm package.
+ - getVSW
+ - getSystemList
+ - getAddSSPDisk
+ - getNPIV
++ Go to the 'Workflows' folder
++ Create on 'Custom' folder a new folder named 'PowerAdm'
++ Left clic on 'PowerAdm' folder and click on 'Import workflows..'
++ Left click on workflow PowerAdm and click on 'Edit'
++ In General, change the Attribute Values:
+ - powerAdmAddres ""[IP address of your server with PowerAdm]""
+ - powerAdmUser ""[Username of PowerAdm]""
+ - powerAdmPassword ""[Password PowerAdm user]""
+ - powerAdmPath ""[path installationz]""
+
+	For more information visit [vCo-forPowerAdm SITEROOT/vcoforpoweradm.html]
+
+
+== Optional IDs Structure / Organize your IDs ==
+-------------------------------------------------------------
+
+    This is required when you use 'vslot_std = True' on config file.
+
+	These IDs are well organized, assisting in the identification of devices,
+	particularly in times of troubleshooting on environments with a large
+	number of LPARs. These IDs also help managing the Live Partition Mobility.
+	Therefore, if well organized, will always remain the same independent of
+	the box.
+
+	For this, the following rules were established:
+
+	Every LPAR has a maximum number of virtual devices 40 and the following structure:
+
+- Virtual Network IDs will be between 10 and 19
+- Virtual SCSI IDs will be between 20 and 29 (default 21 primary VIO, 22 secondary VIO)
+- Virtual Fibre Channel IDs will be between 30 and 39 (default 33 primary VIO, 34 secondary VIO)
+
+
+	"VIOS" settings have the following default: Maximum number of virtual devices in the Primary VIO is 3500 and in the Secondary VIO 4500 allowing a total of 500 LPARs on this set of VIOS.
+
+	Other sample: If the maximum number of LPAR is 100 the number is changed to 3100 (VIO Primary) and 4100 (VIO Secundary)
+
+Continuing...
+
+	Virtual SCSI IDs:
+
+- Primary VIO 1 + 'LPAR ID'
+- Secondary VIO 2 + 'LPAR ID'
+
+
+	Fiber Channel IDs:
+
+- Primary VIO 3 + 'LPAR ID'
+- Secondary VIO 4 + 'LPAR ID'
+
+
+**Example:**
+
+- VIOS1 - ID: 1 (ever)
+ - Maximum number of virtual IDs: 3500
+
+
+- VIOS2 - ID: 2 (ever)
+ - Maximum number of virtual IDs: 4500
+
+
+LPAR AIX1
+
+- LPAR ID: 11
+- Virtual devices:
+ - 11: Network adapter data
+ - 12: Network adapter backup
+ - 21: Virtual SCSI (Server: 111 VIOS1)
+ - 22: Virtual SCSI (Server: 211 VIOS2)
+ - 33: Fiber Channel (Server: 311 VIOS1)
+ - 34: Fiber Channel (Server: 411 VIOS2)
+
+
+LPAR AIX2
+
+- LPAR ID: 12
+- Virtual devices:
+ - 11: Network adapter data
+ - 12: Network adapter backup
+ - 21: Virtual SCSI (Server: 112 VIOS1)
+ - 22: Virtual SCSI (Server: 212 VIOS2)
+ - 33: Fiber Channel (Server: 312 VIOS1)
+ - 34: Fiber Channel (Server: 412 VIOS2)
+
+
+VIOS1
+
+- LPAR ID: 1
+- Virtual devices:
+ - 111 Virtual SCSI (Client ID: 11 / Virtual Client: 21)
+ - 112 Virtual SCSI (Client ID: 12 / Virtual Client: 21)
+ - 311 Fiber Channel (Client ID: 11 / Virtual Client: 33)
+ - 312 Fiber Channel (Client ID: 12 / Virtual Client: 33)
+
+
+VIOS2
+
+- LPAR ID: 2
+- Virtual devices:
+ - 211 Virtual SCSI (Client: 11 / Virtual Client: 22)
+ - 212 Virtual SCSI (Client: 12 / Virtual Client: 22)
+ - 411 Fiber Channel (Client: 11 / Virtual Client: 34)
+ - 412 Fiber Channel (Client: 12 / Virtual Client: 34)
+
+In this example we can easily identify which VIO serves the virtual devices, by only looking the partition ID.
+
+Sample: Identifying AIX1 on VIOs
+
+```
+padmin@VIOS1:[/home/padmin]lsmap -all | grep C111
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+padmin@VIOS1:[/home/padmin]lsmap -vadapter vhost6
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost6          U9119.FHB.8297FCR-V3-C111                    0x0000000b
+
+VTD                   NO VIRTUAL TARGET DEVICE FOUND
+
+
+padmin@VIOS1:[/home/padmin]lsmap -all -npiv | grep C311
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1 AIX
+
+padmin@VIOS1:[/home/padmin]lsmap -npiv -vadapter vfchost3
+Name          Physloc                            ClntID ClntName       ClntOS
+------------- ---------------------------------- ------ -------------- -------
+vfchost3      U9119.FHB.8297FCR-V3-C311              11 AIX1           AIX
+
+Status:LOGGED_IN
+FC name:fcs0                    FC loc code:U5873.001.992014K-P1-C6-T1
+Ports logged in:2
+Flags:a<LOGGED_IN,STRIP_MERGE>
+VFC client name:fcs0            VFC client DRC:U9119.FHB.8297FCR-V11-C33
+```
+
 
 === Maximum number of LPARs ===
 
@@ -101,43 +260,6 @@ Its configuration will look like in the VIO:
 - 232 to second virtual SCSI on Second VIO
 - 332 to first virtual Fiber Channel (HBA) on Primary VIO
 - 432 to second virtual Fiber Channel (HBA) on Second VIO
-
-
-= Environment to Deploy OS Using a NIM Server = 
-------------------------------------------------
-
-== NIM Server ==
-
-	You need a configured and working NIM Server with SUDO installed.
-
-	Check the install procedure on [INSTALL downloads/install] file.
-
-= Using the VMWare vCenter Orchestrator to create LPAR = 
-------------------------------------------------
-
-	TIP: The PowerAdm must be configured and running in text mode/ASCII.
-
-+ Login on the VMware vCenter Orchestrator using the vCenter Orchestrator Client
-+ Change the view from 'Run' to 'Design'
-+ Go to the 'Action'
-+ Create folder 'org.poweradm.basic'
-+ Left clic on folder 'org.poweradm.basic' and click on 'Import action...'.
-+ Select all actions in the vCO folder of PowerAdm package.
- - getVSW
- - getSystemList
- - getAddSSPDisk
- - getNPIV
-+ Go to the 'Workflows' folder
-+ Create on 'Custom' folder a new folder named 'PowerAdm'
-+ Left clic on 'PowerAdm' folder and click on 'Import workflows..'
-+ Left click on workflow PowerAdm and click on 'Edit'
-+ In General, change the Attribute Values:
- - powerAdmAddres ""[IP address of your server with PowerAdm]""
- - powerAdmUser ""[Username of PowerAdm]""
- - powerAdmPassword ""[Password PowerAdm user]""
- - powerAdmPath ""[path installationz]""
-
-	For more information visit [vCo-forPowerAdm SITEROOT/vcoforpoweradm.html]
 
 == Tips ==
 

@@ -11,6 +11,8 @@
 Last modified on %%mtime(%d %B %Y at %H:%M)
 ([See sources %%infile])
 
+This page style is based on http://txt2tags.org page =)
+
 ''' </div><div id="fake">
 % Open a fake DIV that will be closed by the old #body </div>
 
