@@ -1,0 +1,20 @@
+PowerAdm - IBM Power/PowerVM Administration tool
+
+How it Works 
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+== PowerAdm simple overview == 
+%!include: ''video-poweradm.html'' 
+
+== PowerAdm integrated with VMware vCenter Orchestrator == 
+%!include: ''video-poweradm-vco.html''
+
+== Need help ? ==
+
+Send me an email: kairo[@]kairo.eti.br
+
+%!include: inc/footer.t2t
+

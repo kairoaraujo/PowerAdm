@@ -70,12 +70,14 @@ In beta testing:
 === License ===
 	This software is BSD License. Please more details in LICENSE file.
 
-	IMPORTANT: IBM, PowerVM (a.k.a. VIOS), smitty are registered trademarks of IBM Corporation in the United States, other countries, or both.
+	IMPORTANT: IBM, IBM Power and PowerVM/VIOS are registered trademarks of IBM Corporation in the United States, other countries, or both.
 
 	VMware, vCenter, vCenter Orchestrator are registered trademarks of VMware Inc in the United States, other countries, or both.
 
 		This project is maintained by [Kairo Araujo http://kairo.eti.br/]
 
 		Contributors: Bruno Costa, Fernando Costa,  Raphael Paiva and Filipi Silva
+
+        ** All informations here are own by Maintainer and Contributors **
 
 %!include: inc/footer.t2t
