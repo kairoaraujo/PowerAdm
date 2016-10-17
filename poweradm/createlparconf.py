@@ -128,6 +128,9 @@ def lparconfig():
         nim_deploy.mkCheck()
         nim_deploy = nim_deploy.answerCheck()
 
+    else:
+        nim_deploy = 'n'
+
     """ get network to deploy using nim (only if nim deploy is enabled) """
     vsw_deploy = None
     vlan_deploy = None
