@@ -50,7 +50,6 @@ active_ssp = poweradm.config.active_ssp.lower()
 storage_pools = poweradm.config.storage_pools
 npivs = poweradm.npiv.NPIV()
 system_vio = poweradm.systemvios.SystemVios()
-freeid = poweradm.newid.NewID()
 
 
 @route('<filename:path>')
@@ -285,7 +284,7 @@ def lpar_config_finish():
     createlpar = request.GET.get('createlpar', '')
 
     # get the next free id
-    nextid = newid.NewID()
+    nextid = poweradm.newid.NewID()
     if poweradm.config.vslot_std:
         lparid = nextid.mkid()
     else:
