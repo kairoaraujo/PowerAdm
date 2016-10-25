@@ -129,15 +129,13 @@ class MakeLPARConf:
         vios_vslot_vhba = None
         vios_vslot_vscsi = None
 
-        if self.vscsi == 'y' or self.vscsi == 'y':
+        if self.vscsi == 'y' or self.vfc == 'y':
 
             if config.vslot_std:
-                if self.vscsi == 'y':
-                    vios1_vslot_vscsi = '1%s' % self.lparid
-                    vios2_vslot_vscsi = '2%s' % self.lparid
-                if self.vfc == 'y':
-                    vios1_vslot_vhba = '3%s' % self.lparid
-                    vios2_vslot_vhba = '4%s' % self.lparid
+                vios1_vslot_vscsi = '1%s' % self.lparid
+                vios2_vslot_vscsi = '2%s' % self.lparid
+                vios1_vslot_vhba = '3%s' % self.lparid
+                vios2_vslot_vhba = '4%s' % self.lparid
 
                 vscsi_vio1 = ("21/client//%s/%s/0" % (self.vios1, vios1_vslot_vscsi))
                 vscsi_vio2 = ("22/client//%s/%s/0" % (self.vios2, vios2_vslot_vscsi))
@@ -154,15 +152,25 @@ class MakeLPARConf:
                     vios_vslot_vscsi = vios_vslot.get_new()[0]
                     vios1_vslot_vscsi = vios_vslot_vscsi
                     vios2_vslot_vscsi = vios_vslot_vscsi
-                    vslot_tmp_file.write('%s\n' % vios_vslot_vscsi)
+
+                else:
+                    vios1_vslot_vscsi = 0
+                    vios2_vslot_vscsi = 0
+
+                vslot_tmp_file.write('%s\n' % vios_vslot_vscsi)
 
                 if self.vfc == 'y':
                     vios_vslot_vhba = vios_vslot.get_new()[1]
                     vios1_vslot_vhba = vios_vslot_vhba
                     vios2_vslot_vhba = vios_vslot_vhba
-                    vslot_tmp_file.write('%s\n' % vios_vslot_vhba)
 
-                    vslot_tmp_file.close()
+                else:
+                    vios1_vslot_vhba = 0
+                    vios2_vslot_vhba = 0
+
+                vslot_tmp_file.write('%s\n' % vios_vslot_vhba)
+
+                vslot_tmp_file.close()
 
                 vscsi_vio1 = ("21/client//%s/%s/0" % (self.vios1, vios_vslot_vscsi))
                 vscsi_vio2 = ("22/client//%s/%s/0" % (self.vios2, vios_vslot_vscsi))
