@@ -237,7 +237,9 @@ class Vadpt:
             '%s/poweradm/tmp/vslots_vios_%s_%s' % (config.pahome,
                                                    self.systemp,
                                                    globalvar.timestr), 'r')
-        used_vdapts = file_used_vdapts.readlines()
+        used_vdapts = file_used_vdapts.read().splitlines()
+        while 'None' in used_vdapts:
+            used_vdapts.remove('None')
         used_vdapts.sort(key=int)
         used_vdapts = map(int, used_vdapts)
         full_vdapts = range(int(max_virtual_slots))
